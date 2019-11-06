@@ -32,7 +32,12 @@ public class CubeFace : MonoBehaviour
                 TileScript.type tileType;
                 GameObject tileTypeObject;
 
-                if(random < probRock)
+                if (y == 0 || x == 0 || x == width-1 || y == heigth - 1)
+                {
+                    tileType = TileScript.type.ROCK;
+                    tileTypeObject = prefabRock;
+                }
+                 else if(random < probRock)
                 {
                     tileType = TileScript.type.ROCK;
                     tileTypeObject = prefabRock;
