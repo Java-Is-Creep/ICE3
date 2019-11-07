@@ -53,6 +53,38 @@ public class CharacterController : MonoBehaviour
         }
     }
 
+    public void w()
+    {
+        if (lastMovement == 0)
+        {
+            lastMovement = 4;
+        }
+    }
+
+    public void a()
+    {
+        if (lastMovement == 0)
+        {
+            lastMovement = 1;
+        }
+    }
+
+    public void s()
+    {
+        if (lastMovement == 0)
+        {
+            lastMovement = 2;
+        }
+    }
+
+    public void d()
+    {
+        if (lastMovement == 0)
+        {
+            lastMovement = 3;
+        }
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.tag == "Rock"){
