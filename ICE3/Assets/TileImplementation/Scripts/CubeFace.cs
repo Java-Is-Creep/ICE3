@@ -4,68 +4,68 @@ using UnityEngine;
 
 public class CubeFace : MonoBehaviour
 {
-    public float width;
-    public float heigth;
-    public int cubeId;
+     float width;
+     float heigth;
 
-    public GameObject prefabIce;
-    public GameObject prefabRock;
-    public GameObject prefabTile;
+    int faceNum; //enumerador que sirve para saber que cara es;
 
-    public int FaceNum; //enumerador que sirve para saber que cara es;
-
-    int probRock = 10;
+    
 
     float prefWidth = 1;
 
     GameObject[,] cubeFace;
-    // Start is called before the first frame update
+
+    
+    public void initCube (float width, float heigth, int faceNum, GameObject[,] cubeFace)
+    {
+        this.width = width;
+        this.heigth = heigth;
+        this.faceNum = faceNum;
+        this.cubeFace = cubeFace;
+        changeOrientation();
+    }
+    
+
+
+
+    // Se crea la cara del cubo correspondiente.
+    //Se crean obstaculos aleatorios
+    // La cara se recubre de cubos para no caerte.
     void Start()
     {
-        cubeFace = new GameObject[(int)width, (int)heigth];
+    }
 
-        for(int x = 0; x<width; x++)
+    public void changeOrientation()
+    {
+        switch (faceNum)
         {
-            for (int y = 0; y <heigth; y++)
-            {
-                int random = Random.Range(0, 100);
-                TileScript.type tileType;
-                GameObject tileTypeObject;
-
-                if (y == 0 || x == 0 || x == width-1 || y == heigth - 1)
-                {
-                    tileType = TileScript.type.ROCK;
-                    tileTypeObject = prefabRock;
-                }
-                 else if(random < probRock)
-                {
-                    tileType = TileScript.type.ROCK;
-                    tileTypeObject = prefabRock;
-                } else
-                {
-                    tileType = TileScript.type.ICE;
-                    tileTypeObject = prefabIce;
-                }
-
-                GameObject tileObject = Instantiate(prefabTile,GetComponentInParent<Transform>());
-                tileObject.transform.position = new Vector3(x, 0, y);                
-                TileScript tile = tileObject.GetComponent<TileScript>();
-                    tile.initTile(x, y, cubeId, x, y, tileTypeObject,tileType);
-                cubeFace[x, y] = tileObject;
-            }
-        }
-
-        switch (FaceNum)
-        {
-            case 0: // cara arriba
+            case 0: // cara Top
                 break;
-            case 1: //cara derecha
-                this.transform.Translate(0, -(prefWidth / 2), width - (prefWidth / 2));
-                this.transform.Rotate(90, 0, 0);
+            case 1: //cara arriba
+                this.transform.Translate(width - prefWidth, -width + (prefWidth / 2), width - (prefWidth / 2));
+                this.transform.Rotate(90, 0, 0, Space.Self);
+                this.transform.Rotate(0, 0, 180, Space.World);
+                break;
+            case 2: // cara abajo
+                this.transform.Translate(0, -width + (prefWidth / 2), -(prefWidth / 2));
+                this.transform.Rotate(-90, 0, 0);
+                break;
+            case 3:// cara derecha
+                this.transform.Translate(-(prefWidth / 2), -width + (prefWidth / 2), width - prefWidth);
+                this.transform.Rotate(0, 0, 90, Space.Self);
+                this.transform.Rotate(-90, 0, 0, Space.World);
+                break;
+            case 4: // cara izquierda
+                this.transform.Translate(width - (prefWidth / 2), -width + (prefWidth / 2), 0);
+                this.transform.Rotate(0, 0, -90, Space.Self);
+                this.transform.Rotate(-90, 0, 0, Space.World);
+                break;
+            case 5: // cara bottom
+                this.transform.Translate(width - prefWidth, -width, 0);
+                this.transform.Rotate(180, 0, 0, Space.Self);
+                this.transform.Rotate(0, 180, 0, Space.World);
                 break;
         }
-
-
     }
 
     // Update is called once per frame
