@@ -61,6 +61,7 @@ public class Cube : MonoBehaviour
             faces[i].initCube(width, heigth, i, cubeFace);
                  
         }
+        this.transform.position = new Vector3(-width/2, heigth/2, -heigth/2);
     }
 
         // Update is called once per frame
