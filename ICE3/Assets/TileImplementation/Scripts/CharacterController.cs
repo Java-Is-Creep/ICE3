@@ -2,22 +2,45 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterController : MonoBehaviour
+using UnityEngine.Networking;
+
+public class CharacterController : NetworkBehaviour
 {
 
     private float velocity = 5f;
 
     private int lastMovement = 0;
 
+    public int Cara;
+    public int indexX;
+    public int indexY;
+
+    public Vector3 target;
+    public bool mooving = false;
+
+     float increment = 10f;
+
+    Cube cubo;
+
     // Start is called before the first frame update
     void Start()
     {
-        this.transform.position = new Vector3(1, 1.03f, 1);
+        cubo = FindObjectOfType<Cube>();
+        indexX = 2;
+        indexY = 10;
+        Cara = 0;
+        this.transform.position = cubo.faces[Cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
+        this.transform.position = this.transform.position + new Vector3(0, 1, 0);
     }
 
     // Update is called once per frame
     void Update()
     {
+        float incrementAux = increment * Time.deltaTime;
+        if (!isLocalPlayer)
+        {
+            return;
+        }
         if (lastMovement == 0)
         {
             if (Input.GetKeyDown("a"))
@@ -37,10 +60,43 @@ public class CharacterController : MonoBehaviour
                 lastMovement = 4;
             }
         }
+        
         if (lastMovement == 1)
         {
-            this.transform.position = new Vector3(transform.position.x + 1 * velocity *Time.deltaTime, transform.position.y, transform.position.z);
-        } else if (lastMovement == 2)
+            if(indexY> 0)
+            {
+                if (mooving) //mas eficiente, mirar todas las casillas y ver hasta cualpuedes ir
+                {
+                    this.transform.position = new Vector3(transform.position.x , transform.position.y, transform.position.z - incrementAux);
+                    if ( Mathf.Abs(this.transform.position.z - target.z) < 0.5f)
+                    {
+                        
+                        this.transform.position = target;
+                        Debug.Log("Acaba Casilla");
+                        mooving = false;
+                    }
+                } else
+                {
+                    indexY--;
+                    TileScript tile = cubo.faces[Cara].tiles[indexX, indexY].GetComponent<TileScript>();
+                    if (tile.tileType == TileScript.type.ICE)
+                    {
+                        Debug.Log("Siguien casilla hielo");
+                        target = new Vector3(tile.AbsolutePos.x, transform.position.y, tile.AbsolutePos.z);
+                        Debug.Log(target);
+                        mooving = true;
+
+                    }
+                    else
+                    {
+                        Debug.Log("Siguien casilla Roca");
+                        mooving = false;
+                        lastMovement = 0;
+                    }
+                }
+               
+            }
+        }/* else if (lastMovement == 2)
         {
             this.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + 1 * velocity * Time.deltaTime);
         }
@@ -51,6 +107,7 @@ public class CharacterController : MonoBehaviour
         {
             this.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - 1 * velocity * Time.deltaTime);
         }
+        */
     }
 
     public void w()
@@ -86,10 +143,11 @@ public class CharacterController : MonoBehaviour
     }
 
     private void OnCollisionEnter(Collision collision)
-    {
+    {/*
         if (collision.collider.tag == "Rock"){
             lastMovement = 0;
             this.transform.position = new Vector3(Mathf.Round(transform.position.x), transform.position.y, Mathf.Round(transform.position.z - 1 * velocity * Time.deltaTime));
         }
+        */
     }
 }

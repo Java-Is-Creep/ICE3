@@ -21,10 +21,8 @@ public class CameraRotator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
         camera = this.transform.GetChild(0);
-        camera.LookAt(pivot);
-
-        wasRotating = false;
     }
 
     // Update is called once per frame
