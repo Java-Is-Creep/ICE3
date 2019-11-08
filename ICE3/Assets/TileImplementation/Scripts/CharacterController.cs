@@ -61,53 +61,166 @@ public class CharacterController : NetworkBehaviour
             }
         }
         
-        if (lastMovement == 1)
+        if (lastMovement == 1) // izq
         {
-            if(indexY> 0)
+
+
+            if (indexX > 0)
             {
                 if (mooving) //mas eficiente, mirar todas las casillas y ver hasta cualpuedes ir
                 {
-                    this.transform.position = new Vector3(transform.position.x , transform.position.y, transform.position.z - incrementAux);
-                    if ( Mathf.Abs(this.transform.position.z - target.z) < 0.5f)
+                    this.transform.position = new Vector3(transform.position.x - incrementAux, transform.position.y, transform.position.z);
+                    if (Mathf.Abs(this.transform.position.x - target.x) < 0.5f)
                     {
-                        
+
                         this.transform.position = target;
-                        Debug.Log("Acaba Casilla");
+                        Debug.Log("Acaba Casilla Izq");
                         mooving = false;
                     }
-                } else
+                }
+                else
                 {
-                    indexY--;
-                    TileScript tile = cubo.faces[Cara].tiles[indexX, indexY].GetComponent<TileScript>();
+                    
+                    TileScript tile = cubo.faces[Cara].tiles[indexX-1, indexY].GetComponent<TileScript>();
                     if (tile.tileType == TileScript.type.ICE)
                     {
-                        Debug.Log("Siguien casilla hielo");
+                        Debug.Log("Siguien casilla hielo Izq");
                         target = new Vector3(tile.AbsolutePos.x, transform.position.y, tile.AbsolutePos.z);
                         Debug.Log(target);
                         mooving = true;
+                        indexX--;
 
                     }
                     else
                     {
-                        Debug.Log("Siguien casilla Roca");
+                        Debug.Log("Siguien casilla Roca Izq");
                         mooving = false;
                         lastMovement = 0;
                     }
                 }
-               
+
             }
-        }/* else if (lastMovement == 2)
+
+
+
+        } else if (lastMovement == 2) // abajo
         {
-            this.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + 1 * velocity * Time.deltaTime);
+
+
+            if (indexY > 0)
+            {
+                if (mooving) //mas eficiente, mirar todas las casillas y ver hasta cualpuedes ir
+                {
+                    this.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - incrementAux);
+                    if (Mathf.Abs(this.transform.position.z - target.z) < 0.5f)
+                    {
+
+                        this.transform.position = target;
+                        Debug.Log("Acaba Casilla Aba");
+                        mooving = false;
+                    }
+                }
+                else
+                {
+                    
+                    TileScript tile = cubo.faces[Cara].tiles[indexX, indexY-1].GetComponent<TileScript>();
+                    if (tile.tileType == TileScript.type.ICE)
+                    {
+                        Debug.Log("Siguien casilla hielo Aba");
+                        target = new Vector3(tile.AbsolutePos.x, transform.position.y, tile.AbsolutePos.z);
+                        Debug.Log(target);
+                        mooving = true;
+                        indexY--;
+
+                    }
+                    else
+                    {
+                        Debug.Log("Siguien casilla Roca Aba");
+                        mooving = false;
+                        lastMovement = 0;
+                    }
+                }
+
+            }
         }
-        else if (lastMovement == 3)
+        else if (lastMovement == 3)// derecha
         {
-            this.transform.position = new Vector3(transform.position.x - 1 * velocity * Time.deltaTime, transform.position.y, transform.position.z);
-        } else if (lastMovement == 4)
-        {
-            this.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - 1 * velocity * Time.deltaTime);
+
+            if (indexX < cubo.width -1)
+            {
+                if (mooving) //mas eficiente, mirar todas las casillas y ver hasta cualpuedes ir
+                {
+                    this.transform.position = new Vector3(transform.position.x + incrementAux, transform.position.y, transform.position.z);
+                    if (Mathf.Abs(this.transform.position.x - target.x) < 0.5f)
+                    {
+
+                        this.transform.position = target;
+                        Debug.Log("Acaba Casilla Izq");
+                        mooving = false;
+                    }
+                }
+                else
+                {
+
+                    TileScript tile = cubo.faces[Cara].tiles[indexX + 1, indexY].GetComponent<TileScript>();
+                    if (tile.tileType == TileScript.type.ICE)
+                    {
+                        Debug.Log("Siguien casilla hielo Izq");
+                        target = new Vector3(tile.AbsolutePos.x, transform.position.y, tile.AbsolutePos.z);
+                        Debug.Log(target);
+                        mooving = true;
+                        indexX++;
+
+                    }
+                    else
+                    {
+                        Debug.Log("Siguien casilla Roca Izq");
+                        mooving = false;
+                        lastMovement = 0;
+                    }
+                }
+
+            }
+
         }
-        */
+        else if (lastMovement == 4) // arriba
+        {
+            if (indexY <cubo.heigth -1)
+            {
+                if (mooving) //mas eficiente, mirar todas las casillas y ver hasta cualpuedes ir
+                {
+                    this.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + incrementAux);
+                    if (Mathf.Abs(this.transform.position.z - target.z) < 0.5f)
+                    {
+
+                        this.transform.position = target;
+                        Debug.Log("Acaba Casilla Aba");
+                        mooving = false;
+                    }
+                }
+                else
+                {
+
+                    TileScript tile = cubo.faces[Cara].tiles[indexX, indexY + 1].GetComponent<TileScript>();
+                    if (tile.tileType == TileScript.type.ICE)
+                    {
+                        Debug.Log("Siguien casilla hielo Aba");
+                        target = new Vector3(tile.AbsolutePos.x, transform.position.y, tile.AbsolutePos.z);
+                        Debug.Log(target);
+                        mooving = true;
+                        indexY++;
+
+                    }
+                    else
+                    {
+                        Debug.Log("Siguien casilla Roca Aba");
+                        mooving = false;
+                        lastMovement = 0;
+                    }
+                }
+
+            }
+        }
     }
 
     public void w()
