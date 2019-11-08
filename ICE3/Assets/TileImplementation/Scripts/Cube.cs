@@ -58,10 +58,16 @@ public class Cube : MonoBehaviour
                 }
             }
             faces[i] = facesObject[i].GetComponent<CubeFace>();
-            faces[i].initCube(width, heigth, i, cubeFace);
+            faces[i].initCube(width, heigth, i, cubeFace,this.gameObject);
                  
         }
-        this.transform.position = new Vector3(-width/2, heigth/2, -heigth/2);
+
+        this.transform.position = new Vector3(-width / 2, heigth / 2, -heigth / 2);
+
+        for (int i = 0; i < faces.Length; i++)
+        {
+            faces[i].reloadTilePos();
+        }
     }
 
         // Update is called once per frame

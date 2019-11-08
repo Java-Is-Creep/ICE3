@@ -11,8 +11,11 @@ public class TileScript : MonoBehaviour
 
     GameObject myObject;
 
-    int posX;
-    int posY;
+    public float posX;
+    public float posY;
+    public float posZ;
+
+    public Vector3 AbsolutePos;
 
     public enum type { ICE,ROCK}
 
