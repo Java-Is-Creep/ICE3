@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -30,7 +31,8 @@ public class CameraRotator : MonoBehaviour
     Quaternion rotacionInicial;
 
     int cara = 0;
-    bool direction;
+    int cara_anterior = 0;
+    int direction;
 
 
     // Start is called before the first frame update
@@ -50,39 +52,155 @@ public class CameraRotator : MonoBehaviour
             float aux = i / framesToRotate;
             //Debug.Log("a");
             //Debug.Log(aux);
-            if (cara == 3 && direction == false)
+            //EJE DE ROTACION 0
+            if (cara == 1 && direction == 0)
             {
                 this.transform.rotation = Quaternion.Euler(50 * aux + rotacionInicial.eulerAngles.x, 50 * aux + rotacionInicial.eulerAngles.y, -90 * aux + rotacionInicial.eulerAngles.z);
-            } else if (cara == 2 && direction == false)
+            }
+            else if (cara == 2 && direction == 0)
             {
                 this.transform.rotation = Quaternion.Euler(50 * aux + rotacionInicial.eulerAngles.x, -50 * aux + rotacionInicial.eulerAngles.y, -90 * aux + rotacionInicial.eulerAngles.z);
             }
-            else if (cara == 1 && direction == false)
+            else if (cara == 3 && direction == 0)
             {
                 this.transform.rotation = Quaternion.Euler(-50 * aux + rotacionInicial.eulerAngles.x, -50 * aux + rotacionInicial.eulerAngles.y, -90 * aux + rotacionInicial.eulerAngles.z);
             }
-            else if (cara == 0 && direction == false)
+            else if (cara == 0 && direction == 0)
             {
                 this.transform.rotation = Quaternion.Euler(-50 * aux + rotacionInicial.eulerAngles.x, +50 * aux + rotacionInicial.eulerAngles.y, -90 * aux + rotacionInicial.eulerAngles.z);
             }
+            //EJE DE ROTACION 1
+            else if (cara == 3 && direction == 1)
+            {
+                this.transform.rotation = Quaternion.Euler(+50 * aux + rotacionInicial.eulerAngles.x, -50 * aux + rotacionInicial.eulerAngles.y, +90 * aux + rotacionInicial.eulerAngles.z);
+            }
+            else if (cara == 2 && direction == 1)
+            {
+                this.transform.rotation = Quaternion.Euler(+50 * aux + rotacionInicial.eulerAngles.x, +50 * aux + rotacionInicial.eulerAngles.y, +90 * aux + rotacionInicial.eulerAngles.z);
+            }
+            else if (cara == 1 && direction == 1)
+            {
+                this.transform.rotation = Quaternion.Euler(-50 * aux + rotacionInicial.eulerAngles.x, +50 * aux + rotacionInicial.eulerAngles.y, +90 * aux + rotacionInicial.eulerAngles.z);
+            }
+            else if (cara == 0 && direction == 1)
+            {
+                this.transform.rotation = Quaternion.Euler(-50 * aux + rotacionInicial.eulerAngles.x, -50 * aux + rotacionInicial.eulerAngles.y, +90 * aux + rotacionInicial.eulerAngles.z);
 
-            if (cara == 1 && direction == true)
-            {
-                this.transform.rotation = Quaternion.Euler(50 * aux + rotacionInicial.eulerAngles.x, -50 * aux + rotacionInicial.eulerAngles.y, 90 * aux + rotacionInicial.eulerAngles.z);
             }
-            else if (cara ==2 && direction == true)
+            //EJE DE ROTACION 2
+            else if (cara == 5 && direction == 2)
             {
-                this.transform.rotation = Quaternion.Euler(50 * aux + rotacionInicial.eulerAngles.x, 50 * aux + rotacionInicial.eulerAngles.y, 90 * aux + rotacionInicial.eulerAngles.z);
+                this.transform.rotation = Quaternion.Euler(-100 * aux + rotacionInicial.eulerAngles.x, 0 * aux + rotacionInicial.eulerAngles.y, 0 * aux + rotacionInicial.eulerAngles.z);
             }
-            else if (cara == 3 && direction == true)
+            else if (cara == 2 && direction == 2)
             {
-                this.transform.rotation = Quaternion.Euler(-50 * aux + rotacionInicial.eulerAngles.x, +50 * aux + rotacionInicial.eulerAngles.y, 90 * aux + rotacionInicial.eulerAngles.z);
+                this.transform.rotation = Quaternion.Euler(+90 * aux + rotacionInicial.eulerAngles.x, -180 * aux + rotacionInicial.eulerAngles.y, +0 * aux + rotacionInicial.eulerAngles.z);
             }
-            else if (cara == 0 && direction == true)
+            else if (cara == 4 && direction == 2)
+            {
+                this.transform.rotation = Quaternion.Euler(-20 * aux + rotacionInicial.eulerAngles.x, 0 * aux + rotacionInicial.eulerAngles.y, +180 * aux + rotacionInicial.eulerAngles.z);
+            }
+            else if (cara == 0 && direction == 2)
+            {
+                this.transform.rotation = Quaternion.Euler(-90 * aux + rotacionInicial.eulerAngles.x, 0 * aux + rotacionInicial.eulerAngles.y, 0 * aux + rotacionInicial.eulerAngles.z);
+            }
+            //EJE DE ROTACION 3
+            else if (cara == 4 && direction == 3)
+            {
+                this.transform.rotation = Quaternion.Euler(+90 * aux + rotacionInicial.eulerAngles.x, 0 * aux + rotacionInicial.eulerAngles.y, 0 * aux + rotacionInicial.eulerAngles.z);
+            }
+            else if (cara == 2 && direction == 3)
+            {
+                this.transform.rotation = Quaternion.Euler(10 * aux + rotacionInicial.eulerAngles.x, 0 * aux + rotacionInicial.eulerAngles.y, -180 * aux + rotacionInicial.eulerAngles.z);
+            }
+            else if (cara == 5 && direction == 3)
+            {
+                this.transform.rotation = Quaternion.Euler(-200 * aux + rotacionInicial.eulerAngles.x, 0 * aux + rotacionInicial.eulerAngles.y, +180 * aux + rotacionInicial.eulerAngles.z);
+            }
+            else if (cara == 0 && direction == 3)
+            {
+                this.transform.rotation = Quaternion.Euler(-100 * aux + rotacionInicial.eulerAngles.x, 0 * aux + rotacionInicial.eulerAngles.y, 0 * aux + rotacionInicial.eulerAngles.z);
+            }
+            //EJE DE ROTACION 4
+            else if (cara == 3 && direction == 4)
+            {
+                this.transform.rotation = Quaternion.Euler(-40 * aux + rotacionInicial.eulerAngles.x, -50 * aux + rotacionInicial.eulerAngles.y, 90 * aux + rotacionInicial.eulerAngles.z);
+            }
+            else if (cara == 5 && direction == 4)
+            {
+                this.transform.rotation = Quaternion.Euler(-150 * aux + rotacionInicial.eulerAngles.x, +50 * aux + rotacionInicial.eulerAngles.y, -90 * aux + rotacionInicial.eulerAngles.z);
+            }
+            else if (cara == 1 && direction == 4)
+            {
+                //ESTE ESTA MAAAAAAAAAAAL
+                this.transform.rotation = Quaternion.Euler(+150 * aux + rotacionInicial.eulerAngles.x, +50 * aux + rotacionInicial.eulerAngles.y, -90 * aux + rotacionInicial.eulerAngles.z);
+            }
+            else if (cara == 4 && direction == 4)
+            {
+                this.transform.rotation = Quaternion.Euler(40 * aux + rotacionInicial.eulerAngles.x, -50 * aux + rotacionInicial.eulerAngles.y,+90 * aux + rotacionInicial.eulerAngles.z);
+            }
+            //EJE DE ROTACION 5
+            else if (cara == 1 && direction == 5)
+            {
+                this.transform.rotation = Quaternion.Euler(-40 * aux + rotacionInicial.eulerAngles.x, 50 * aux + rotacionInicial.eulerAngles.y, -90 * aux + rotacionInicial.eulerAngles.z);
+            }
+            else if (cara == 5 && direction == 5)
+            {
+                this.transform.rotation = Quaternion.Euler(-150 * aux + rotacionInicial.eulerAngles.x, -50 * aux + rotacionInicial.eulerAngles.y, 90 * aux + rotacionInicial.eulerAngles.z);
+            }
+            else if (cara == 3 && direction == 5)
+            {
+                //ESTE ESTA MAAAAAAAAAAAL
+                this.transform.rotation = Quaternion.Euler(+150 * aux + rotacionInicial.eulerAngles.x, -50 * aux + rotacionInicial.eulerAngles.y, 90 * aux + rotacionInicial.eulerAngles.z);
+            }
+            else if (cara == 4 && direction == 5)
+            {
+                this.transform.rotation = Quaternion.Euler(40 * aux + rotacionInicial.eulerAngles.x, +50 * aux + rotacionInicial.eulerAngles.y, -90 * aux + rotacionInicial.eulerAngles.z);
+            }
+
+            /*
+            if (cara == 3 && direction == 1)
+            {
+                this.transform.rotation = Quaternion.Euler(-50 * aux + rotacionInicial.eulerAngles.x, -50 * aux + rotacionInicial.eulerAngles.y, -90 * aux + rotacionInicial.eulerAngles.z);
+
+            } else if (cara == 2 && direction == 0)
+            {
+                this.transform.rotation = Quaternion.Euler(50 * aux + rotacionInicial.eulerAngles.x, -50 * aux + rotacionInicial.eulerAngles.y, -90 * aux + rotacionInicial.eulerAngles.z);
+            }
+            else if (cara == 1 && direction == 0)
+            {
+                this.transform.rotation = Quaternion.Euler(50 * aux + rotacionInicial.eulerAngles.x, 50 * aux + rotacionInicial.eulerAngles.y, -90 * aux + rotacionInicial.eulerAngles.z);
+            }
+            else if (cara == 0 && direction == 0)
             {
                 this.transform.rotation = Quaternion.Euler(-50 * aux + rotacionInicial.eulerAngles.x, -50 * aux + rotacionInicial.eulerAngles.y, 90 * aux + rotacionInicial.eulerAngles.z);
             }
 
+            if (cara == 1 && direction == 1)
+            {
+                this.transform.rotation = Quaternion.Euler(-50 * aux + rotacionInicial.eulerAngles.x, +50 * aux + rotacionInicial.eulerAngles.y, 90 * aux + rotacionInicial.eulerAngles.z);
+
+            }
+            else if (cara == 2 && direction == 1)
+            {
+                this.transform.rotation = Quaternion.Euler(50 * aux + rotacionInicial.eulerAngles.x, 50 * aux + rotacionInicial.eulerAngles.y, 90 * aux + rotacionInicial.eulerAngles.z);
+            }
+            else if (cara == 3 && direction == 1)
+            {
+                this.transform.rotation = Quaternion.Euler(50 * aux + rotacionInicial.eulerAngles.x, -50 * aux + rotacionInicial.eulerAngles.y, 90 * aux + rotacionInicial.eulerAngles.z);
+            }
+            else if (cara == 0 && direction == 1)
+            {
+                this.transform.rotation = Quaternion.Euler(-50 * aux + rotacionInicial.eulerAngles.x, +50 * aux + rotacionInicial.eulerAngles.y, -90 * aux + rotacionInicial.eulerAngles.z);
+
+            }
+
+
+            else if (cara == 4 && direction == 2)
+            {
+                this.transform.rotation = Quaternion.Euler(90 * aux + rotacionInicial.eulerAngles.x, 0 * aux + rotacionInicial.eulerAngles.y, 0 * aux + rotacionInicial.eulerAngles.z);
+            }
+            */
             i++;
             if ( i> 60)
             {
@@ -90,17 +208,23 @@ public class CameraRotator : MonoBehaviour
                 i = 0;
             }
         }                                                               //Izquierda                 Derecha
-        // cara 0: original rotation -50, 0, 0
-        //cara 1: a dla rotacion que queremos ir 0, 50, -90           //X: +50, +50, -50, -50       x: +50, +50, -50, -50
-        //cara 2: siguiente es: 50, 0, -180                           //Y: +50, -50, -50, +50       y: -50, +50, -50, +50
-        // cara 3: 0, -50, -270                                        //Z: -90, -90, -90, -90      z: +90, +90, +90, +90
+        // cara 0:  -50, 0, 0
+        //cara 1:  0, 50, -90                                           //X: +50, +50, -50, -50       x: +50, +50, -50, -50
+        //cara 2:  50, 0, -180                                          //Y: +50, -50, -50, +50       y: -50, +50, -50, +50
+        // cara 3: 0, -50, 90                                        //Z: -90, -90, -90, -90       z: +90, +90, +90, +90
+        //cara 4: 40, 0, 0
+        //cara 5: -150, 0, 0
+
+        //goToNewFace();
 
         if (!hasToRotate)
         {
-            if (Input.GetKeyDown("q"))
+            goToNewFace();
+            /*
+            if (Input.GetKeyDown("a"))
             {
                 cara--;
-                direction = false;
+                direction = 0;
                 if (cara == -1)
                 {
                     cara = 3;
@@ -109,19 +233,10 @@ public class CameraRotator : MonoBehaviour
                 rotacionInicial = this.transform.rotation;
                 hasToRotate = true;
                 Debug.Log(cara);
-                //camaraAux = transform.rotation;
-                //Vector3 aux = camaraAux.eulerAngles;
-                //aux += new Vector3(0, 50, -90);
-
-                //this.transform.rotation = Quaternion.Euler(0, 50, -90);
-
-                //this.transform.Rotate(-1*aux);
-                //this.transform.rotation = Quaternion.identity;
-                //this.transform.Rotate(0, 50, -90, Space.World);
             }
-            else if (Input.GetKeyDown("e"))
+            else if (Input.GetKeyDown("d"))
             {
-                direction = true;
+                direction = 1;
                 cara = Mathf.Abs((cara + 1) % 4);
                 Debug.Log(cara);
                 i = 0;
@@ -129,7 +244,15 @@ public class CameraRotator : MonoBehaviour
                 hasToRotate = true;
                 //this.transform.Rotate(-50, -90, 0);
 
+            } else if (Input.GetKeyDown("w"))
+            {
+                direction = 2;
+                cara = 4;
+                i = 0;
+                rotacionInicial = this.transform.rotation;
+                hasToRotate = true;
             }
+            */
 
             if (SystemInfo.deviceType == DeviceType.Desktop)
             {
@@ -158,8 +281,8 @@ public class CameraRotator : MonoBehaviour
                         {
                             //Debug.Log("Puedes mover");
                             transform.Rotate(new Vector3(Input.GetAxis("Mouse Y") * Time.deltaTime * speedRotation, Input.GetAxis("Mouse X") * Time.deltaTime * speedRotation, 0));
-                            //float z = transform.eulerAngles.z;
-                            //transform.Rotate(0, 0, -z);
+                            float z = transform.eulerAngles.z;
+                            transform.Rotate(0, 0, -z);
                             //transform.rotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y, lastCamara.z);
                         }
                         else
@@ -316,5 +439,149 @@ public class CameraRotator : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void goToNewFace()
+    {
+        cara_anterior = cara;
+        if (Input.GetKeyDown("a"))
+        {
+            rotacionInicial = this.transform.rotation;
+            hasToRotate = true;
+            if (cara == 0)
+            {
+                cara = 1;
+                direction = 0;
+            } else if (cara == 1)
+            {
+                cara = 2;
+                direction = 0;
+            }
+            else if (cara == 2)
+            {
+                cara = 3;
+                direction = 0;
+            }
+            else if (cara == 3)
+            {
+                cara = 0;
+                direction = 0;
+            }
+            else if (cara == 4)
+            {
+                cara = 1;
+                direction = 5;
+            } else if (cara == 5)
+            {
+                cara = 1;
+                direction = 4;
+            }
+        }
+        if (Input.GetKeyDown("d"))
+        {
+            rotacionInicial = this.transform.rotation;
+            hasToRotate = true;
+            if (cara == 0)
+            {
+                cara = 3;
+                direction = 1;
+            }
+            else if (cara == 1)
+            {
+                cara = 0;
+                direction = 1;
+            }
+            else if (cara == 2)
+            {
+                cara = 1;
+                direction = 1;
+            }
+            else if (cara == 3)
+            {
+                cara = 2;
+                direction = 1;
+            }
+            else if (cara == 4)
+            {
+                cara = 3;
+                direction = 4;
+            }
+            else if (cara == 5)
+            {
+                cara = 3;
+                direction = 5;
+            }
+        }
+        if (Input.GetKeyDown("w"))
+        {
+            rotacionInicial = this.transform.rotation;
+            hasToRotate = true;
+            if (cara == 0)
+            {
+                cara = 5;
+                direction = 2;
+            }
+            else if (cara == 1)
+            {
+                cara = 5;
+                direction = 5;
+            }
+            else if (cara == 2)
+            {
+                cara = 4;
+                direction = 2;
+            }
+            else if (cara == 3)
+            {
+                cara = 5;
+                direction = 4;
+            }
+            else if (cara == 4)
+            {
+                cara = 0;
+                direction = 2;
+            }
+            else if (cara == 5)
+            {
+                cara = 2;
+                direction = 2;
+            }
+        }
+        if (Input.GetKeyDown("s"))
+        {
+            rotacionInicial = this.transform.rotation;
+            hasToRotate = true;
+            if (cara == 0)
+            {
+                cara = 4;
+                direction = 3;
+            }
+            else if (cara == 1)
+            {
+                cara = 4;
+                direction = 4;
+            }
+            else if (cara == 2)
+            {
+                cara = 5;
+                direction = 3;
+            }
+            else if (cara == 3)
+            {
+                cara = 4;
+                direction = 5;
+            }
+            else if (cara == 4)
+            {
+                cara = 2;
+                direction = 3;
+            }
+            else if (cara == 5)
+            {
+                cara = 0;
+                direction = 3;
+            }
+        }
+
     }
 }
