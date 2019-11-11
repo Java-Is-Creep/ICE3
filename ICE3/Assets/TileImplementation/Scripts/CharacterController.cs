@@ -26,8 +26,8 @@ public class CharacterController : NetworkBehaviour
     void Start()
     {
         cubo = FindObjectOfType<Cube>();
-        indexX = 2;
-        indexY = 10;
+        indexX = 3;
+        indexY = 3;
         Cara = 0;
         this.transform.position = cubo.faces[Cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
         this.transform.position = this.transform.position + new Vector3(0, 1, 0);
