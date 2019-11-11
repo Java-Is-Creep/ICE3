@@ -2,6 +2,9 @@
 
 Somos una empresa dedicada al desarrollo de videojuegos con un potencial de diversion explosivo.
 
+[![master](https://img.shields.io/badge/master-v0.0.0-green?style=for-the-badge&logo=appveyor)]
+![develop](https://img.shields.io/badge/develop-v0.1.0-blue?style=for-the-badge&logo=appveyor)
+
 
 [![Twitter](https://img.shields.io/twitter/follow/java_is_creep?label=Follow&style=social)](https://twitter.com/intent/follow?screen_name=java_is_creep)
 
