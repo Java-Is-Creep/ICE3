@@ -47,6 +47,7 @@ public class CameraRotator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        /*
         if (hasToRotate)
         {
             float aux = i / framesToRotate;
@@ -200,7 +201,7 @@ public class CameraRotator : MonoBehaviour
             {
                 this.transform.rotation = Quaternion.Euler(90 * aux + rotacionInicial.eulerAngles.x, 0 * aux + rotacionInicial.eulerAngles.y, 0 * aux + rotacionInicial.eulerAngles.z);
             }
-            */
+            
             i++;
             if ( i> 60)
             {
@@ -441,6 +442,7 @@ public class CameraRotator : MonoBehaviour
         }
     }
 
+/*
     private void goToNewFace()
     {
         cara_anterior = cara;
@@ -584,4 +586,5 @@ public class CameraRotator : MonoBehaviour
         }
 
     }
-}
+    */
+

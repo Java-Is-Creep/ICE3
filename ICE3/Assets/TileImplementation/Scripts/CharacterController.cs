@@ -45,19 +45,19 @@ public class CharacterController : NetworkBehaviour
         {
             if (Input.GetKeyDown("a"))
             {
-                lastMovement = 1;
+                lastMovement = 3;
             }
             else if (Input.GetKeyDown("s"))
             {
-                lastMovement = 2;
+                lastMovement = 4;
             }
             else if (Input.GetKeyDown("d"))
             {
-                lastMovement = 3;
+                lastMovement = 1;
             }
             else if (Input.GetKeyDown("w"))
             {
-                lastMovement = 4;
+                lastMovement = 2;
             }
         }
         
