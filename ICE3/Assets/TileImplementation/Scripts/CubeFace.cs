@@ -7,7 +7,7 @@ public class CubeFace : MonoBehaviour
      float width;
      float heigth;
 
-    int faceNum; //enumerador que sirve para saber que cara es;
+    public int faceNum; //enumerador que sirve para saber que cara es;
 
     
 
@@ -45,28 +45,33 @@ public class CubeFace : MonoBehaviour
             case 0: // cara Top
                 break;
             case 1: //cara arriba
-                this.transform.Translate(width - prefWidth, -width + (prefWidth / 2), width - (prefWidth / 2));
-                this.transform.Rotate(90, 0, 0, Space.World);
-                this.transform.Rotate(0, 0, 180, Space.World);
-                break;
-            case 2: // cara abajo
-                this.transform.Translate(0, -width + (prefWidth / 2), -(prefWidth / 2));
-                this.transform.Rotate(-90, 0, 0,Space.World);
-                break;
-            case 3:// cara derecha
                 this.transform.Translate(-(prefWidth / 2), -width + (prefWidth / 2), width - prefWidth);
                 this.transform.Rotate(0, 0, 90, Space.World);
-                this.transform.Rotate(-90, 0, 0, Space.World);
+                this.transform.Translate(0, 0, -width + prefWidth);
+                /*this.transform.Rotate(-90, 0, 0, Space.World);
+                this.transform.Rotate(90, 0, 0, Space.World);
+                */
+                break;
+            case 2: // cara abajo
+                this.transform.Rotate(0, 0, -90, Space.World);
+                this.transform.Translate((prefWidth / 2), width - (prefWidth / 2), 0);
+                
+                //this.transform.Rotate(-90, 0, 0, Space.World);
+                break;
+            case 3:// cara derecha
+                this.transform.Rotate(90, 0, 0, Space.World);
+                this.transform.Translate(0, width - (prefWidth / 2), (prefWidth / 2));
                 break;
             case 4: // cara izquierda
-                this.transform.Translate(width - (prefWidth / 2), -width + (prefWidth / 2), 0);
-                this.transform.Rotate(0, 0, -90, Space.World);
-                this.transform.Rotate(-90, 0, 0, Space.World);
+                this.transform.Rotate(-90,0, 0, Space.World);
+                this.transform.Translate(0,  + (prefWidth / 2), -width+(prefWidth / 2));
+
                 break;
             case 5: // cara bottom
-                this.transform.Translate(width - prefWidth, -width, 0);
                 this.transform.Rotate(180, 0, 0, Space.World);
-                this.transform.Rotate(0, 180, 0, Space.World);
+                this.transform.Translate(0,width, -width+prefWidth);
+                
+                //this.transform.Rotate(0, 180, 0, Space.World);
                 break;
 
 
