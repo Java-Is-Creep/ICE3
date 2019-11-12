@@ -996,7 +996,7 @@ MonoBehaviour:
   m_Follow: {fileID: 982934255}
   m_CommonLens: 1
   m_Lens:
-    FieldOfView: 30
+    FieldOfView: 20
     OrthographicSize: 10
     NearClipPlane: 0.1
     FarClipPlane: 5000
@@ -3377,7 +3377,7 @@ PrefabInstance:
         type: 3}
       propertyPath: MapInfo
       value: 
-      objectReference: {fileID: 4900000, guid: aff80f1f556c71f498758d3ec4e8c899, type: 3}
+      objectReference: {fileID: 4900000, guid: 6b04ca287b5aa0b4892a86c6eb9e6430, type: 3}
     m_RemovedComponents:
     - {fileID: 8268428570574653423, guid: 7b9ded1496edfae46904431f9162cdc9, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 7b9ded1496edfae46904431f9162cdc9, type: 3}
