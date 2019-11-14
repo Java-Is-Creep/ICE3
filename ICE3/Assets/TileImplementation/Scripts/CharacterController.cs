@@ -4,7 +4,7 @@ using UnityEngine;
 
 using UnityEngine.Networking;
 
-public class CharacterController : NetworkBehaviour
+public class CharacterController : MonoBehaviour
 {
 
     private float velocity = 5f;
@@ -40,10 +40,7 @@ public class CharacterController : NetworkBehaviour
     void Update()
     {
         float incrementAux = increment * Time.deltaTime;
-        if (!isLocalPlayer)
-        {
-            return;
-        }
+
         if (lastMovement == 0)
         {
             if (Input.GetKeyDown("a"))

@@ -198,9 +198,7 @@ public class Cube : MonoBehaviour
                 {
                     if (j >= tamaño && j < tamaño * 2) 
                     {
-                        Debug.Log(i + " i es: " + j + " j es:");
                         caraAbajo[i - tamaño * 2, j - tamaño] = linea[j];
-                        Debug.Log("Sin errores");
                     }
 
                 }
