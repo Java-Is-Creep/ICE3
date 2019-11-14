@@ -12,10 +12,6 @@ public class TileScript : MonoBehaviour
     GameObject myGround;
     GameObject myObject;
 
-    public float posX;
-    public float posY;
-    public float posZ;
-
     public Vector3 AbsolutePos;
 
     public enum type { ICE,ROCK,NULL}
@@ -31,6 +27,14 @@ public class TileScript : MonoBehaviour
     {
         
     }
+
+
+    public void reloadPos()
+    {
+        AbsolutePos = this.transform.TransformPoint(this.transform.position)/2;
+    }
+
+
 
     public void initTile(int indexX, int indexY, int cubeId, int posX, int posY, GameObject prefab, type tipe)
     {

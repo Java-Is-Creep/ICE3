@@ -28,7 +28,6 @@ public class moverCamaraFija : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("Hola");
         if (Input.GetMouseButtonDown(0))
         {
             lastCara = cara;
@@ -85,17 +84,18 @@ public class moverCamaraFija : MonoBehaviour
         } 
         else if (Input.GetKeyDown(KeyCode.Keypad0))
         {
+           
             Debug.Log("0");
             top();
         }
         else if(Input.GetKeyDown(KeyCode.Keypad1))
         {
+            back();
             Debug.Log("1");
-            left();
         } else if (Input.GetKeyDown(KeyCode.Keypad2))
         {
+            front();
             Debug.Log("2");
-            button();
         }
         else if (Input.GetKeyDown(KeyCode.Keypad3))
         {
@@ -104,13 +104,13 @@ public class moverCamaraFija : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.Keypad4))
         {
+            left();
             Debug.Log("4");
-            front();
         }
         else if (Input.GetKeyDown(KeyCode.Keypad5))
         {
+            button();
             Debug.Log("5");
-            back();
         } 
     }
 

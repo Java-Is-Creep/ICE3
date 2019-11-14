@@ -22,6 +22,8 @@ public class Cube : MonoBehaviour
 
     string[] separacion1;
 
+    float tamañoCara = 1;
+
     string[,] caraTop; // cara 0 a la hora de girar
     string[,] caraArriba;//1
     string[,] caraAbajo;//2
@@ -124,7 +126,7 @@ public class Cube : MonoBehaviour
                  
         }
 
-        this.transform.position = new Vector3(-width / 2, heigth / 2, -heigth / 2);
+        this.transform.position = new Vector3(-width / 2, heigth / 2, -heigth / 2 +tamañoCara/2);
 
         for (int i = 0; i < faces.Length; i++)
         {
@@ -137,7 +139,6 @@ public class Cube : MonoBehaviour
         {
 
         }
-
 
     public void readCSV()
     {
@@ -197,7 +198,9 @@ public class Cube : MonoBehaviour
                 {
                     if (j >= tamaño && j < tamaño * 2) 
                     {
+                        Debug.Log(i + " i es: " + j + " j es:");
                         caraAbajo[i - tamaño * 2, j - tamaño] = linea[j];
+                        Debug.Log("Sin errores");
                     }
 
                 }

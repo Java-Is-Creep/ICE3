@@ -86,10 +86,9 @@ public class CubeFace : MonoBehaviour
             for (int j = 0; j < heigth; j++)
             {
                 GameObject aux = tiles[i, j];
-                Vector3 transformPos = aux.transform.position;
                 TileScript tileS = aux.GetComponent<TileScript>();
-                transformPos = aux.transform.TransformPoint(transformPos);
-                tileS.AbsolutePos = transformPos/2;
+                tileS.reloadPos();
+                //tileS.AbsolutePos = transformPos/2;
                 /*
                 transformPos = this.gameObject.transform.TransformPoint(transformPos);
 
