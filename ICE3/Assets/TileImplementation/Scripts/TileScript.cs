@@ -9,14 +9,18 @@ public class TileScript : MonoBehaviour
     int indexY;
     int cubeId;
 
+    GameObject myGround;
     GameObject myObject;
 
-    int posX;
-    int posY;
+    public Vector3 AbsolutePos;
 
-    public enum type { ICE,ROCK}
+    public enum type { ICE,ROCK,NULL}
+
+    public enum tileObject { NULL, ROCK}
 
     public type tileType;
+
+    public tileObject myObjectType;
 
 
     private void Start()
@@ -24,12 +28,36 @@ public class TileScript : MonoBehaviour
         
     }
 
+
+    public void reloadPos()
+    {
+        AbsolutePos = this.transform.TransformPoint(this.transform.position)/2;
+    }
+
+
+
     public void initTile(int indexX, int indexY, int cubeId, int posX, int posY, GameObject prefab, type tipe)
     {
         this.indexX = indexX;
         this.indexY = indexY;
         this.cubeId = cubeId;
-        myObject = Instantiate(prefab,this.GetComponentInParent<Transform>());
+        myGround = Instantiate(prefab,this.GetComponentInParent<Transform>());
         tileType = tipe;
     }
+
+    public void hasObject(GameObject prefab, tileObject type)
+    {
+        myObject = Instantiate(prefab, this.GetComponentInParent<Transform>());
+        myObjectType = type;
+    }
+
+    public void removeObject()
+    {
+        myObject.transform.SetParent(null);
+        myObject = null;
+        myObjectType = tileObject.NULL;
+        
+    }
+
+
 }
