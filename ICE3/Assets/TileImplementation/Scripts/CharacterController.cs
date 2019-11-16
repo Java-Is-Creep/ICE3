@@ -1,10 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-using UnityEngine.Networking;
-
-public class CharacterController : MonoBehaviour
+public class CharacterController : MonoBehaviourPunCallbacks
 {
 
     private float velocity = 5f;
@@ -24,21 +23,53 @@ public class CharacterController : MonoBehaviour
 
     moverCamaraFija camaraScript;
 
+    bool hecho = false;
+
     // Start is called before the first frame update
     void Start()
     {
         camaraScript = FindObjectOfType<moverCamaraFija>();
-        cubo = FindObjectOfType<Cube>();
-        indexX = 3;
-        indexY = 3;
-        Cara = 0;
-        this.transform.position = cubo.faces[Cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
-        this.transform.position = this.transform.position + new Vector3(0, 1, 0);
+
     }
 
     // Update is called once per frame
     void Update()
     {
+
+      
+
+        // no dejamos controlar las cosas si no somos el cliente;
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
+        if (!hecho)
+        {
+            if (PhotonNetwork.IsMasterClient)
+            {
+                Debug.Log("Server");
+                indexX = 3;
+                indexY = 3;
+                Cara = 0;
+            }
+            else
+            {
+                Debug.Log("Cliente");
+                indexX = 5;
+                indexY = 5;
+                Cara = 0;
+            }
+
+            cubo = FindObjectOfType<Cube>();
+
+
+
+            this.transform.position = cubo.faces[Cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
+            this.transform.position = this.transform.position + new Vector3(0, 1, 0);
+            hecho = true;
+        }
+
         float incrementAux = increment * Time.deltaTime;
 
         if (lastMovement == 0)
@@ -90,7 +121,7 @@ public class CharacterController : MonoBehaviour
                     {
 
                         this.transform.position = target;
-                        //Debug.Log("Acaba Casilla Izq");
+                        Debug.Log("Acaba Casilla Izq 1");
                         mooving = false;
                     }
                 }
@@ -104,14 +135,14 @@ public class CharacterController : MonoBehaviour
                         {
                             if (tile.myObjectType == TileScript.tileObject.NULL)
                             {
-                                // Debug.Log("Siguien casilla sin obstaculos");
+                                 Debug.Log("Siguien casilla sin obstaculos");
                                 target = new Vector3(tile.AbsolutePos.x, transform.position.y, tile.AbsolutePos.z);
                                 mooving = true;
                                 indexX--;
                             }
                             else
                             {
-                                //Debug.Log("Hay Roca");
+                                Debug.Log("Hay Roca");
                                 mooving = false;
                                 lastMovement = 0;
                             }
@@ -120,7 +151,7 @@ public class CharacterController : MonoBehaviour
                         }
                         else
                         {
-                            //Debug.Log("suelo Piedra");
+                            Debug.Log("suelo Piedra");
                             mooving = false;
                             lastMovement = 0;
                         }
@@ -153,7 +184,7 @@ public class CharacterController : MonoBehaviour
                     {
 
                         this.transform.position = target;
-                        //Debug.Log("Acaba Casilla Aba");
+                        Debug.Log("Acaba Casilla Aba 1");
                         mooving = false;
                     }
                 }
@@ -167,14 +198,14 @@ public class CharacterController : MonoBehaviour
 
                             if (tile.myObjectType == TileScript.tileObject.NULL)
                             {
-                                //Debug.Log("Siguien casilla sin obstaculos");
+                                Debug.Log("Siguien casilla sin obstaculos");
                                 target = new Vector3(tile.AbsolutePos.x, transform.position.y, tile.AbsolutePos.z);
                                 mooving = true;
                                 indexY--;
                             }
                             else
                             {
-                                //Debug.Log("Hay Roca");
+                                Debug.Log("Hay Roca");
                                 mooving = false;
                                 lastMovement = 0;
                             }
@@ -182,7 +213,7 @@ public class CharacterController : MonoBehaviour
                         }
                         else
                         {
-                            //Debug.Log("Suelo Piedra");
+                            Debug.Log("Suelo Piedra");
                             mooving = false;
                             lastMovement = 0;
                         }
@@ -213,7 +244,7 @@ public class CharacterController : MonoBehaviour
                     {
 
                         this.transform.position = target;
-                        //Debug.Log("Acaba Casilla Izq");
+                        Debug.Log("Acaba Casilla Izq");
                         mooving = false;
                     }
                 }
@@ -272,7 +303,7 @@ public class CharacterController : MonoBehaviour
                     {
 
                         this.transform.position = target;
-                        //Debug.Log("Acaba Casilla Aba");
+                        Debug.Log("Acaba Casilla Aba");
                         mooving = false;
                     }
                 }
@@ -286,7 +317,7 @@ public class CharacterController : MonoBehaviour
 
                             if (tile.myObjectType == TileScript.tileObject.NULL)
                             {
-                                //Debug.Log("Siguien casilla sin obstaculos");
+                                Debug.Log("Siguien casilla sin obstaculos");
                                 target = new Vector3(tile.AbsolutePos.x, transform.position.y, tile.AbsolutePos.z);
 
                                 mooving = true;
@@ -294,7 +325,7 @@ public class CharacterController : MonoBehaviour
                             }
                             else
                             {
-                                //Debug.Log("Hay Roca");
+                                Debug.Log("Hay Roca");
                                 mooving = false;
                                 lastMovement = 0;
                             }
@@ -304,7 +335,7 @@ public class CharacterController : MonoBehaviour
                         }
                         else
                         {
-                            // Debug.Log("Siguien casilla suelo piedra");
+                             Debug.Log("Siguien casilla suelo piedra");
                             mooving = false;
                             lastMovement = 0;
                         }
@@ -346,7 +377,7 @@ public class CharacterController : MonoBehaviour
                     {
 
                         this.transform.position = target;
-                        //Debug.Log("Acaba Casilla Izq");
+                        Debug.Log("Acaba Casilla Izq");
                         mooving = false;
                     }
                 }
@@ -360,14 +391,14 @@ public class CharacterController : MonoBehaviour
                         {
                             if (tile.myObjectType == TileScript.tileObject.NULL)
                             {
-                                // Debug.Log("Siguien casilla sin obstaculos");
+                                 Debug.Log("Siguien casilla sin obstaculos");
                                 target = new Vector3(tile.AbsolutePos.x, transform.position.y, tile.AbsolutePos.z);
                                 mooving = true;
                                 indexX--;
                             }
                             else
                             {
-                                //Debug.Log("Hay Roca");
+                                Debug.Log("Hay Roca");
                                 mooving = false;
                                 lastMovement = 0;
                             }
@@ -376,7 +407,7 @@ public class CharacterController : MonoBehaviour
                         }
                         else
                         {
-                            //Debug.Log("suelo Piedra");
+                            Debug.Log("suelo Piedra");
                             mooving = false;
                             lastMovement = 0;
                         }

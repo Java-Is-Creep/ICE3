@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Cube : MonoBehaviour
+
+public class Cube : MonoBehaviourPunCallbacks
 {
     //anchura y altua de las caras
     public float width;
@@ -34,6 +36,8 @@ public class Cube : MonoBehaviour
 
     void Start()
     {
+        
+
         readCSV();
 
 
@@ -42,6 +46,7 @@ public class Cube : MonoBehaviour
         {
             cubeFace = new GameObject[(int)width, (int)heigth];
             facesObject[i] = Instantiate(prefabFace, GetComponentInParent<Transform>());
+
 
             for (int x = 0; x < width; x++)
             {
@@ -126,8 +131,16 @@ public class Cube : MonoBehaviour
                  
         }
 
-        this.transform.position = new Vector3(-width / 2, heigth / 2, -heigth / 2 +tamañoCara/2);
+        //this.transform.position = new Vector3(-width / 2, heigth / 2, -heigth / 2 +tamañoCara/2);
 
+        updateFaces();
+    }
+
+    /// <summary>
+    /// Se rotan las caras para ponerlas en su posicion
+    /// </summary>
+    public void updateFaces()
+    {
         for (int i = 0; i < faces.Length; i++)
         {
             faces[i].reloadTilePos();
