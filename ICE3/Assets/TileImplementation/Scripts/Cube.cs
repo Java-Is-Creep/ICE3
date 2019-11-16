@@ -154,6 +154,7 @@ public class Cube : MonoBehaviour
                 if (i == 0 && j == 0)
                 {
                     tamaño = int.Parse(linea[i]);
+                    Debug.Log("Read csv " +  tamaño); //Da 8
                     width = tamaño;
                     heigth = tamaño;
                     caraTop = new string[tamaño, tamaño];
@@ -188,7 +189,7 @@ public class Cube : MonoBehaviour
                     {
                         if(linea[j].CompareTo("null") == 0)
                         {
-                            Debug.Log("i es: " + i + " j es: " + j);
+                            //Debug.Log("i es: " + i + " j es: " + j);
                         }
  
                         caraBottom[ i - tamaño,j - tamaño*3] = linea[j];
@@ -198,9 +199,9 @@ public class Cube : MonoBehaviour
                 {
                     if (j >= tamaño && j < tamaño * 2) 
                     {
-                        Debug.Log(i + " i es: " + j + " j es:");
+                        //Debug.Log(i + " i es: " + j + " j es:");
                         caraAbajo[i - tamaño * 2, j - tamaño] = linea[j];
-                        Debug.Log("Sin errores");
+                        //Debug.Log("Sin errores");
                     }
 
                 }

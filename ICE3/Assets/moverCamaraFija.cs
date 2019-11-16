@@ -88,11 +88,11 @@ public class moverCamaraFija : MonoBehaviour
             Debug.Log("0");
             top();
         }
-        else if(Input.GetKeyDown(KeyCode.Keypad1))
+        else if(Input.GetKeyDown(KeyCode.Keypad5))
         {
             back();
             Debug.Log("1");
-        } else if (Input.GetKeyDown(KeyCode.Keypad2))
+        } else if (Input.GetKeyDown(KeyCode.Keypad4))
         {
             front();
             Debug.Log("2");
@@ -102,12 +102,12 @@ public class moverCamaraFija : MonoBehaviour
             Debug.Log("3");
             right();
         }
-        else if (Input.GetKeyDown(KeyCode.Keypad4))
+        else if (Input.GetKeyDown(KeyCode.Keypad1))
         {
             left();
             Debug.Log("4");
         }
-        else if (Input.GetKeyDown(KeyCode.Keypad5))
+        else if (Input.GetKeyDown(KeyCode.Keypad2))
         {
             button();
             Debug.Log("5");
