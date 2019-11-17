@@ -69,7 +69,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  MapInfo: {fileID: 4900000, guid: aff80f1f556c71f498758d3ec4e8c899, type: 3}
+  MapInfo: {fileID: 4900000, guid: 150a7bd047d6a4c40aa8cb63f54cd8e7, type: 3}
 --- !u!114 &1330174981098044732
 MonoBehaviour:
   m_ObjectHideFlags: 0

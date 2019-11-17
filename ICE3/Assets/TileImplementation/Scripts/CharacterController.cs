@@ -51,21 +51,21 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 Debug.Log("Server");
                 indexX = 3;
                 indexY = 3;
-                Cara = 0;
+                cara = 0;
             }
             else
             {
                 Debug.Log("Cliente");
                 indexX = 5;
                 indexY = 5;
-                Cara = 0;
+                cara = 0;
             }
 
             cubo = FindObjectOfType<Cube>();
 
 
             hayCambioCara = false;
-            this.transform.position = cubo.faces[Cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
+            this.transform.position = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
             this.transform.position = this.transform.position + new Vector3(0, 1, 0);
             hecho = true;
         }
