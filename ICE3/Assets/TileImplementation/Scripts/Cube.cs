@@ -154,7 +154,6 @@ public class Cube : MonoBehaviour
                 if (i == 0 && j == 0)
                 {
                     tamaño = int.Parse(linea[i]);
-                    Debug.Log("Read csv " +  tamaño); //Da 8
                     width = tamaño;
                     heigth = tamaño;
                     caraTop = new string[tamaño, tamaño];
