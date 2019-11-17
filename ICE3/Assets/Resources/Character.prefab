@@ -124,11 +124,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dc3134c3393bfd46ad8f70e963f6676, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Cara: 0
+  cara: 0
   indexX: 0
   indexY: 0
   target: {x: 0, y: 0, z: 0}
-  mooving: 0
+  moving: 0
 --- !u!114 &7116918764183407478
 MonoBehaviour:
   m_ObjectHideFlags: 0

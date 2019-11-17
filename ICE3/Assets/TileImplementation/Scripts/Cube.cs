@@ -24,7 +24,7 @@ public class Cube : MonoBehaviourPunCallbacks
 
     string[] separacion1;
 
-    float tamañoCara = 1;
+    public float tamañoCara = 1;
 
     string[,] caraTop; // cara 0 a la hora de girar
     string[,] caraArriba;//1
@@ -33,13 +33,13 @@ public class Cube : MonoBehaviourPunCallbacks
     string[,] caraIzquierda;//4
     string[,] caraBottom;//5
 
-
+    
     void Start()
     {
         
 
         readCSV();
-
+        //this.transform.position = new Vector3(-this.width / 2, this.heigth / 2, -this.heigth / 2 + this.tamañoCara / 2);
 
         GameObject[,] cubeFace;
         for (int i = 0; i < 6; i++)
@@ -114,7 +114,7 @@ public class Cube : MonoBehaviourPunCallbacks
                         tileTypeObject = prefabIce;
                     }
                     */
-
+                    
                     GameObject tileObject = Instantiate(prefabTile, facesObject[i].GetComponent < Transform>());
                     tileObject.transform.position = new Vector3(x, 0, y);
                     TileScript tile = tileObject.GetComponent<TileScript>();
@@ -219,6 +219,7 @@ public class Cube : MonoBehaviourPunCallbacks
                 }
             }
         }
+
     }
     
 }

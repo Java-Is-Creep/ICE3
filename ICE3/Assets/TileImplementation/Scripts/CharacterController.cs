@@ -56,16 +56,34 @@ public class CharacterController : MonoBehaviourPunCallbacks
             else
             {
                 Debug.Log("Cliente");
-                indexX = 5;
-                indexY = 5;
+                indexX = 3;
+                indexY = 4;
                 cara = 0;
             }
+            /*
+           GameObject aux = GameObject.Find("Cube(Clone)(Clone)");
+           Debug.Log(aux);
+           cubo = aux.GetComponent<Cube>();
+           Debug.Log(cubo);*/
+            /*
+            if (PhotonNetwork.IsMasterClient)
+            {
+                if (photonView.IsMine)
+                {
+                    GameObject g = cubo.gameObject;
+                    g.transform.position = new Vector3(-cubo.width / 2, cubo.heigth / 2, -cubo.heigth / 2 + cubo.tamañoCara / 2);
+                    cubo.updateFaces();
+                }
+            }*/
 
             cubo = FindObjectOfType<Cube>();
 
-
             hayCambioCara = false;
-            this.transform.position = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
+            CubeFace face = cubo.faces[cara];
+             GameObject au = face.tiles[indexX, indexY];
+            TileScript ts = au.GetComponent<TileScript>();
+            this.transform.position =ts.AbsolutePos;
+
             this.transform.position = this.transform.position + new Vector3(0, 1, 0);
             hecho = true;
         }
