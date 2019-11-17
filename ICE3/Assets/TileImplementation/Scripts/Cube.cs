@@ -201,7 +201,7 @@ public class Cube : MonoBehaviourPunCallbacks
                     {
                         if(linea[j].CompareTo("null") == 0)
                         {
-                            Debug.Log("i es: " + i + " j es: " + j);
+                            //Debug.Log("i es: " + i + " j es: " + j);
                         }
  
                         caraBottom[ i - tamaño,j - tamaño*3] = linea[j];
@@ -211,7 +211,9 @@ public class Cube : MonoBehaviourPunCallbacks
                 {
                     if (j >= tamaño && j < tamaño * 2) 
                     {
+                        //Debug.Log(i + " i es: " + j + " j es:");
                         caraAbajo[i - tamaño * 2, j - tamaño] = linea[j];
+                        //Debug.Log("Sin errores");
                     }
 
                 }

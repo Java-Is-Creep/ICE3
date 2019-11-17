@@ -31,7 +31,29 @@ public class TileScript : MonoBehaviour
 
     public void reloadPos()
     {
-        AbsolutePos = this.transform.TransformPoint(this.transform.position)/2;
+        CubeFace cf = this.transform.parent.GetComponent<CubeFace>();
+        if (cf.faceNum == 0)
+        {
+            AbsolutePos = this.transform.TransformPoint(this.transform.position) / 2;
+        }
+        else if (cf.faceNum == 3)
+        {
+            /*
+            Transform auxCara = this.transform.parent.transform;
+            Transform auxCubo = this.transform.parent.transform.parent.transform;
+            Quaternion a = auxCara.rotation;
+            Quaternion b = auxCubo.rotation;
+            auxCara.rotation = Quaternion.identity;
+            auxCubo.rotation = Quaternion.identity;
+            AbsolutePos = auxCara.position - auxCubo.position;
+            auxCara.rotation = a;
+            auxCubo.rotation = b;*/
+            AbsolutePos = this.transform.TransformPoint(this.transform.position) / 2;
+
+        } else
+        {
+            AbsolutePos = this.transform.position - this.transform.parent.transform.position - this.transform.parent.transform.parent.transform.position;
+        }
     }
 
 
