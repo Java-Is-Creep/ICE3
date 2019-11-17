@@ -67,11 +67,11 @@ public class CharacterController : NetworkBehaviour
         switch (cara)
         {
             case 0:
-                //Debug.Log("Indice cara: " + indexX + ", " + indexY);
+                Debug.Log("Indice cara top: " + indexX + ", " + indexY);
                 MovimientoCaraTop(incrementAux);
                 break;
             case 3:
-                Debug.Log("Indice cara: " + indexX + ", " + indexY);
+                Debug.Log("Indice cara right: " + indexX + ", " + indexY);
                 MovimientoCaraRigth(incrementAux);
                 break;
         }
@@ -330,8 +330,11 @@ public class CharacterController : NetworkBehaviour
                         this.gameObject.transform.RotateAround(Vector3.zero, Vector3.right, 90);
                         this.gameObject.transform.Translate(new Vector3(0, cubo.width - 1, 0), Space.World);
                         cara = 3;
+                        indexX = 1;
                         indexY = 0;
-                        indexX = ((int)cubo.width) - 1 - indexX;                                
+                        //indexX = ((int)cubo.width) - 1 - indexX;       
+                        //indexX = 0;
+                        
                         
                         Debug.LogWarning("Cambio de cara");
                         moving = false;
@@ -343,10 +346,129 @@ public class CharacterController : NetworkBehaviour
             }
         }  
     }
+
     public void MovimientoCaraRigth(float incrementAux)
     {
         if (lastMovement == 1) // izq
         {
+            Debug.Log("Izq");
+            if (indexX <= cubo.heigth)
+            {
+                if (moving) //mas eficiente, mirar todas las casillas y ver hasta cualpuedes ir
+                {
+                    Debug.Log("Moving");
+                    //Debug.Log("Pos: " + this.transform.position);
+                    Debug.Log("Pos target: " + target);
+                    this.transform.position = new Vector3(transform.position.x + incrementAux, transform.position.y, transform.position.z);
+                    if (Mathf.Abs(this.transform.position.x - target.x) <= 0.5f)
+                    {
+                        this.transform.position = target;
+                        target = this.transform.position;
+                        Debug.Log("Acaba Casilla Izq");
+                        moving = false;
+                        lastMovement = 0;
+                    }
+                    else
+                    {
+                        Debug.Log("No llegamos a la casilla");
+                    }
+                }
+                else
+                {
+                    int iteracion = 0;
+                    if (indexX < cubo.heigth-1)
+                    {
+                        TileScript tile;
+
+                        do
+                        {
+                            Debug.Log("Iteracion");
+                            tile = cubo.faces[cara].tiles[indexX+1 , indexY].GetComponent<TileScript>();
+                            Debug.Log("Leyendo casilla: " + (indexX+1) + ", " + (indexY));
+                            if (tile.tileType == TileScript.type.ICE)
+                            {
+                                if (tile.myObjectType == TileScript.tileObject.NULL)
+                                {
+                                    Debug.Log("Siguien casilla sin obstaculos");
+                                    //target = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y,this.transform.position.z);
+                                    //target = new Vector3(this.transform.position.x + 1, target.y, target.z);
+                                    moving = true;
+                                    indexX++;
+                                    iteracion++;
+                                }
+                                else
+                                {
+                                    Debug.Log("Hay Roca");
+                                    if (iteracion <= 0)
+                                    {
+                                        Debug.Log("iteracion menor o igual que 0");
+                                        moving = false;
+                                        lastMovement = 0;
+                                    }
+                                    else
+                                    {
+                                        moving = true;
+                                    }
+                                    //lastMovement = 0;
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                Debug.Log("suelo Piedra");
+                                if (iteracion <= 0)
+                                {
+                                    moving = false;
+                                }
+                                else
+                                {
+                                    moving = true;
+                                }
+                                lastMovement = 0;
+                                break;
+                            }
+
+                        } while (true);
+                        target = new Vector3(this.transform.position.x + iteracion, this.transform.position.y, this.transform.position.z);
+                        /*
+                        TileScript tile = cubo.faces[cara].tiles[indexX - 1, indexY].GetComponent<TileScript>();
+                        if (tile.tileType == TileScript.type.ICE)
+                        {
+                            
+                            if (tile.myObjectType == TileScript.tileObject.NULL)
+                            {
+                                Debug.Log("Siguien casilla sin obstaculos");
+                                //target = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y,this.transform.position.z);
+                                target = new Vector3(this.transform.position.x +1 , this.transform.position.y, this.transform.position.z);
+                                moving = true;
+                                indexX--;
+                            }
+                            else
+                            {
+                                Debug.Log("Hay Roca");
+                                moving = false;
+                                lastMovement = 0;
+                            }
+                        }
+                        else
+                        {
+                            Debug.Log("suelo Piedra");
+                            moving = false;
+                            lastMovement = 0;
+                        }*/
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Cambio de cara");
+                        moving = false;
+                        lastMovement = 0;
+                    }
+                    Debug.Log("Hola");
+
+                }
+
+            }
+            /*
             Debug.Log("Izq");
             if (indexX >= 0)
             {
@@ -448,6 +570,131 @@ public class CharacterController : NetworkBehaviour
                             moving = false;
                             lastMovement = 0;
                         }*/
+            /*
+        }
+        else
+        {
+            Debug.LogWarning("Cambio de cara");
+            moving = false;
+            lastMovement = 0;
+        }
+        Debug.Log("Hola");
+
+    }
+
+}*/
+
+
+
+        }
+
+        if (lastMovement == 3) // derecha
+        {
+            Debug.Log("Izq");
+            if (indexX >= 0)
+            {
+                if (moving) //mas eficiente, mirar todas las casillas y ver hasta cualpuedes ir
+                {
+                    Debug.Log("Moving");
+                    Debug.Log("Pos: " + this.transform.position);
+                    Debug.Log("Pos target: " + target);
+                    this.transform.position = new Vector3(transform.position.x - incrementAux, transform.position.y, transform.position.z);
+                    if (Mathf.Abs(this.transform.position.x - target.x) <= 0.5f)
+                    {
+                        this.transform.position = target;
+                        target = this.transform.position;
+                        Debug.Log("Acaba Casilla Izq");
+                        moving = false;
+                        lastMovement = 0;
+                    }
+                    else
+                    {
+                        Debug.Log("No llegamos a la casilla");
+                    }
+                }
+                else
+                {
+                    int iteracion = 0;
+                    if (indexX > 0)
+                    {
+                        TileScript tile;
+
+                        do
+                        {
+                            Debug.Log("Iteracion");
+                            tile = cubo.faces[cara].tiles[indexX - 1, indexY].GetComponent<TileScript>();
+                            Debug.Log("Leyendo casilla: " + (indexX - 1) + ", " + (indexY));
+                            if (tile.tileType == TileScript.type.ICE)
+                            {
+                                if (tile.myObjectType == TileScript.tileObject.NULL)
+                                {
+                                    Debug.Log("Siguien casilla sin obstaculos");
+                                    //target = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y,this.transform.position.z);
+                                    //target = new Vector3(this.transform.position.x + 1, target.y, target.z);
+                                    moving = true;
+                                    indexX--;
+                                    iteracion++;
+                                }
+                                else
+                                {
+                                    Debug.Log("Hay Roca");
+                                    if (iteracion <= 0)
+                                    {
+                                        Debug.Log("iteracion menor o igual que 0");
+                                        moving = false;
+                                        lastMovement = 0;
+                                    }
+                                    else
+                                    {
+                                        moving = true;
+                                    }
+                                    //
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                Debug.Log("suelo Piedra");
+                                if (iteracion <= 0)
+                                {
+                                    moving = false;
+                                }
+                                else
+                                {
+                                    moving = true;
+                                }
+                                lastMovement = 0;
+                                break;
+                            }
+
+                        } while (true);
+                        target = new Vector3(this.transform.position.x - iteracion, this.transform.position.y, this.transform.position.z);
+                        /*
+                        TileScript tile = cubo.faces[cara].tiles[indexX - 1, indexY].GetComponent<TileScript>();
+                        if (tile.tileType == TileScript.type.ICE)
+                        {
+                            
+                            if (tile.myObjectType == TileScript.tileObject.NULL)
+                            {
+                                Debug.Log("Siguien casilla sin obstaculos");
+                                //target = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y,this.transform.position.z);
+                                target = new Vector3(this.transform.position.x +1 , this.transform.position.y, this.transform.position.z);
+                                moving = true;
+                                indexX--;
+                            }
+                            else
+                            {
+                                Debug.Log("Hay Roca");
+                                moving = false;
+                                lastMovement = 0;
+                            }
+                        }
+                        else
+                        {
+                            Debug.Log("suelo Piedra");
+                            moving = false;
+                            lastMovement = 0;
+                        }*/
                     }
                     else
                     {
@@ -460,41 +707,40 @@ public class CharacterController : NetworkBehaviour
                 }
 
             }
-
-
-
-        }           
-        else if (lastMovement == 3)// derecha
-        {
-            Debug.Log("Dcha");
-            if (indexX < cubo.width)
+            /*
+            Debug.Log("Izq");
+            if (indexX >= 0)
             {
                 if (moving) //mas eficiente, mirar todas las casillas y ver hasta cualpuedes ir
                 {
+                    Debug.Log("Moving");
                     //Debug.Log("Pos: " + this.transform.position);
                     Debug.Log("Pos target: " + target);
-                    this.transform.position = new Vector3(transform.position.x - incrementAux, transform.position.y, transform.position.z);
-                    if (Mathf.Abs(this.transform.position.x - target.x) < 0.5f)
+                    this.transform.position = new Vector3(transform.position.x + incrementAux, transform.position.y, transform.position.z);
+                    if (Mathf.Abs(this.transform.position.x - target.x) <= 0.5f)
                     {
-
                         this.transform.position = target;
                         target = this.transform.position;
-                        //Debug.Log("Acaba Casilla Izq");
+                        Debug.Log("Acaba Casilla Izq");
                         moving = false;
                         lastMovement = 0;
+                    } else
+                    {
+                        Debug.Log("No llegamos a la casilla");
                     }
                 }
                 else
                 {
                     int iteracion = 0;
-                    if (indexX < cubo.width - 1)
+                    if (indexX > 0)
                     {
                         TileScript tile;
-
+                        
                         do
                         {
                             Debug.Log("Iteracion");
-                            tile = cubo.faces[cara].tiles[indexX+1, indexY].GetComponent<TileScript>();
+                            tile = cubo.faces[cara].tiles[indexX -1, indexY].GetComponent<TileScript>();
+                            Debug.Log("Leyendo casilla: " + (indexX - 1) + ", " + indexY);
                             if (tile.tileType == TileScript.type.ICE)
                             {
                                 if (tile.myObjectType == TileScript.tileObject.NULL)
@@ -503,7 +749,7 @@ public class CharacterController : NetworkBehaviour
                                     //target = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y,this.transform.position.z);
                                     //target = new Vector3(this.transform.position.x + 1, target.y, target.z);
                                     moving = true;
-                                    indexX++;
+                                    indexX--;
                                     iteracion++;
                                 }
                                 else
@@ -513,6 +759,123 @@ public class CharacterController : NetworkBehaviour
                                     {
                                         Debug.Log("iteracion menor o igual que 0");
                                         moving = false;
+                                    } else
+                                    {
+                                        moving = true;
+                                    }
+                                    //lastMovement = 0;
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                Debug.Log("suelo Piedra");
+                                if (iteracion <= 0)
+                                {
+                                    moving = false;
+                                } else
+                                {
+                                    moving = true;
+                                }
+                                lastMovement = 0;
+                                break;
+                            }
+                            
+                        } while (true);
+                        target = new Vector3(this.transform.position.x + iteracion, this.transform.position.y, this.transform.position.z);
+                        /*
+                        TileScript tile = cubo.faces[cara].tiles[indexX - 1, indexY].GetComponent<TileScript>();
+                        if (tile.tileType == TileScript.type.ICE)
+                        {
+                            
+                            if (tile.myObjectType == TileScript.tileObject.NULL)
+                            {
+                                Debug.Log("Siguien casilla sin obstaculos");
+                                //target = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y,this.transform.position.z);
+                                target = new Vector3(this.transform.position.x +1 , this.transform.position.y, this.transform.position.z);
+                                moving = true;
+                                indexX--;
+                            }
+                            else
+                            {
+                                Debug.Log("Hay Roca");
+                                moving = false;
+                                lastMovement = 0;
+                            }
+                        }
+                        else
+                        {
+                            Debug.Log("suelo Piedra");
+                            moving = false;
+                            lastMovement = 0;
+                        }*/
+            /*
+        }
+        else
+        {
+            Debug.LogWarning("Cambio de cara");
+            moving = false;
+            lastMovement = 0;
+        }
+        Debug.Log("Hola");
+
+    }
+
+}*/
+
+
+
+        }
+
+        else if (lastMovement == 2)         //Abajo
+        {
+            Debug.Log("Abajo");
+            //Debug.Log("Estoy en " + indexY);
+            if (indexY < cubo.heigth)
+            {
+                if (moving) //mas eficiente, mirar todas las casillas y ver hasta cualpuedes ir
+                {
+                    //Debug.Log("Pos: " + this.transform.position);
+                    Debug.Log("Pos target: " + target);
+                    this.transform.position = new Vector3(transform.position.x , transform.position.y - incrementAux, transform.position.z);
+                    if (Mathf.Abs(this.transform.position.y - target.y) < 0.5f)
+                    {
+                        this.transform.position = target;
+                        //Debug.Log("Acaba Casilla Izq");
+                        moving = false;
+                    }
+                }
+                else
+                {
+
+                    if (indexY < cubo.heigth - 1)
+                    {
+                        TileScript tile;
+                        int iteracion = 0;
+                        do
+                        {
+                            Debug.Log("Iteracion");
+                            tile = cubo.faces[cara].tiles[indexX , indexY + 1].GetComponent<TileScript>();
+                            Debug.Log("Leyendo casilla: " + (indexX) + ", " + (indexY + 1));
+                            if (tile.tileType == TileScript.type.ICE)
+                            {
+                                if (tile.myObjectType == TileScript.tileObject.NULL)
+                                {
+                                    Debug.Log("Siguien casilla sin obstaculos");
+                                    //target = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y,this.transform.position.z);
+                                    //target = new Vector3(this.transform.position.x + 1, target.y, target.z);
+                                    moving = true;
+                                    indexY++;
+                                    iteracion++;
+                                }
+                                else
+                                {
+                                    Debug.Log("Hay Roca");
+                                    if (iteracion <= 0)
+                                    {
+                                        Debug.Log("iteracion menor o igual que 0");
+                                        moving = false;
+                                        lastMovement = 0;
                                     }
                                     else
                                     {
@@ -538,70 +901,9 @@ public class CharacterController : NetworkBehaviour
                             }
 
                         } while (true);
-                        target = new Vector3(this.transform.position.x - iteracion, this.transform.position.y, this.transform.position.z);
+                        target = new Vector3(this.transform.position.x , this.transform.position.y - iteracion, this.transform.position.z);
 
                         /*
-                        TileScript tile = cubo.faces[cara].tiles[indexX + 1, indexY].GetComponent<TileScript>();
-                        if (tile.tileType == TileScript.type.ICE)
-                        {
-
-                            if (tile.myObjectType == TileScript.tileObject.NULL)
-                            {
-                                //Debug.Log("Siguien casilla sin obstaculos");
-                                //target = new Vector3(tile.AbsolutePos.x, transform.position.y, tile.AbsolutePos.z);
-                                target = new Vector3(this.transform.position.x - 1, this.transform.position.y, this.transform.position.z);
-                                moving = true;
-                                indexX++;
-                            }
-                            else
-                            {
-                                //Debug.Log("Hay Roca");
-                                moving = false;
-                                lastMovement = 0;
-                            }
-
-                        }
-                        else
-                        {
-                            //Debug.Log("Suelo Piedra");
-                            moving = false;
-                            lastMovement = 0;
-                        }*/
-                    }
-                    else
-                    {
-                        Debug.LogWarning("Cambio de cara");
-                        moving = false;
-                        lastMovement = 0;
-                    }
-                }
-
-            }
-        }      
-        else if (lastMovement == 2)         //Abajo
-        {
-            Debug.Log("Abajo");
-            //Debug.Log("Estoy en " + indexY);
-            if (indexY < cubo.heigth)
-            {
-                if (moving) //mas eficiente, mirar todas las casillas y ver hasta cualpuedes ir
-                {
-                    //Debug.Log("Pos: " + this.transform.position);
-                    Debug.Log("Pos target: " + target);
-                    this.transform.position = new Vector3(transform.position.x , transform.position.y - incrementAux, transform.position.z);
-                    if (Mathf.Abs(this.transform.position.y - target.y) < 0.5f)
-                    {
-                        this.transform.position = target;
-                        //Debug.Log("Acaba Casilla Izq");
-                        moving = false;
-                    }
-                }
-                else
-                {
-
-                    if (indexY < cubo.heigth - 1)
-                    {
-
                         TileScript tile = cubo.faces[cara].tiles[indexX, indexY +1].GetComponent<TileScript>();
                         if (tile.tileType == TileScript.type.ICE)
                         {
@@ -627,7 +929,7 @@ public class CharacterController : NetworkBehaviour
                             //Debug.Log("Suelo Piedra");
                             moving = false;
                             lastMovement = 0;
-                        }
+                        }*/
                     }
                     else
                     {
@@ -640,10 +942,12 @@ public class CharacterController : NetworkBehaviour
 
             }
 
-        }      
+        }
+
         else if (lastMovement == 4)         //Arriba
         {
             Debug.Log("Arriba");
+            //Debug.Log("Estoy en " + indexY);
             if (indexY >= 0)
             {
                 if (moving) //mas eficiente, mirar todas las casillas y ver hasta cualpuedes ir
@@ -653,7 +957,6 @@ public class CharacterController : NetworkBehaviour
                     this.transform.position = new Vector3(transform.position.x, transform.position.y + incrementAux, transform.position.z);
                     if (Mathf.Abs(this.transform.position.y - target.y) < 0.5f)
                     {
-
                         this.transform.position = target;
                         //Debug.Log("Acaba Casilla Izq");
                         moving = false;
@@ -664,18 +967,71 @@ public class CharacterController : NetworkBehaviour
 
                     if (indexY > 0)
                     {
+                        TileScript tile;
+                        int iteracion = 0;
+                        do
+                        {
+                            Debug.Log("Iteracion");
+                            tile = cubo.faces[cara].tiles[indexX, indexY - 1].GetComponent<TileScript>();
+                            Debug.Log("Leyendo casilla: " + (indexX) + ", " + (indexY - 1));
+                            if (tile.tileType == TileScript.type.ICE)
+                            {
+                                if (tile.myObjectType == TileScript.tileObject.NULL)
+                                {
+                                    Debug.Log("Siguien casilla sin obstaculos");
+                                    //target = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y,this.transform.position.z);
+                                    //target = new Vector3(this.transform.position.x + 1, target.y, target.z);
+                                    moving = true;
+                                    indexY--;
+                                    iteracion++;
+                                }
+                                else
+                                {
+                                    Debug.Log("Hay Roca");
+                                    if (iteracion <= 0)
+                                    {
+                                        Debug.Log("iteracion menor o igual que 0");
+                                        moving = false;
+                                        lastMovement = 0;
+                                    }
+                                    else
+                                    {
+                                        moving = true;
+                                    }
+                                    //lastMovement = 0;
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                Debug.Log("suelo Piedra");
+                                if (iteracion <= 0)
+                                {
+                                    moving = false;
+                                }
+                                else
+                                {
+                                    moving = true;
+                                }
+                                lastMovement = 0;
+                                break;
+                            }
 
-                        TileScript tile = cubo.faces[cara].tiles[indexX, indexY - 1].GetComponent<TileScript>();
+                        } while (true);
+                        target = new Vector3(this.transform.position.x, this.transform.position.y + iteracion, this.transform.position.z);
+
+                        /*
+                        TileScript tile = cubo.faces[cara].tiles[indexX, indexY +1].GetComponent<TileScript>();
                         if (tile.tileType == TileScript.type.ICE)
                         {
 
                             if (tile.myObjectType == TileScript.tileObject.NULL)
                             {
                                 //Debug.Log("Siguien casilla sin obstaculos");
-                                //target = new Vector3(tile.AbsolutePos.x , tile.AbsolutePos.y, this.transform.position.z);
-                                target = new Vector3(this.transform.position.x , this.transform.position.y+1, this.transform.position.z);
+                                //target = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y, this.transform.position.z);
+                                target = new Vector3(this.transform.position.x , this.transform.position.y -1, this.transform.position.z);
                                 moving = true;
-                                indexY--;
+                                indexY++;
                             }
                             else
                             {
@@ -690,7 +1046,7 @@ public class CharacterController : NetworkBehaviour
                             //Debug.Log("Suelo Piedra");
                             moving = false;
                             lastMovement = 0;
-                        }
+                        }*/
                     }
                     else
                     {
@@ -703,7 +1059,9 @@ public class CharacterController : NetworkBehaviour
 
             }
 
-        }       
+        }
+
+       
     }
 
     #region botones para movil
