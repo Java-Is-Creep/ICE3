@@ -222,32 +222,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                         } while (true);
                         target = new Vector3(this.transform.position.x - iteracion, this.transform.position.y , this.transform.position.z);
 
-                        /*
-                        TileScript tile = cubo.faces[cara].tiles[indexX - 1, indexY].GetComponent<TileScript>();
-                        if (tile.tileType == TileScript.type.ICE)
-                        {
-                            if (tile.myObjectType == TileScript.tileObject.NULL)
-                            {
-                                 //Debug.Log("Siguien casilla sin obstaculos");
-                                target = new Vector3(tile.AbsolutePos.x, transform.position.y, tile.AbsolutePos.z);
-                                moving = true;
-                                indexX--;
-                            }
-                            else
-                            {
-                                //Debug.Log("Hay Roca");
-                                moving = false;
-                                lastMovement = 0;
-                            }
-
-
-                        }
-                        else
-                        {
-                            //Debug.Log("suelo Piedra");
-                            moving = false;
-                            lastMovement = 0;
-                        }*/
+                        
                     }
                     else
                     {
@@ -355,32 +330,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                         } while (true);
                         target = new Vector3(this.transform.position.x , this.transform.position.y, this.transform.position.z - iteracion);
 
-                        /*
-                        TileScript tile = cubo.faces[cara].tiles[indexX, indexY - 1].GetComponent<TileScript>();
-                        if (tile.tileType == TileScript.type.ICE)
-                        {
-
-                            if (tile.myObjectType == TileScript.tileObject.NULL)
-                            {
-                                //Debug.Log("Siguien casilla sin obstaculos");
-                                target = new Vector3(tile.AbsolutePos.x, transform.position.y, tile.AbsolutePos.z);
-                                moving = true;
-                                indexY--;
-                            }
-                            else
-                            {
-                                //Debug.Log("Hay Roca");
-                                moving = false;
-                                lastMovement = 0;
-                            }
-
-                        }
-                        else
-                        {
-                            //Debug.Log("Suelo Piedra");
-                            moving = false;
-                            lastMovement = 0;
-                        }*/
+                        
                     }
                     else
                     {
@@ -416,7 +366,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                         {
                             camaraScript.front();
                             this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.forward, -90);
-                            this.gameObject.transform.Translate(new Vector3(0, cubo.width - 1.5f, 0), Space.World);
+                            this.gameObject.transform.Translate(new Vector3(0.5f, cubo.width - 1.5f, 0), Space.World);
                             //this.gameObject.transform.Translate(new Vector3(-0.5f, 0, 0), Space.World);
                             cara = 2;
                             moving = false;
@@ -491,47 +441,21 @@ public class CharacterController : MonoBehaviourPunCallbacks
                         } while (true);
                         target = new Vector3(this.transform.position.x + iteracion, this.transform.position.y, this.transform.position.z);
 
-                        /*
-                        TileScript tile = cubo.faces[cara].tiles[indexX + 1, indexY].GetComponent<TileScript>();
-                        if (tile.tileType == TileScript.type.ICE)
-                        {
-
-                            if (tile.myObjectType == TileScript.tileObject.NULL)
-                            {
-                                //Debug.Log("Siguien casilla sin obstaculos");
-                                target = new Vector3(tile.AbsolutePos.x, transform.position.y, tile.AbsolutePos.z);
-
-                                moving = true;
-                                indexX++;
-                            }
-                            else
-                            {
-                                //Debug.Log("Hay Roca");
-                                moving = false;
-                                lastMovement = 0;
-                            }
-
-                        }
-                        else
-                        {
-                            //Debug.Log("Suelo Piedra");
-                            moving = false;
-                            lastMovement = 0;
-                        }*/
+                        
                     }
                     else
                     {
-                        //Debug.LogWarning("Cambio de cara");
-                        /*
                         camaraScript.front();
                         this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.forward, -90);
-                        this.gameObject.transform.Translate(new Vector3(0, cubo.width - 1.5f, 0), Space.World);
+                        this.gameObject.transform.Translate(new Vector3(0.5f, cubo.width - 1.5f, 0), Space.World);
                         //this.gameObject.transform.Translate(new Vector3(-0.5f, 0, 0), Space.World);
                         cara = 2;
                         moving = false;
                         //lastMovement = 0;
                         indexX = 0;
-                        //indexY = 0;*/
+                        hayCambioCara = false;
+                        //Debug.LogWarning("Cambio de cara");
+                        
                     }
                 }
 
@@ -637,55 +561,25 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
                         } while (true);
                         target = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z + iteracion);
-
-                        /*
-                        TileScript tile = cubo.faces[cara].tiles[indexX, indexY + 1].GetComponent<TileScript>();
-                        if (tile.tileType == TileScript.type.ICE)
-                        {
-
-                            if (tile.myObjectType == TileScript.tileObject.NULL)
-                            {
-                                //Debug.Log("Siguien casilla sin obstaculos");
-                                target = new Vector3(tile.AbsolutePos.x, transform.position.y, tile.AbsolutePos.z);
-
-                                moving = true;
-                                indexY++;
-                            }
-                            else
-                            {
-                                //Debug.Log("Hay Roca");
-                                moving = false;
-                                lastMovement = 0;
-                            }
-
-
-
-                        }
-                        else
-                        {
-                            // Debug.Log("Siguien casilla suelo piedra");
-                            moving = false;
-                            lastMovement = 0;
-                        }*/
+                        
                     }
                     else
                     {
-
-                        /*
-                        //Debug.Log("Me salgo por la cara topa la cara de arriba");
                         camaraScript.right();
                         this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.right, 90);
-                        this.gameObject.transform.Translate(new Vector3(0, cubo.width - 1.5f, 0), Space.World);
+                        this.gameObject.transform.Translate(new Vector3(0, cubo.width - 1.5f, 0.5f), Space.World);
                         cara = 3;
                         //indexX = 1;
                         indexY = 0;
                         //indexX = ((int)cubo.width) - 1 - indexX;       
                         //indexX = 0;
-                        
-                        
+
+
                         //Debug.LogWarning("Cambio de cara");
                         moving = false;
-                        lastMovement = 2;*/
+                        lastMovement = 2;
+                        hayCambioCara = false;
+                        
                     }
 
                 }
@@ -715,6 +609,25 @@ public class CharacterController : MonoBehaviourPunCallbacks
                         //Debug.Log("Acaba Casilla Izq");
                         moving = false;
                         lastMovement = 0;
+                        if (hayCambioCara)
+                        {
+                            camaraScript.front();
+                            this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.up, 90);
+                            this.gameObject.transform.Translate(new Vector3(0, 0, cubo.width - 1f), Space.World);
+                            cara = 2;
+                            //indexX = 1;
+                            int aux = indexX;
+                            indexX = indexY;
+                            indexY = aux;
+                            //indexX = ((int)cubo.width) - 1 - indexX;       
+                            //indexX = 0;
+
+
+                            //Debug.LogWarning("Cambio de cara");
+                            moving = false;
+                            lastMovement = 1;
+                            hayCambioCara = false;
+                        }
                     }
                     else
                     {
@@ -730,10 +643,11 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
                         do
                         {
-                           // Debug.Log("Iteracion");
+                            //Debug.Log("Iteracion");
                             if (indexX +1 >= cubo.heigth)
                             {
                                 //Debug.Log("Es la ultima casilla");
+                                hayCambioCara = true;
                                 break;
                             }
                             tile = cubo.faces[cara].tiles[indexX+1 , indexY].GetComponent<TileScript>();
@@ -788,8 +702,22 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     else
                     {
                         //Debug.LogWarning("Cambio de cara");
+                        camaraScript.front();
+                        this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.up, 90);
+                        this.gameObject.transform.Translate(new Vector3(0, 0, cubo.width - 1f), Space.World);
+                        cara = 2;
+                        //indexX = 1;
+                        int aux = indexX;
+                        indexX = indexY;
+                        indexY = aux;
+                        //indexX = ((int)cubo.width) - 1 - indexX;       
+                        //indexX = 0;
+
+
+                        //Debug.LogWarning("Cambio de cara");
                         moving = false;
-                        lastMovement = 0;
+                        lastMovement = 1;
+                        hayCambioCara = false;
                     }
                     
 
@@ -1106,8 +1034,17 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     {
                         //Debug.Log(indexY);
                         //Debug.LogWarning("Cambio de cara");
+                        camaraScript.top();
+                        this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.right, -90);
+                        this.gameObject.transform.Translate(new Vector3(0, -0.5f, cubo.width - 1.5f), Space.World);
+                        cara = 0;
+                        indexY = 7;
+
+
+                        //Debug.LogWarning("Cambio de cara");
                         moving = false;
-                        lastMovement = 0;
+                        lastMovement = 1;
+                        hayCambioCara = false;
                     }
                 }
 
@@ -1135,6 +1072,25 @@ public class CharacterController : MonoBehaviourPunCallbacks
                         target = this.transform.position;
                         //Debug.Log("Acaba Casilla Aba");
                         moving = false;
+                        if (hayCambioCara)
+                        {
+                            camaraScript.right();
+                            this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.up, -90);
+                            this.gameObject.transform.Translate(new Vector3(cubo.width - 1f, 0, 0), Space.World);
+                            cara = 3;
+                            //indexX = 1;
+                            int aux = indexX;
+                            indexX = indexY;
+                            indexY = aux;
+                            //indexX = ((int)cubo.width) - 1 - indexX;       
+                            //indexX = 0;
+
+
+                            //Debug.LogWarning("Cambio de cara");
+                            moving = false;
+                            lastMovement = 3;
+                            hayCambioCara = false;
+                        }
                     }
                 }
                 else
@@ -1150,6 +1106,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             if (indexY + 1 >= cubo.width)
                             {
                                 //Debug.Log("Es la ultima casilla");
+                                hayCambioCara = true;
                                 break;
                             }
                             tile = cubo.faces[cara].tiles[indexX, indexY+1].GetComponent<TileScript>();
@@ -1199,55 +1156,27 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
                         } while (true);
                         target = new Vector3(this.transform.position.x , this.transform.position.y, this.transform.position.z + iteracion);
-
-                        /*
-                        TileScript tile = cubo.faces[cara].tiles[indexX, indexY + 1].GetComponent<TileScript>();
-                        if (tile.tileType == TileScript.type.ICE)
-                        {
-
-                            if (tile.myObjectType == TileScript.tileObject.NULL)
-                            {
-                                //Debug.Log("Siguien casilla sin obstaculos");
-                                target = new Vector3(this.transform.position.x, tile.AbsolutePos.y, tile.AbsolutePos.z);
-
-                                moving = true;
-                                indexY++;
-                            }
-                            else
-                            {
-                                //Debug.Log("Hay Roca");
-                                moving = false;
-                                lastMovement = 0;
-                            }
-
-
-
-                        }
-                        else
-                        {
-                            // Debug.Log("Siguien casilla suelo piedra");
-                            moving = false;
-                            lastMovement = 0;
-                        }*/
+                        
                     }
                     else
                     {
-
-                        /*
-                        Debug.Log("Me salgo por la cara topa la cara de arriba");
                         camaraScript.right();
-                        this.gameObject.transform.RotateAround(Vector3.zero, Vector3.right, 90);
-                        this.gameObject.transform.Translate(new Vector3(0, cubo.width - 1, 0), Space.World);
+                        this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.up, -90);
+                        this.gameObject.transform.Translate(new Vector3(cubo.width - 1f, 0, 0), Space.World);
                         cara = 3;
                         //indexX = 1;
-                        indexY = 0;
+                        int aux = indexX;
+                        indexX = indexY;
+                        indexY = aux;
                         //indexX = ((int)cubo.width) - 1 - indexX;       
                         //indexX = 0;
 
-                    */
+
                         //Debug.LogWarning("Cambio de cara");
                         moving = false;
-                        lastMovement = 0;
+                        lastMovement = 3;
+                        hayCambioCara = false;
+                        //Debug.LogWarning("Cambio de cara");
                     }
 
                 }
@@ -1258,7 +1187,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
         //Izquierda
         if (lastMovement == 1)
         {
-
+            //Debug.Log("SALE");
             if (indexY >= 0)
             {
                 if (moving) //mas eficiente, mirar todas las casillas y ver hasta cualpuedes ir
@@ -1288,7 +1217,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                                 break;
                             }
                             tile = cubo.faces[cara].tiles[indexX, indexY - 1].GetComponent<TileScript>();
-                           // Debug.Log("Leyendo casilla: " + (indexX) + ", " + (indexY - 1));
+                            //Debug.Log("Leyendo casilla: " + (indexX) + ", " + (indexY - 1));
                             if (tile.tileType == TileScript.type.ICE)
                             {
                                 if (tile.myObjectType == TileScript.tileObject.NULL)
@@ -1334,52 +1263,11 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
                         } while (true);
                         target = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z - iteracion);
-
-                        /*
-                        TileScript tile = cubo.faces[cara].tiles[indexX, indexY + 1].GetComponent<TileScript>();
-                        if (tile.tileType == TileScript.type.ICE)
-                        {
-
-                            if (tile.myObjectType == TileScript.tileObject.NULL)
-                            {
-                                //Debug.Log("Siguien casilla sin obstaculos");
-                                target = new Vector3(this.transform.position.x, tile.AbsolutePos.y, tile.AbsolutePos.z);
-
-                                moving = true;
-                                indexY++;
-                            }
-                            else
-                            {
-                                //Debug.Log("Hay Roca");
-                                moving = false;
-                                lastMovement = 0;
-                            }
-
-
-
-                        }
-                        else
-                        {
-                            // Debug.Log("Siguien casilla suelo piedra");
-                            moving = false;
-                            lastMovement = 0;
-                        }*/
+                        
                     }
                     else
                     {
-
-                        /*
-                        Debug.Log("Me salgo por la cara topa la cara de arriba");
-                        camaraScript.right();
-                        this.gameObject.transform.RotateAround(Vector3.zero, Vector3.right, 90);
-                        this.gameObject.transform.Translate(new Vector3(0, cubo.width - 1, 0), Space.World);
-                        cara = 3;
-                        //indexX = 1;
-                        indexY = 0;
-                        //indexX = ((int)cubo.width) - 1 - indexX;       
-                        //indexX = 0;
-
-                    */
+                        
                         Debug.LogWarning("Cambio de cara");
                         moving = false;
                         lastMovement = 0;
@@ -1469,52 +1357,11 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
                         } while (true);
                         target = new Vector3(this.transform.position.x , this.transform.position.y - iteracion, this.transform.position.z );
-
-                        /*
-                        TileScript tile = cubo.faces[cara].tiles[indexX, indexY + 1].GetComponent<TileScript>();
-                        if (tile.tileType == TileScript.type.ICE)
-                        {
-
-                            if (tile.myObjectType == TileScript.tileObject.NULL)
-                            {
-                                //Debug.Log("Siguien casilla sin obstaculos");
-                                target = new Vector3(this.transform.position.x, tile.AbsolutePos.y, tile.AbsolutePos.z);
-
-                                moving = true;
-                                indexY++;
-                            }
-                            else
-                            {
-                                //Debug.Log("Hay Roca");
-                                moving = false;
-                                lastMovement = 0;
-                            }
-
-
-
-                        }
-                        else
-                        {
-                            // Debug.Log("Siguien casilla suelo piedra");
-                            moving = false;
-                            lastMovement = 0;
-                        }*/
+                        
                     }
                     else
                     {
-
-                        /*
-                        Debug.Log("Me salgo por la cara topa la cara de arriba");
-                        camaraScript.right();
-                        this.gameObject.transform.RotateAround(Vector3.zero, Vector3.right, 90);
-                        this.gameObject.transform.Translate(new Vector3(0, cubo.width - 1, 0), Space.World);
-                        cara = 3;
-                        //indexX = 1;
-                        indexY = 0;
-                        //indexX = ((int)cubo.width) - 1 - indexX;       
-                        //indexX = 0;
-
-                    */
+                        
                         Debug.LogWarning("Cambio de cara");
                         moving = false;
                         lastMovement = 0;
@@ -1544,7 +1391,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                         {
                             camaraScript.top();
                             this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.forward, 90);
-                            this.gameObject.transform.Translate(new Vector3((cubo.width - 1.5f), 0, 0), Space.World);
+                            this.gameObject.transform.Translate(new Vector3((cubo.width - 1.5f), -0.5f, 0), Space.World);
                             cara = 0;
                             //indexX = 1;
                             indexX = 7;
@@ -1623,56 +1470,19 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
                         } while (true);
                         target = new Vector3(this.transform.position.x, this.transform.position.y + iteracion, this.transform.position.z);
-
-                        /*
-                        TileScript tile = cubo.faces[cara].tiles[indexX, indexY + 1].GetComponent<TileScript>();
-                        if (tile.tileType == TileScript.type.ICE)
-                        {
-
-                            if (tile.myObjectType == TileScript.tileObject.NULL)
-                            {
-                                //Debug.Log("Siguien casilla sin obstaculos");
-                                target = new Vector3(this.transform.position.x, tile.AbsolutePos.y, tile.AbsolutePos.z);
-
-                                moving = true;
-                                indexY++;
-                            }
-                            else
-                            {
-                                //Debug.Log("Hay Roca");
-                                moving = false;
-                                lastMovement = 0;
-                            }
-
-
-
-                        }
-                        else
-                        {
-                            // Debug.Log("Siguien casilla suelo piedra");
-                            moving = false;
-                            lastMovement = 0;
-                        }*/
+                        
                     }
                     else
                     {
-
-                        /*
-                        Debug.Log("Me salgo por la cara topa la cara de arriba");
-                        camaraScript.right();
-                        this.gameObject.transform.RotateAround(Vector3.zero, Vector3.right, 90);
-                        this.gameObject.transform.Translate(new Vector3(0, cubo.width - 1, 0), Space.World);
-                        cara = 3;
-                        //indexX = 1;
-                        indexY = 0;
-                        //indexX = ((int)cubo.width) - 1 - indexX;       
-                        //indexX = 0;
-
-                    */
                         //Debug.LogWarning("Cambio de cara");
-                        hayCambioCara = true;
+                        camaraScript.top();
+                        this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.forward, 90);
+                        this.gameObject.transform.Translate(new Vector3((cubo.width - 1.5f), -0.5f, 0), Space.World);
+                        cara = 0;
+                        indexX = 7;
                         moving = false;
-                        lastMovement = 0;
+                        lastMovement = 4;
+                        hayCambioCara = false;
                     }
 
                 }
