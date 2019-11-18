@@ -26,6 +26,11 @@ public class CharacterController : MonoBehaviourPunCallbacks
     bool hecho = false;
     bool hayCambioCara;
 
+    bool ab = false;
+    bool wb = false;
+    bool sb = false;
+    bool db = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -92,21 +97,25 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
         if (lastMovement == 0)
         {
-            if (Input.GetKeyDown("a"))
+            if (Input.GetKeyDown("a") || ab)
             {
                 lastMovement = 1;
+                ab = false;
             }
-            else if (Input.GetKeyDown("s"))
+            else if (Input.GetKeyDown("s") || sb)
             {
                 lastMovement = 2;
+                sb = false;
             }
-            else if (Input.GetKeyDown("d"))
+            else if (Input.GetKeyDown("d") || db)
             {
                 lastMovement = 3;
+                db = false;
             }
-            else if (Input.GetKeyDown("w"))
+            else if (Input.GetKeyDown("w") || wb)
             {
                 lastMovement = 4;
+                wb = false;
             }
         }
 
@@ -1498,7 +1507,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
     {
         if (lastMovement == 0)
         {
-            lastMovement = 4;
+            wb = true;
         }
     }
 
@@ -1506,7 +1515,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
     {
         if (lastMovement == 0)
         {
-            lastMovement = 1;
+            ab = true;
         }
     }
 
@@ -1514,7 +1523,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
     {
         if (lastMovement == 0)
         {
-            lastMovement = 2;
+            sb = true;
         }
     }
 
@@ -1522,10 +1531,12 @@ public class CharacterController : MonoBehaviourPunCallbacks
     {
         if (lastMovement == 0)
         {
-            lastMovement = 3;
+            db = true;
         }
     }
     #endregion
+
+
     private void OnCollisionEnter(Collision collision)
     {/*
         if (collision.collider.tag == "Rock"){

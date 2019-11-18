@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using UnityEngine.EventSystems;
 
 public class moverCamaraFija : MonoBehaviour
 {
@@ -28,7 +29,7 @@ public class moverCamaraFija : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
         {
             lastCara = cara;
             if (cara == 0)
@@ -56,7 +57,7 @@ public class moverCamaraFija : MonoBehaviour
                 freeLookCam.transform.position = backCam.transform.position;
             }
             Free();
-        } else if (Input.GetMouseButtonUp(0))
+        } else if (Input.GetMouseButtonUp(0) && !EventSystem.current.IsPointerOverGameObject())
         {
             if (lastCara == 0)
             {
