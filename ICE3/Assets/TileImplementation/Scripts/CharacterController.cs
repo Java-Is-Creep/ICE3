@@ -17,7 +17,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
     public Vector3 target;
     public bool moving = false;
 
-     float increment = 5f;
+    float increment = 5f;
 
     Cube cubo;
 
@@ -31,9 +31,12 @@ public class CharacterController : MonoBehaviourPunCallbacks
     bool sb = false;
     bool db = false;
 
+    GameObject model;
+
     // Start is called before the first frame update
     void Start()
     {
+        model = GetComponentInChildren<Transform>().gameObject;
         camaraScript = FindObjectOfType<moverCamaraFija>();
     }
 
@@ -41,7 +44,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
     void Update()
     {
 
-      
+
 
         // no dejamos controlar las cosas si no somos el cliente;
         if (!photonView.IsMine)
@@ -85,9 +88,9 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
             hayCambioCara = false;
             CubeFace face = cubo.faces[cara];
-             GameObject au = face.tiles[indexX, indexY];
+            GameObject au = face.tiles[indexX, indexY];
             TileScript ts = au.GetComponent<TileScript>();
-            this.transform.position =ts.AbsolutePos;
+            this.transform.position = ts.AbsolutePos;
 
             this.transform.position = this.transform.position + new Vector3(0, 1, 0);
             hecho = true;
@@ -95,29 +98,57 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
         float incrementAux = increment * Time.deltaTime;
 
-        if (lastMovement == 0)
+
+
+        if (Input.GetKeyDown("a") || ab)
         {
-            if (Input.GetKeyDown("a") || ab)
+            if (cara == 0)
+            {
+                model.transform.rotation = Quaternion.Euler(0, 0, 0);
+            }
+            if (lastMovement == 0)
             {
                 lastMovement = 1;
                 ab = false;
             }
-            else if (Input.GetKeyDown("s") || sb)
+        }
+        else if (Input.GetKeyDown("s") || sb)
+        {
+            if (cara == 0)
+            {
+                model.transform.rotation = Quaternion.Euler(0, -90, 0);
+            }
+            if (lastMovement == 0)
             {
                 lastMovement = 2;
                 sb = false;
             }
-            else if (Input.GetKeyDown("d") || db)
+        }
+        else if (Input.GetKeyDown("d") || db)
+        {
+            if (cara == 0)
+            {
+                model.transform.rotation = Quaternion.Euler(0, 180, 0);
+            }
+            if (lastMovement == 0)
             {
                 lastMovement = 3;
                 db = false;
             }
-            else if (Input.GetKeyDown("w") || wb)
+        }
+        else if (Input.GetKeyDown("w") || wb)
+        {
+            if (cara == 0)
+            {
+                model.transform.rotation = Quaternion.Euler(0, 90, 0);
+            }
+            if (lastMovement == 0)
             {
                 lastMovement = 4;
                 wb = false;
             }
         }
+
 
         switch (cara)
         {
@@ -183,7 +214,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
                                 break;
                             }
-                            tile = cubo.faces[cara].tiles[indexX - 1, indexY ].GetComponent<TileScript>();
+                            tile = cubo.faces[cara].tiles[indexX - 1, indexY].GetComponent<TileScript>();
                             //Debug.Log("Leyendo casilla: " + (indexX) + ", " + (indexY - 1));
                             if (tile.tileType == TileScript.type.ICE)
                             {
@@ -229,9 +260,9 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             }
 
                         } while (true);
-                        target = new Vector3(this.transform.position.x - iteracion, this.transform.position.y , this.transform.position.z);
+                        target = new Vector3(this.transform.position.x - iteracion, this.transform.position.y, this.transform.position.z);
 
-                        
+
                     }
                     else
                     {
@@ -247,8 +278,8 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
 
 
-        }   
-        
+        }
+
         //Izquierda
         else if (lastMovement == 1) // izqda
         {
@@ -291,7 +322,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
                                 break;
                             }
-                            tile = cubo.faces[cara].tiles[indexX , indexY - 1].GetComponent<TileScript>();
+                            tile = cubo.faces[cara].tiles[indexX, indexY - 1].GetComponent<TileScript>();
                             //Debug.Log("Leyendo casilla: " + (indexX) + ", " + (indexY - 1));
                             if (tile.tileType == TileScript.type.ICE)
                             {
@@ -337,15 +368,15 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             }
 
                         } while (true);
-                        target = new Vector3(this.transform.position.x , this.transform.position.y, this.transform.position.z - iteracion);
+                        target = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z - iteracion);
 
-                        
+
                     }
                     else
                     {
 
 
-                       // Debug.LogWarning("Cambio de cara");
+                        // Debug.LogWarning("Cambio de cara");
                         moving = false;
                         lastMovement = 0;
                     }
@@ -354,7 +385,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 }
 
             }
-        }  
+        }
 
         //Abajo
         else if (lastMovement == 2)
@@ -450,7 +481,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                         } while (true);
                         target = new Vector3(this.transform.position.x + iteracion, this.transform.position.y, this.transform.position.z);
 
-                        
+
                     }
                     else
                     {
@@ -464,18 +495,18 @@ public class CharacterController : MonoBehaviourPunCallbacks
                         indexX = 0;
                         hayCambioCara = false;
                         //Debug.LogWarning("Cambio de cara");
-                        
+
                     }
                 }
 
             }
 
-        } 
-        
+        }
+
         //Dcha
-        else if (lastMovement == 3) 
+        else if (lastMovement == 3)
         {
-            
+
             if (indexY < cubo.heigth)
             {
                 if (moving) //mas eficiente, mirar todas las casillas y ver hasta cualpuedes ir
@@ -520,7 +551,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                                 //Debug.Log("Es la ultima casilla");
 
                                 hayCambioCara = true;
-                                
+
                                 break;
                             }
                             tile = cubo.faces[cara].tiles[indexX, indexY + 1].GetComponent<TileScript>();
@@ -570,7 +601,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
                         } while (true);
                         target = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z + iteracion);
-                        
+
                     }
                     else
                     {
@@ -588,19 +619,19 @@ public class CharacterController : MonoBehaviourPunCallbacks
                         moving = false;
                         lastMovement = 2;
                         hayCambioCara = false;
-                        
+
                     }
 
                 }
 
             }
-        }  
+        }
     }
 
     public void MovimientoCaraRigth(float incrementAux)
     {
         // izq
-        if (lastMovement == 1) 
+        if (lastMovement == 1)
         {
             //Debug.Log("Izq");
             if (indexX <= cubo.heigth)
@@ -646,20 +677,20 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 else
                 {
                     int iteracion = 0;
-                    if (indexX < cubo.heigth-1)
+                    if (indexX < cubo.heigth - 1)
                     {
                         TileScript tile;
 
                         do
                         {
                             //Debug.Log("Iteracion");
-                            if (indexX +1 >= cubo.heigth)
+                            if (indexX + 1 >= cubo.heigth)
                             {
                                 //Debug.Log("Es la ultima casilla");
                                 hayCambioCara = true;
                                 break;
                             }
-                            tile = cubo.faces[cara].tiles[indexX+1 , indexY].GetComponent<TileScript>();
+                            tile = cubo.faces[cara].tiles[indexX + 1, indexY].GetComponent<TileScript>();
                             //Debug.Log("Leyendo casilla: " + (indexX+1) + ", " + (indexY));
                             if (tile.tileType == TileScript.type.ICE)
                             {
@@ -706,7 +737,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
                         } while (true);
                         target = new Vector3(this.transform.position.x + iteracion, this.transform.position.y, this.transform.position.z);
-                        
+
                     }
                     else
                     {
@@ -728,16 +759,16 @@ public class CharacterController : MonoBehaviourPunCallbacks
                         lastMovement = 1;
                         hayCambioCara = false;
                     }
-                    
+
 
                 }
 
             }
-            
+
         }
 
         // derecha
-        else if (lastMovement == 3) 
+        else if (lastMovement == 3)
         {
             //Debug.Log("Dcha");
             if (indexX >= 0)
@@ -752,7 +783,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     {
                         this.transform.position = target;
                         target = this.transform.position;
-                       // Debug.Log("Acaba Casilla Izq");
+                        // Debug.Log("Acaba Casilla Izq");
                         moving = false;
                         lastMovement = 0;
                     }
@@ -782,7 +813,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             {
                                 if (tile.myObjectType == TileScript.tileObject.NULL)
                                 {
-                                   // Debug.Log("Siguien casilla sin obstaculos");
+                                    // Debug.Log("Siguien casilla sin obstaculos");
                                     //target = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y,this.transform.position.z);
                                     //target = new Vector3(this.transform.position.x + 1, target.y, target.z);
                                     moving = true;
@@ -791,7 +822,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                                 }
                                 else
                                 {
-                                   // Debug.Log("Hay Roca");
+                                    // Debug.Log("Hay Roca");
                                     if (iteracion <= 0)
                                     {
                                         //Debug.Log("iteracion menor o igual que 0");
@@ -823,7 +854,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
                         } while (true);
                         target = new Vector3(this.transform.position.x - iteracion, this.transform.position.y, this.transform.position.z);
-                        
+
                     }
                     else
                     {
@@ -836,11 +867,11 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 }
 
             }
-            
+
         }
 
         //Abajo
-        else if (lastMovement == 2)         
+        else if (lastMovement == 2)
         {
             //Debug.Log("Abajo");
             //Debug.Log("Estoy en " + indexY);
@@ -850,7 +881,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 {
                     //Debug.Log("Pos: " + this.transform.position);
                     //Debug.Log("Pos target: " + target);
-                    this.transform.position = new Vector3(transform.position.x , transform.position.y - incrementAux, transform.position.z);
+                    this.transform.position = new Vector3(transform.position.x, transform.position.y - incrementAux, transform.position.z);
                     if (Mathf.Abs(this.transform.position.y - target.y) < 0.5f)
                     {
                         this.transform.position = target;
@@ -873,7 +904,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                                 //Debug.Log("Es la ultima casilla");
                                 break;
                             }
-                            tile = cubo.faces[cara].tiles[indexX , indexY + 1].GetComponent<TileScript>();
+                            tile = cubo.faces[cara].tiles[indexX, indexY + 1].GetComponent<TileScript>();
                             //Debug.Log("Leyendo casilla: " + (indexX) + ", " + (indexY + 1));
                             if (tile.tileType == TileScript.type.ICE)
                             {
@@ -919,7 +950,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             }
 
                         } while (true);
-                        target = new Vector3(this.transform.position.x , this.transform.position.y - iteracion, this.transform.position.z);
+                        target = new Vector3(this.transform.position.x, this.transform.position.y - iteracion, this.transform.position.z);
 
                     }
                     else
@@ -936,7 +967,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
         }
 
         //Arriba
-        else if (lastMovement == 4)         
+        else if (lastMovement == 4)
         {
             //Debug.Log("Arriba");
             //Debug.Log("Estoy en " + indexY);
@@ -1008,7 +1039,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                                     //Debug.Log("Hay Roca");
                                     if (iteracion <= 0)
                                     {
-                                       // Debug.Log("iteracion menor o igual que 0");
+                                        // Debug.Log("iteracion menor o igual que 0");
                                         moving = false;
                                         lastMovement = 0;
                                     }
@@ -1037,7 +1068,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
                         } while (true);
                         target = new Vector3(this.transform.position.x, this.transform.position.y + iteracion, this.transform.position.z);
-                        
+
                     }
                     else
                     {
@@ -1060,12 +1091,12 @@ public class CharacterController : MonoBehaviourPunCallbacks
             }
 
         }
- 
+
     }
 
     public void MovimientoCaraFront(float incrementAux)
     {
-        
+
         //Dcha
         if (lastMovement == 3)
         {
@@ -1118,13 +1149,13 @@ public class CharacterController : MonoBehaviourPunCallbacks
                                 hayCambioCara = true;
                                 break;
                             }
-                            tile = cubo.faces[cara].tiles[indexX, indexY+1].GetComponent<TileScript>();
+                            tile = cubo.faces[cara].tiles[indexX, indexY + 1].GetComponent<TileScript>();
                             //Debug.Log("Leyendo casilla: " + (indexX) + ", " + (indexY+1));
                             if (tile.tileType == TileScript.type.ICE)
                             {
                                 if (tile.myObjectType == TileScript.tileObject.NULL)
                                 {
-                                     //Debug.Log("Siguien casilla sin obstaculos");
+                                    //Debug.Log("Siguien casilla sin obstaculos");
                                     //target = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y,this.transform.position.z);
                                     //target = new Vector3(this.transform.position.x + 1, target.y, target.z);
                                     moving = true;
@@ -1164,8 +1195,8 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             }
 
                         } while (true);
-                        target = new Vector3(this.transform.position.x , this.transform.position.y, this.transform.position.z + iteracion);
-                        
+                        target = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z + iteracion);
+
                     }
                     else
                     {
@@ -1272,11 +1303,11 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
                         } while (true);
                         target = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z - iteracion);
-                        
+
                     }
                     else
                     {
-                        
+
                         Debug.LogWarning("Cambio de cara");
                         moving = false;
                         lastMovement = 0;
@@ -1295,7 +1326,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
             {
                 if (moving) //mas eficiente, mirar todas las casillas y ver hasta cualpuedes ir
                 {
-                    this.transform.position = new Vector3(transform.position.x , transform.position.y - incrementAux, transform.position.z );
+                    this.transform.position = new Vector3(transform.position.x, transform.position.y - incrementAux, transform.position.z);
                     if (Mathf.Abs(this.transform.position.y - target.y) < 0.5f)
                     {
                         this.transform.position = target;
@@ -1319,13 +1350,13 @@ public class CharacterController : MonoBehaviourPunCallbacks
                                 //Debug.Log("Es la ultima casilla");
                                 break;
                             }
-                            tile = cubo.faces[cara].tiles[indexX + 1, indexY ].GetComponent<TileScript>();
-                           // Debug.Log("Leyendo casilla: " + (indexX + 1) + ", " + (indexY ));
+                            tile = cubo.faces[cara].tiles[indexX + 1, indexY].GetComponent<TileScript>();
+                            // Debug.Log("Leyendo casilla: " + (indexX + 1) + ", " + (indexY ));
                             if (tile.tileType == TileScript.type.ICE)
                             {
                                 if (tile.myObjectType == TileScript.tileObject.NULL)
                                 {
-                                   // Debug.Log("Siguien casilla sin obstaculos");
+                                    // Debug.Log("Siguien casilla sin obstaculos");
                                     //target = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y,this.transform.position.z);
                                     //target = new Vector3(this.transform.position.x + 1, target.y, target.z);
                                     moving = true;
@@ -1351,7 +1382,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             }
                             else
                             {
-                               // Debug.Log("suelo Piedra");
+                                // Debug.Log("suelo Piedra");
                                 if (iteracion <= 0)
                                 {
                                     moving = false;
@@ -1365,12 +1396,12 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             }
 
                         } while (true);
-                        target = new Vector3(this.transform.position.x , this.transform.position.y - iteracion, this.transform.position.z );
-                        
+                        target = new Vector3(this.transform.position.x, this.transform.position.y - iteracion, this.transform.position.z);
+
                     }
                     else
                     {
-                        
+
                         Debug.LogWarning("Cambio de cara");
                         moving = false;
                         lastMovement = 0;
@@ -1433,12 +1464,12 @@ public class CharacterController : MonoBehaviourPunCallbacks
                                 break;
                             }
                             tile = cubo.faces[cara].tiles[indexX - 1, indexY].GetComponent<TileScript>();
-                           // Debug.Log("Leyendo casilla: " + (indexX - 1) + ", " + (indexY));
+                            // Debug.Log("Leyendo casilla: " + (indexX - 1) + ", " + (indexY));
                             if (tile.tileType == TileScript.type.ICE)
                             {
                                 if (tile.myObjectType == TileScript.tileObject.NULL)
                                 {
-                                   // Debug.Log("Siguien casilla sin obstaculos");
+                                    // Debug.Log("Siguien casilla sin obstaculos");
                                     //target = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y,this.transform.position.z);
                                     //target = new Vector3(this.transform.position.x + 1, target.y, target.z);
                                     moving = true;
@@ -1450,7 +1481,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                                     //Debug.Log("Hay Roca");
                                     if (iteracion <= 0)
                                     {
-                                       // Debug.Log("iteracion menor o igual que 0");
+                                        // Debug.Log("iteracion menor o igual que 0");
                                         moving = false;
                                         lastMovement = 0;
                                     }
@@ -1479,7 +1510,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
                         } while (true);
                         target = new Vector3(this.transform.position.x, this.transform.position.y + iteracion, this.transform.position.z);
-                        
+
                     }
                     else
                     {
