@@ -36,7 +36,8 @@ public class CharacterController : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
-        model = GetComponentInChildren<Transform>().gameObject;
+        model = this.transform.GetChild(0).gameObject;
+        Debug.Log(model);
         camaraScript = FindObjectOfType<moverCamaraFija>();
     }
 
@@ -102,10 +103,13 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
         if (Input.GetKeyDown("a") || ab)
         {
-            if (cara == 0)
-            {
-                model.transform.rotation = Quaternion.Euler(0, 0, 0);
-            }
+            if (cara == 0 || cara == 2)
+             {
+                 model.transform.localRotation = Quaternion.Euler(0, 0, 0);
+             } else if (cara == 3)
+             {
+                 model.transform.localRotation = Quaternion.Euler(0,-90, 0);
+             }
             if (lastMovement == 0)
             {
                 lastMovement = 1;
@@ -114,9 +118,15 @@ public class CharacterController : MonoBehaviourPunCallbacks
         }
         else if (Input.GetKeyDown("s") || sb)
         {
-            if (cara == 0)
+            
+            
+            if (cara == 0 || cara == 2)
             {
-                model.transform.rotation = Quaternion.Euler(0, -90, 0);
+                model.transform.localRotation = Quaternion.Euler(0, -90, 0);
+            }
+            else if (cara == 3)
+            {
+                model.transform.localRotation = Quaternion.Euler(0, 180, 0);
             }
             if (lastMovement == 0)
             {
@@ -126,9 +136,14 @@ public class CharacterController : MonoBehaviourPunCallbacks
         }
         else if (Input.GetKeyDown("d") || db)
         {
-            if (cara == 0)
+            
+            if (cara == 0 || cara == 2)
             {
-                model.transform.rotation = Quaternion.Euler(0, 180, 0);
+                model.transform.localRotation = Quaternion.Euler(0, 180, 0);
+            }
+            else if (cara == 3)
+            {
+                model.transform.localRotation = Quaternion.Euler(0, 90, 0);
             }
             if (lastMovement == 0)
             {
@@ -138,9 +153,14 @@ public class CharacterController : MonoBehaviourPunCallbacks
         }
         else if (Input.GetKeyDown("w") || wb)
         {
-            if (cara == 0)
+            
+            if (cara == 0 || cara == 2)
             {
-                model.transform.rotation = Quaternion.Euler(0, 90, 0);
+                model.transform.localRotation = Quaternion.Euler(0, 90, 0);
+            }
+            else if (cara == 3)
+            {
+                model.transform.localRotation = Quaternion.Euler(0, 0, 0);
             }
             if (lastMovement == 0)
             {
@@ -164,6 +184,10 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 //Debug.Log("Indice cara front: " + indexX + ", " + indexY);
                 MovimientoCaraFront(incrementAux);
                 break;
+            case 4:
+                MovimientoCaraLeft(incrementAux);
+                break;
+
 
         }
 
@@ -300,7 +324,15 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
                         if (hayCambioCara)
                         {
-
+                            camaraScript.left();
+                            this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.right, -90);
+                            this.gameObject.transform.Translate(new Vector3(0, cubo.width - 1.5f,0.5f), Space.World);
+                            //this.gameObject.transform.Translate(new Vector3(-0.5f, 0, 0), Space.World);
+                            cara = 4;
+                            moving = false;
+                            //lastMovement = 0;
+                            indexX = 0;
+                            hayCambioCara = false;
                         }
 
                     }
@@ -318,7 +350,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             {
                                 //Debug.Log("Es la ultima casilla");
 
-                                //hayCambioCara = true;
+                                hayCambioCara = true;
 
                                 break;
                             }
@@ -662,7 +694,8 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             //indexX = ((int)cubo.width) - 1 - indexX;       
                             //indexX = 0;
 
-
+                            this.gameObject.transform.rotation = Quaternion.Euler(0, 0, -90);
+                            model.transform.localRotation = Quaternion.Euler(0, 0, 0);
                             //Debug.LogWarning("Cambio de cara");
                             moving = false;
                             lastMovement = 1;
@@ -1124,8 +1157,8 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             indexY = aux;
                             //indexX = ((int)cubo.width) - 1 - indexX;       
                             //indexX = 0;
-
-
+                            this.gameObject.transform.rotation = Quaternion.Euler(90, 0, 0);
+                            model.transform.localRotation = Quaternion.Euler(0, 90, 0);
                             //Debug.LogWarning("Cambio de cara");
                             moving = false;
                             lastMovement = 3;
@@ -1528,6 +1561,33 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 }
 
             }
+        }
+    }
+
+    public void MovimientoCaraLeft(float incrementAux)
+    {
+        //izqda
+        if (lastMovement == 1)
+        {
+
+        }
+
+        //Abajo
+        else if (lastMovement == 2)
+        {
+
+        }
+
+        //derecha
+        else if (lastMovement == 3)
+        {
+
+        }
+
+        //arriba
+        else if (lastMovement == 4)
+        {
+
         }
     }
 
