@@ -25,29 +25,39 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
     bool hecho = false;
     bool hayCambioCara;
+    public bool isFiring;
+    public float timeBetweenShots;
+    public float timeWaitingShots = 0;
+
+    public GameObject bolaDeNieve;
+
 
     bool ab = false;
     bool wb = false;
     bool sb = false;
     bool db = false;
 
+
     // Start is called before the first frame update
     void Start()
     {
         camaraScript = FindObjectOfType<moverCamaraFija>();
+
     }
 
     // Update is called once per frame
     void Update()
     {
 
-      
 
-        // no dejamos controlar las cosas si no somos el cliente;
         if (!photonView.IsMine)
         {
             return;
         }
+        //actualizacion de variables
+        timeWaitingShots += Time.deltaTime;
+        isFiring = false;
+
 
         if (!hecho)
         {
@@ -65,21 +75,6 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 indexY = 4;
                 cara = 0;
             }
-            /*
-           GameObject aux = GameObject.Find("Cube(Clone)(Clone)");
-           Debug.Log(aux);
-           cubo = aux.GetComponent<Cube>();
-           Debug.Log(cubo);*/
-            /*
-            if (PhotonNetwork.IsMasterClient)
-            {
-                if (photonView.IsMine)
-                {
-                    GameObject g = cubo.gameObject;
-                    g.transform.position = new Vector3(-cubo.width / 2, cubo.heigth / 2, -cubo.heigth / 2 + cubo.tamañoCara / 2);
-                    cubo.updateFaces();
-                }
-            }*/
 
             cubo = FindObjectOfType<Cube>();
 
@@ -119,6 +114,20 @@ public class CharacterController : MonoBehaviourPunCallbacks
             }
         }
 
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            
+            if(timeBetweenShots < timeWaitingShots)
+            {
+                Debug.Log("Di`parando");
+                this.photonView.RPC("Shot", RpcTarget.All,this.photonView.GetInstanceID());
+                timeWaitingShots = 0;
+            }
+        }
+
+
+
         switch (cara)
         {
             case 0:
@@ -138,6 +147,27 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
     }
 
+
+    #region IPunObservable implementation
+
+    [PunRPC]
+    void Shot(int targetID)
+    {
+        Debug.Log("Han disparado");
+        /* if(targetID == photonView.GetInstanceID())
+         {
+             GameObject aux = Instantiate(bolaDeNieve, this.transform.position + (Vector3.forward * 0.2f), Quaternion.identity);
+             aux.GetComponent<Proyectil>().initDireccion(this.gameObject.transform.TransformDirection(Vector3.forward), this.gameObject);
+         }*/
+        GameObject aux = Instantiate(bolaDeNieve, this.transform.position + (Vector3.forward * 0.2f), Quaternion.identity);
+        aux.GetComponent<Proyectil>().initDireccion(this.gameObject.transform.TransformDirection(Vector3.forward), this.gameObject);
+
+    }
+
+
+
+
+    #endregion
 
     public void MovimientoCaraTop(float incrementAux)
     {

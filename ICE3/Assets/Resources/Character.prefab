@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 7356212918199213849}
   m_Layer: 0
   m_Name: Character
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -129,6 +129,11 @@ MonoBehaviour:
   indexY: 0
   target: {x: 0, y: 0, z: 0}
   moving: 0
+  isFiring: 0
+  timeBetweenShots: 1
+  timeWaitingShots: 0
+  bolaDeNieve: {fileID: 1690511612642863994, guid: 2f041fa018d29494b8882a09f7eec235,
+    type: 3}
 --- !u!114 &7116918764183407478
 MonoBehaviour:
   m_ObjectHideFlags: 0
