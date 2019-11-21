@@ -12,14 +12,13 @@ public class CanvasManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (SystemInfo.deviceType == DeviceType.Desktop)
+        if (Application.isMobilePlatform)
         {
-            up.gameObject.SetActive(false);
-            down.gameObject.SetActive(false);
-            right.gameObject.SetActive(false);
-            left.gameObject.SetActive(false);
-       } else
-        {
+            up.gameObject.SetActive(true);
+            down.gameObject.SetActive(true);
+            right.gameObject.SetActive(true);
+            left.gameObject.SetActive(true);
+       
             CharacterController personaje = FindObjectOfType<CharacterController>();
 
             up.onClick.AddListener(personaje.w);
