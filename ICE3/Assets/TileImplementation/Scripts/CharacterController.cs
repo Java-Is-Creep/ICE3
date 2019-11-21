@@ -194,10 +194,11 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 MovimientoCaraRigth(incrementAux);
                 break;
             case 2:
-                //Debug.Log("Indice cara front: " + indexX + ", " + indexY);
+                Debug.Log("Indice cara front: " + indexX + ", " + indexY);
                 MovimientoCaraFront(incrementAux);
                 break;
             case 4:
+                Debug.Log("Indice cara left: " + indexX + ", " + indexY);
                 MovimientoCaraLeft(incrementAux);
                 break;
 
@@ -1161,7 +1162,6 @@ public class CharacterController : MonoBehaviourPunCallbacks
         //Dcha
         if (lastMovement == 3)
         {
-
             if (indexY < cubo.heigth)
             {
                 if (moving) //mas eficiente, mirar todas las casillas y ver hasta cualpuedes ir
@@ -1200,7 +1200,6 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     if (indexY < cubo.heigth - 1)
                     {
                         TileScript tile;
-
                         do
                         {
                             //Debug.Log("Iteracion");
@@ -1300,6 +1299,28 @@ public class CharacterController : MonoBehaviourPunCallbacks
                         target = this.transform.position;
                         //Debug.Log("Acaba Casilla Aba");
                         moving = false;
+                        if (hayCambioCara)
+                        {
+                            camaraScript.left();
+                            this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.up, 90);
+                            this.gameObject.transform.Translate(new Vector3((cubo.width - 1f), 0, 0), Space.World);
+                            cara = 4;
+                            //indexX = 1;
+                            indexY = ((int)(cubo.width - 1)) - indexX;
+                            indexX = 7;
+                            //Vennimos del 7,4
+                            //Hay que ir al 4,0
+
+                            //indexX = ((int)cubo.width) - 1 - indexX;       
+                            //indexX = 0;
+
+                            this.gameObject.transform.rotation = Quaternion.Euler(-90, 0, 0);
+                            model.transform.localRotation = Quaternion.Euler(0, 90, 0);
+                            //Debug.LogWarning("Cambio de cara");
+                            moving = false;
+                            lastMovement = 1;
+                            hayCambioCara = false;
+                        }
                     }
                 }
                 else
@@ -1315,6 +1336,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             if (indexY - 1 < 0)
                             {
                                 //Debug.Log("Es la ultima casilla");
+                                hayCambioCara = true;
                                 break;
                             }
                             tile = cubo.faces[cara].tiles[indexX, indexY - 1].GetComponent<TileScript>();
@@ -1813,7 +1835,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     */
                         //Debug.LogWarning("Cambio de cara");
                         moving = false;
-                        lastMovement = 1;
+                        lastMovement = 0;
                         hayCambioCara = false;
                     }
                 }
@@ -1841,24 +1863,26 @@ public class CharacterController : MonoBehaviourPunCallbacks
                         lastMovement = 0;
                         if (hayCambioCara)
                         {
-                            /*
+                            
                             camaraScript.front();
-                            this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.up, 90);
-                            this.gameObject.transform.Translate(new Vector3(0, 0, cubo.width - 1f), Space.World);
+                            this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.up, -90);
+                            this.gameObject.transform.Translate(new Vector3(0, 0,-( cubo.width - 1f)), Space.World);
                             cara = 2;
                             //indexX = 1;
-                            int aux = indexX;
-                            indexX = indexY;
-                            indexY = aux;
+                            indexX = ((int)(cubo.width-1)) - indexY;
+                            indexY = 0;
+                            //Vennimos del 7,4
+                            //Hay que ir al 4,0
+
                             //indexX = ((int)cubo.width) - 1 - indexX;       
                             //indexX = 0;
 
                             this.gameObject.transform.rotation = Quaternion.Euler(0, 0, -90);
-                            model.transform.localRotation = Quaternion.Euler(0, 0, 0);
+                            model.transform.localRotation = Quaternion.Euler(0, 180, 0);
                             //Debug.LogWarning("Cambio de cara");
                             moving = false;
-                            lastMovement = 1;
-                            hayCambioCara = false;*/
+                            lastMovement = 3;
+                            hayCambioCara = false;
                         }
                     }
                     else
@@ -1879,7 +1903,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             if (indexX + 1 >= cubo.heigth)
                             {
                                 //Debug.Log("Es la ultima casilla");
-                                //hayCambioCara = true;
+                                hayCambioCara = true;
                                 break;
                             }
                             tile = cubo.faces[cara].tiles[indexX + 1, indexY].GetComponent<TileScript>();
@@ -1933,6 +1957,25 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     }
                     else
                     {
+                        camaraScript.front();
+                        this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.up, -90);
+                        this.gameObject.transform.Translate(new Vector3(0, 0, -(cubo.width - 1f)), Space.World);
+                        cara = 2;
+                        //indexX = 1;
+                        indexX = ((int)(cubo.width - 1)) - indexY;
+                        indexY = 0;
+                        //Vennimos del 7,4
+                        //Hay que ir al 4,0
+
+                        //indexX = ((int)cubo.width) - 1 - indexX;       
+                        //indexX = 0;
+
+                        this.gameObject.transform.rotation = Quaternion.Euler(0, 0, -90);
+                        model.transform.localRotation = Quaternion.Euler(0, 180, 0);
+                        //Debug.LogWarning("Cambio de cara");
+                        moving = false;
+                        lastMovement = 3;
+                        hayCambioCara = false;
                         /*
                         //Debug.LogWarning("Cambio de cara");
                         camaraScript.front();
@@ -1946,10 +1989,10 @@ public class CharacterController : MonoBehaviourPunCallbacks
                         //indexX = ((int)cubo.width) - 1 - indexX;       
                         //indexX = 0;
 
-
+                    
                         //Debug.LogWarning("Cambio de cara");
                         moving = false;
-                        lastMovement = 1;
+                        lastMovement = 0;
                         hayCambioCara = false;*/
                     }
 
