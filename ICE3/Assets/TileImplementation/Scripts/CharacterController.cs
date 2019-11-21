@@ -201,7 +201,10 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 Debug.Log("Indice cara left: " + indexX + ", " + indexY);
                 MovimientoCaraLeft(incrementAux);
                 break;
-
+            case 1:
+                Debug.Log("Indice cara left: " + indexX + ", " + indexY);
+                MovimientoCaraBack(incrementAux);
+                break;
 
         }
 
@@ -2119,7 +2122,29 @@ public class CharacterController : MonoBehaviourPunCallbacks
         }
     }
 
+    public void MovimientoCaraBack(float incrementAux)
+    {
+        //izquierda
+        if (lastMovement == 1)
+        {
 
+        }
+        //abajo
+        else if (lastMovement == 2)
+        {
+
+        }
+        //derecha
+        else if (lastMovement == 3)
+        {
+
+        }
+        //arriba
+        else if (lastMovement == 4)
+        {
+
+        }
+    }
 
     #region botones para movil
     public void w()
