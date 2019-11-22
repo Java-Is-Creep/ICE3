@@ -106,18 +106,24 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
 
 
-        if (Input.GetKeyDown("a") || ab )
+        if (Input.GetKeyDown("a") || ab)
         {
             if (cara == 0 || cara == 2 )
-             {
-                 model.transform.localRotation = Quaternion.Euler(0, 0, 0);
-             } else if (cara == 3 )
-             {
-                 model.transform.localRotation = Quaternion.Euler(0,-90, 0);
-             } else if (cara == 4)
-             {
+            {
+                model.transform.localRotation = Quaternion.Euler(0, 0, 0);
+            }
+            else if (cara == 3)
+            {
+                model.transform.localRotation = Quaternion.Euler(0, -90, 0);
+            }
+            else if (cara == 4)
+            {
                 model.transform.localRotation = Quaternion.Euler(0, 90, 0);
-             }
+            }
+            else if (cara == 1)
+            {
+                model.transform.localRotation = Quaternion.Euler(0, 180, 0);
+            }
             if (lastMovement == 0)
             {
                 lastMovement = 1;
@@ -126,18 +132,21 @@ public class CharacterController : MonoBehaviourPunCallbacks
         }
         else if (Input.GetKeyDown("s") || sb)
         {
-            
-            
-            if (cara == 0 || cara == 2 )
+            if (cara == 0 || cara == 2)
             {
                 model.transform.localRotation = Quaternion.Euler(0, -90, 0);
             }
-            else if (cara == 3 )
+            else if (cara == 3)
             {
                 model.transform.localRotation = Quaternion.Euler(0, 180, 0);
-            } else if (cara == 4)
+            }
+            else if (cara == 4)
             {
                 model.transform.localRotation = Quaternion.Euler(0, 0, 0);
+            }
+            else if (cara == 1)
+            {
+                model.transform.localRotation = Quaternion.Euler(0, 90, 0);
             }
             if (lastMovement == 0)
             {
@@ -147,17 +156,22 @@ public class CharacterController : MonoBehaviourPunCallbacks
         }
         else if (Input.GetKeyDown("d") || db)
         {
-            
-            if (cara == 0 || cara == 2 )
+
+            if (cara == 0 || cara == 2)
             {
                 model.transform.localRotation = Quaternion.Euler(0, 180, 0);
             }
-            else if (cara == 3 )
+            else if (cara == 3)
             {
                 model.transform.localRotation = Quaternion.Euler(0, 90, 0);
-            } else if (cara == 4)
+            }
+            else if (cara == 4)
             {
                 model.transform.localRotation = Quaternion.Euler(0, -90, 0);
+            }
+            else if (cara == 1)
+            {
+                model.transform.localRotation = Quaternion.Euler(0, 0, 0);
             }
             if (lastMovement == 0)
             {
@@ -167,12 +181,12 @@ public class CharacterController : MonoBehaviourPunCallbacks
         }
         else if (Input.GetKeyDown("w") || wb)
         {
-            
-            if (cara == 0 || cara == 2 )
+
+            if (cara == 0 || cara == 2)
             {
                 model.transform.localRotation = Quaternion.Euler(0, 90, 0);
             }
-            else if (cara == 3 )
+            else if (cara == 3)
             {
                 model.transform.localRotation = Quaternion.Euler(0, 0, 0);
             }
@@ -180,12 +194,30 @@ public class CharacterController : MonoBehaviourPunCallbacks
             {
                 model.transform.localRotation = Quaternion.Euler(0, 180, 0);
             }
+            else if (cara == 1)
+            {
+                model.transform.localRotation = Quaternion.Euler(0, -90, 0);
+            }
             if (lastMovement == 0)
             {
                 lastMovement = 4;
                 wb = false;
             }
         }
+
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+
+            if (timeBetweenShots < timeWaitingShots)
+            {
+                Debug.Log("Di`parando");
+                this.photonView.RPC("Shot", RpcTarget.All, this.photonView.GetInstanceID());
+                timeWaitingShots = 0;
+            }
+        }
+
+
 
         switch (cara)
         {
@@ -198,15 +230,15 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 MovimientoCaraRigth(incrementAux);
                 break;
             case 2:
-                Debug.Log("Indice cara front: " + indexX + ", " + indexY);
+                //Debug.Log("Indice cara front: " + indexX + ", " + indexY);
                 MovimientoCaraFront(incrementAux);
                 break;
             case 4:
-                Debug.Log("Indice cara left: " + indexX + ", " + indexY);
+                //Debug.Log("Indice cara left: " + indexX + ", " + indexY);
                 MovimientoCaraLeft(incrementAux);
                 break;
             case 1:
-                Debug.Log("Indice cara left: " + indexX + ", " + indexY);
+                Debug.Log("Indice cara back: " + indexX + ", " + indexY);
                 MovimientoCaraBack(incrementAux);
                 break;
 
@@ -261,7 +293,25 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
                         if (hayCambioCara)
                         {
+                            camaraScript.back();
+                            this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.forward, 90);
+                            this.gameObject.transform.Translate(new Vector3(-0.5f, cubo.width - 1.5f, 0), Space.World);
+                            //this.gameObject.transform.Translate(new Vector3(-0.5f, 0, 0), Space.World);
+                            cara = 1;
+                            moving = false;
+                            //del 0,1 al 1,7
+                            lastMovement = 2;
+                            //indexX = indexY;
+                            indexX = 7;
+                            hayCambioCara = false;
 
+                            for (int i = 0; i < cubo.width; i++)
+                            {
+                                for (int j = 0; j < cubo.width; j++)
+                                {
+                                    Debug.Log(i + " " + j + " " + cubo.faces[cara].tiles[i, j].GetComponent<TileScript>().myObjectType);
+                                }
+                            }
                         }
                     }
                 }
@@ -279,7 +329,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             {
                                 //Debug.Log("Es la ultima casilla");
 
-                                //hayCambioCara = true;
+                                hayCambioCara = true;
 
                                 break;
                             }
@@ -336,8 +386,19 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     else
                     {
                         //Debug.LogWarning("Cambio de cara");
+                        //moving = false;
+                        //lastMovement = 0;
+                        camaraScript.back();
+                        this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.forward, 90);
+                        this.gameObject.transform.Translate(new Vector3(-0.5f, cubo.width - 1.5f, 0), Space.World);
+                        //this.gameObject.transform.Translate(new Vector3(-0.5f, 0, 0), Space.World);
+                        cara = 1;
                         moving = false;
-                        lastMovement = 0;
+                        //del 0,1 al 1,7
+                        lastMovement = 2;
+                        //indexX = indexY;
+                        indexX = 7;
+                        hayCambioCara = false;
                     }
 
 
@@ -371,7 +432,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                         {
                             camaraScript.left();
                             this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.right, -90);
-                            this.gameObject.transform.Translate(new Vector3(0, cubo.width - 1.5f,-0.5f), Space.World);
+                            this.gameObject.transform.Translate(new Vector3(0, cubo.width - 1.5f, -0.5f), Space.World);
                             //this.gameObject.transform.Translate(new Vector3(-0.5f, 0, 0), Space.World);
                             cara = 4;
                             moving = false;
@@ -1647,7 +1708,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
     public void MovimientoCaraLeft(float incrementAux)
     {
-        
+
         //izqda
         if (lastMovement == 1)
         {
@@ -1894,13 +1955,13 @@ public class CharacterController : MonoBehaviourPunCallbacks
                         lastMovement = 0;
                         if (hayCambioCara)
                         {
-                            
+
                             camaraScript.front();
                             this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.up, -90);
-                            this.gameObject.transform.Translate(new Vector3(0, 0,-( cubo.width - 1f)), Space.World);
+                            this.gameObject.transform.Translate(new Vector3(0, 0, -(cubo.width - 1f)), Space.World);
                             cara = 2;
                             //indexX = 1;
-                            indexX = ((int)(cubo.width-1)) - indexY;
+                            indexX = ((int)(cubo.width - 1)) - indexY;
                             indexY = 0;
                             //Vennimos del 7,4
                             //Hay que ir al 4,0
@@ -2155,22 +2216,458 @@ public class CharacterController : MonoBehaviourPunCallbacks
         //izquierda
         if (lastMovement == 1)
         {
+            if (indexY < cubo.heigth)
+            {
+                if (moving) //mas eficiente, mirar todas las casillas y ver hasta cualpuedes ir
+                {
+                    this.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + incrementAux);
+                    if (Mathf.Abs(this.transform.position.z - target.z) < 0.5f)
+                    {
+                        this.transform.position = target;
+                        target = this.transform.position;
+                        //Debug.Log("Acaba Casilla Aba");
+                        moving = false;
+                    }
+                }
+                else
+                {
+                    int iteracion = 0;
+                    if (indexY < cubo.heigth - 1)
+                    {
+                        TileScript tile;
 
+                        do
+                        {
+                            //Debug.Log("Iteracion");
+                            if (indexY + 1 >= cubo.width)
+                            {
+                                //Debug.Log("Es la ultima casilla");
+                                break;
+                            }
+                            tile = cubo.faces[cara].tiles[indexX, indexY + 1].GetComponent<TileScript>();
+                            Debug.Log("Leyendo casilla: " + (indexX) + ", " + (indexY + 1));
+                            if (tile.tileType == TileScript.type.ICE)
+                            {
+                                if (tile.myObjectType == TileScript.tileObject.NULL)
+                                {
+                                    // Debug.Log("Siguien casilla sin obstaculos");
+                                    //target = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y,this.transform.position.z);
+                                    //target = new Vector3(this.transform.position.x + 1, target.y, target.z);
+                                    moving = true;
+                                    indexY++;
+                                    iteracion++;
+                                }
+                                else
+                                {
+                                    //Debug.Log("Hay Roca");
+                                    if (iteracion <= 0)
+                                    {
+                                        //Debug.Log("iteracion menor o igual que 0");
+                                        moving = false;
+                                        lastMovement = 0;
+                                    }
+                                    else
+                                    {
+                                        moving = true;
+                                    }
+                                    //
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                // Debug.Log("suelo Piedra");
+                                if (iteracion <= 0)
+                                {
+                                    moving = false;
+                                }
+                                else
+                                {
+                                    moving = true;
+                                }
+                                lastMovement = 0;
+                                break;
+                            }
+
+                        } while (true);
+                        target = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z + iteracion);
+
+                    }
+                    else
+                    {
+
+                        Debug.LogWarning("Cambio de cara");
+                        moving = false;
+                        lastMovement = 0;
+                    }
+
+                }
+
+            }
         }
+
         //abajo
         else if (lastMovement == 2)
         {
 
+            if (indexX >= 0)
+            {
+                if (moving) //mas eficiente, mirar todas las casillas y ver hasta cualpuedes ir
+                {
+                    this.transform.position = new Vector3(transform.position.x, transform.position.y - incrementAux, transform.position.z);
+                    if (Mathf.Abs(this.transform.position.y - target.y) < 0.5f)
+                    {
+                        this.transform.position = target;
+                        target = this.transform.position;
+                        //Debug.Log("Acaba Casilla Aba");
+                        moving = false;
+                        if (hayCambioCara)
+                        {
+                            /*
+                            camaraScript.left();
+                            this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.up, 90);
+                            this.gameObject.transform.Translate(new Vector3((cubo.width - 1f), 0, 0), Space.World);
+                            cara = 4;
+                            //indexX = 1;
+                            indexY = ((int)(cubo.width - 1)) - indexX;
+                            indexX = 7;
+                            //Vennimos del 7,4
+                            //Hay que ir al 4,0
+
+                            //indexX = ((int)cubo.width) - 1 - indexX;       
+                            //indexX = 0;
+
+                            this.gameObject.transform.rotation = Quaternion.Euler(-90, 0, 0);
+                            model.transform.localRotation = Quaternion.Euler(0, 90, 0);
+                            //Debug.LogWarning("Cambio de cara");
+                            moving = false;
+                            lastMovement = 1;
+                            hayCambioCara = false;*/
+                        }
+                    }
+                }
+                else
+                {
+                    int iteracion = 0;
+                    if (indexX > 0)
+                    {
+                        TileScript tile;
+
+                        do
+                        {
+                            //Debug.Log("Iteracion");
+                            if (indexX - 1 < 0)
+                            {
+                                //Debug.Log("Es la ultima casilla");
+                                //hayCambioCara = true;
+                                break;
+                            }
+                            tile = cubo.faces[cara].tiles[indexX - 1, indexY].GetComponent<TileScript>();
+                            Debug.Log("Leyendo casilla: " + (indexX - 1) + ", " + (indexY));
+                            if (tile.tileType == TileScript.type.ICE)
+                            {
+                                if (tile.myObjectType == TileScript.tileObject.NULL)
+                                {
+                                    //Debug.Log("Siguien casilla sin obstaculos");
+                                    //target = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y,this.transform.position.z);
+                                    //target = new Vector3(this.transform.position.x + 1, target.y, target.z);
+                                    moving = true;
+                                    indexX--;
+                                    iteracion++;
+                                }
+                                else
+                                {
+                                    //Debug.Log("Hay Roca");
+                                    if (iteracion <= 0)
+                                    {
+                                        //Debug.Log("iteracion menor o igual que 0");
+                                        moving = false;
+                                        lastMovement = 0;
+                                    }
+                                    else
+                                    {
+                                        moving = true;
+                                    }
+                                    //
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                //Debug.Log("suelo Piedra");
+                                if (iteracion <= 0)
+                                {
+                                    moving = false;
+                                }
+                                else
+                                {
+                                    moving = true;
+                                }
+                                lastMovement = 0;
+                                break;
+                            }
+
+                        } while (true);
+                        target = new Vector3(this.transform.position.x, this.transform.position.y - iteracion, this.transform.position.z);
+
+                    }
+                    else
+                    {
+
+                        Debug.LogWarning("Cambio de cara");
+                        moving = false;
+                        lastMovement = 0;
+                    }
+
+                }
+
+            }
         }
+
         //derecha
         else if (lastMovement == 3)
         {
+            //Debug.Log("SALE");
+            if (indexY >= 0)
+            {
+                if (moving) //mas eficiente, mirar todas las casillas y ver hasta cualpuedes ir
+                {
+                    this.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - incrementAux);
+                    if (Mathf.Abs(this.transform.position.z - target.z) < 0.5f)
+                    {
+                        this.transform.position = target;
+                        target = this.transform.position;
+                        //Debug.Log("Acaba Casilla Aba");
+                        moving = false;
+                        if (hayCambioCara)
+                        {
+                            /*camaraScript.left();
+                            this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.up, 90);
+                            this.gameObject.transform.Translate(new Vector3((cubo.width - 1f), 0, 0), Space.World);
+                            cara = 4;
+                            //indexX = 1;
+                            indexY = ((int)(cubo.width - 1)) - indexX;
+                            indexX = 7;
+                            //Vennimos del 7,4
+                            //Hay que ir al 4,0
 
+                            //indexX = ((int)cubo.width) - 1 - indexX;       
+                            //indexX = 0;
+
+                            this.gameObject.transform.rotation = Quaternion.Euler(-90, 0, 0);
+                            model.transform.localRotation = Quaternion.Euler(0, 90, 0);
+                            //Debug.LogWarning("Cambio de cara");
+                            moving = false;
+                            lastMovement = 1;
+                            hayCambioCara = false;*/
+                        }
+                    }
+                }
+                else
+                {
+                    int iteracion = 0;
+                    if (indexY > 0)
+                    {
+                        TileScript tile;
+
+                        do
+                        {
+                            //Debug.Log("Iteracion");
+                            if (indexY - 1 < 0)
+                            {
+                                //Debug.Log("Es la ultima casilla");
+                                //hayCambioCara = true;
+                                break;
+                            }
+                            tile = cubo.faces[cara].tiles[indexX, indexY - 1].GetComponent<TileScript>();
+                            Debug.Log("Leyendo casilla: " + (indexX) + ", " + (indexY - 1));
+                            if (tile.tileType == TileScript.type.ICE)
+                            {
+                                if (tile.myObjectType == TileScript.tileObject.NULL)
+                                {
+                                    //Debug.Log("Siguien casilla sin obstaculos");
+                                    //target = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y,this.transform.position.z);
+                                    //target = new Vector3(this.transform.position.x + 1, target.y, target.z);
+                                    moving = true;
+                                    indexY--;
+                                    iteracion++;
+                                }
+                                else
+                                {
+                                    //Debug.Log("Hay Roca");
+                                    if (iteracion <= 0)
+                                    {
+                                        //Debug.Log("iteracion menor o igual que 0");
+                                        moving = false;
+                                        lastMovement = 0;
+                                    }
+                                    else
+                                    {
+                                        moving = true;
+                                    }
+                                    //
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                //Debug.Log("suelo Piedra");
+                                if (iteracion <= 0)
+                                {
+                                    moving = false;
+                                }
+                                else
+                                {
+                                    moving = true;
+                                }
+                                lastMovement = 0;
+                                break;
+                            }
+
+                        } while (true);
+                        target = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z - iteracion);
+
+                    }
+                    else
+                    {
+
+                        Debug.LogWarning("Cambio de cara");
+                        moving = false;
+                        lastMovement = 0;
+                    }
+
+                }
+
+            }
         }
+
         //arriba
         else if (lastMovement == 4)
         {
+            if (indexX < cubo.heigth)
+            {
+                if (moving) //mas eficiente, mirar todas las casillas y ver hasta cualpuedes ir
+                {
+                    this.transform.position = new Vector3(transform.position.x, transform.position.y + incrementAux, transform.position.z);
+                    if (Mathf.Abs(this.transform.position.y - target.y) < 0.5f)
+                    {
+                        this.transform.position = target;
+                        target = this.transform.position;
+                        //Debug.Log("Acaba Casilla Aba");
+                        moving = false;
+                        if (hayCambioCara)
+                        {
+                            /*
+                            camaraScript.right();
+                            this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.up, -90);
+                            this.gameObject.transform.Translate(new Vector3(cubo.width - 1f, 0, 0), Space.World);
+                            cara = 3;
+                            //indexX = 1;
+                            int aux = indexX;
+                            indexX = indexY;
+                            indexY = aux;
+                            //indexX = ((int)cubo.width) - 1 - indexX;       
+                            //indexX = 0;
+                            this.gameObject.transform.rotation = Quaternion.Euler(90, 0, 0);
+                            model.transform.localRotation = Quaternion.Euler(0, 90, 0);
+                            //Debug.LogWarning("Cambio de cara");
+                            moving = false;
+                            lastMovement = 3;
+                            hayCambioCara = false;*/
+                        }
+                    }
+                }
+                else
+                {
+                    int iteracion = 0;
+                    if (indexX < cubo.heigth - 1)
+                    {
+                        TileScript tile;
+                        do
+                        {
+                            //Debug.Log("Iteracion");
+                            if (indexX + 1 >= cubo.width)
+                            {
+                                //Debug.Log("Es la ultima casilla");
+                                //hayCambioCara = true;
+                                break;
+                            }
+                            tile = cubo.faces[cara].tiles[indexX + 1, indexY].GetComponent<TileScript>();
+                            Debug.Log("Leyendo casilla: " + (indexX + 1) + ", " + (indexY));
+                            if (tile.tileType == TileScript.type.ICE)
+                            {
+                                if (tile.myObjectType == TileScript.tileObject.NULL)
+                                {
+                                    //Debug.Log("Siguien casilla sin obstaculos");
+                                    //target = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y,this.transform.position.z);
+                                    //target = new Vector3(this.transform.position.x + 1, target.y, target.z);
+                                    moving = true;
+                                    indexX++;
+                                    iteracion++;
+                                }
+                                else
+                                {
+                                    //Debug.Log("Hay Roca");
+                                    if (iteracion <= 0)
+                                    {
+                                        //Debug.Log("iteracion menor o igual que 0");
+                                        moving = false;
+                                        lastMovement = 0;
+                                    }
+                                    else
+                                    {
+                                        moving = true;
+                                    }
+                                    //
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                //Debug.Log("suelo Piedra");
+                                if (iteracion <= 0)
+                                {
+                                    moving = false;
+                                }
+                                else
+                                {
+                                    moving = true;
+                                }
+                                lastMovement = 0;
+                                break;
+                            }
 
+                        } while (true);
+                        target = new Vector3(this.transform.position.x, this.transform.position.y + iteracion, this.transform.position.z);
+
+                    }
+                    else
+                    {
+                        /*
+                        camaraScript.right();
+                        this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.up, -90);
+                        this.gameObject.transform.Translate(new Vector3(cubo.width - 1f, 0, 0), Space.World);
+                        cara = 3;
+                        //indexX = 1;
+                        int aux = indexX;
+                        indexX = indexY;
+                        indexY = aux;
+                        //indexX = ((int)cubo.width) - 1 - indexX;       
+                        //indexX = 0;
+
+
+                        //Debug.LogWarning("Cambio de cara");
+                        moving = false;
+                        lastMovement = 3;
+                        hayCambioCara = false;
+                        //Debug.LogWarning("Cambio de cara");*/
+                        lastMovement = 0;
+                        moving = false;
+                    }
+
+                }
+
+            }
         }
     }
 
