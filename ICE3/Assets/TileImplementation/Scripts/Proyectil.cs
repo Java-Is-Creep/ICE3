@@ -8,6 +8,7 @@ public class Proyectil : MonoBehaviour
     private Vector3 direccion;
     public float incrementoPosicion;
     public GameObject dueño;
+    public float height;
     
 
     // Start is called before the first frame update
@@ -20,12 +21,17 @@ public class Proyectil : MonoBehaviour
     void Update()
     {
         this.transform.position += direccion *incrementoPosicion;
+        if(Vector3.Distance(this.transform.position, dueño.transform.position) > 2 * height)
+        {
+            Destroy(this.gameObject);
+        }
     }
 
-    public void initDireccion(Vector3 direccion, GameObject dueño)
+    public void initDireccion(Vector3 direccion, GameObject dueño, float height)
     {
         this.direccion = direccion.normalized;
         this.dueño = dueño;
+        this.height = height;
     }
 
     private void OnTriggerEnter(Collider other)

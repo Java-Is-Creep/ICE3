@@ -32,27 +32,29 @@ public class TileScript : MonoBehaviour
     public void reloadPos()
     {
         CubeFace cf = this.transform.parent.GetComponent<CubeFace>();
-        if (cf.faceNum == 0)
+        switch (cf.faceNum)
         {
-            AbsolutePos = this.transform.TransformPoint(this.transform.position) / 2;
-        }
-        else if (cf.faceNum == 3)
-        {
-            /*
-            Transform auxCara = this.transform.parent.transform;
-            Transform auxCubo = this.transform.parent.transform.parent.transform;
-            Quaternion a = auxCara.rotation;
-            Quaternion b = auxCubo.rotation;
-            auxCara.rotation = Quaternion.identity;
-            auxCubo.rotation = Quaternion.identity;
-            AbsolutePos = auxCara.position - auxCubo.position;
-            auxCara.rotation = a;
-            auxCubo.rotation = b;*/
-            AbsolutePos = this.transform.TransformPoint(this.transform.position) / 2;
-
-        } else
-        {
-            AbsolutePos = this.transform.position - this.transform.parent.transform.position - this.transform.parent.transform.parent.transform.position;
+            case (0):
+                AbsolutePos = cf.transform.position + new Vector3(indexX, 0, indexY);
+                break;
+            case (1):
+                AbsolutePos = cf.transform.position + new Vector3(0,indexX, indexY);
+                break;
+            case (2):
+                AbsolutePos = cf.transform.position + new Vector3(0, -indexX, indexY);
+                break;
+            case (3):
+                AbsolutePos = cf.transform.position + new Vector3(indexX, -indexY,0 );
+                break;
+            case (4):
+                AbsolutePos = cf.transform.position + new Vector3(indexX, indexY, 0);
+                break;
+            case (5):
+                AbsolutePos = cf.transform.position + new Vector3(indexX, 0, -indexY);
+                break;
+            default:
+                AbsolutePos = cf.transform.TransformPoint(this.transform.TransformPoint(this.transform.position) / 2);
+                break;
         }
     }
 

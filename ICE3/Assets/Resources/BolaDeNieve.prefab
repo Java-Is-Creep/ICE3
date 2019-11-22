@@ -105,8 +105,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59886eff3d3dafe4ea5532f067e5e851, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  incrementoPosicion: 0.15
-  "due\xF1oID": 0
+  incrementoPosicion: 0.3
+  "due\xF1o": {fileID: 0}
 --- !u!54 &7289082124790127279
 Rigidbody:
   m_ObjectHideFlags: 0

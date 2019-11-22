@@ -93,6 +93,17 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
         float incrementAux = increment * Time.deltaTime;
 
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+
+            if (timeBetweenShots < timeWaitingShots)
+            {
+                Debug.Log("Disparando");
+                this.photonView.RPC("Shot", RpcTarget.All);
+                timeWaitingShots = 0;
+            }
+        }
+
 
 
         if (Input.GetKeyDown("a") || ab )
@@ -176,20 +187,6 @@ public class CharacterController : MonoBehaviourPunCallbacks
             }
         }
 
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            
-            if(timeBetweenShots < timeWaitingShots)
-            {
-                Debug.Log("Di`parando");
-                this.photonView.RPC("Shot", RpcTarget.All,this.photonView.GetInstanceID());
-                timeWaitingShots = 0;
-            }
-        }
-
-
-
         switch (cara)
         {
             case 0:
@@ -218,10 +215,11 @@ public class CharacterController : MonoBehaviourPunCallbacks
     }
 
 
-    #region IPunObservable implementation
+    #region Funciones Remotas
 
+    ///
     [PunRPC]
-    void Shot(int targetID)
+    void Shot()
     {
         Debug.Log("Han disparado");
         /* if(targetID == photonView.GetInstanceID())
@@ -229,8 +227,10 @@ public class CharacterController : MonoBehaviourPunCallbacks
              GameObject aux = Instantiate(bolaDeNieve, this.transform.position + (Vector3.forward * 0.2f), Quaternion.identity);
              aux.GetComponent<Proyectil>().initDireccion(this.gameObject.transform.TransformDirection(Vector3.forward), this.gameObject);
          }*/
-        GameObject aux = Instantiate(bolaDeNieve, this.transform.position + (Vector3.forward * 0.2f), Quaternion.identity);
-        aux.GetComponent<Proyectil>().initDireccion(this.gameObject.transform.TransformDirection(Vector3.forward), this.gameObject);
+        Transform childTransform = this.gameObject.transform.GetChild(0);
+        Debug.Log(childTransform);
+        GameObject aux = Instantiate(bolaDeNieve, this.transform.position + (childTransform.TransformDirection(Vector3.back * 0.2f)), Quaternion.identity);
+        aux.GetComponent<Proyectil>().initDireccion(childTransform.TransformDirection(Vector3.back), this.gameObject,cubo.heigth);
 
     }
 
