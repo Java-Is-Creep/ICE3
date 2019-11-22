@@ -283,7 +283,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 if (moving) //mas eficiente, mirar todas las casillas y ver hasta cualpuedes ir
                 {
                     this.transform.position = new Vector3(transform.position.x - incrementAux, transform.position.y, transform.position.z);
-                    if (Mathf.Abs(this.transform.position.x - target.x) < 0.5f)
+                    if (Mathf.Abs(this.transform.position.x - target.x) < 0.1f)
                     {
 
                         this.transform.position = target;
@@ -420,7 +420,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 if (moving) //mas eficiente, mirar todas las casillas y ver hasta cualpuedes ir
                 {
                     this.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - incrementAux);
-                    if (Mathf.Abs(this.transform.position.z - target.z) < 0.5f)
+                    if (Mathf.Abs(this.transform.position.z - target.z) < 0.1f)
                     {
 
                         this.transform.position = target;
@@ -549,7 +549,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 if (moving) //mas eficiente, mirar todas las casillas y ver hasta cualpuedes ir
                 {
                     this.transform.position = new Vector3(transform.position.x + incrementAux, transform.position.y, transform.position.z);
-                    if (Mathf.Abs(this.transform.position.x - target.x) < 0.5f)
+                    if (Mathf.Abs(this.transform.position.x - target.x) < 0.1f)
                     {
 
                         this.transform.position = target;
@@ -665,7 +665,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 if (moving) //mas eficiente, mirar todas las casillas y ver hasta cualpuedes ir
                 {
                     this.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + incrementAux);
-                    if (Mathf.Abs(this.transform.position.z - target.z) < 0.5f)
+                    if (Mathf.Abs(this.transform.position.z - target.z) < 0.1f)
                     {
 
                         this.transform.position = target;
@@ -795,7 +795,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     //Debug.Log("Pos: " + this.transform.position);
                     //Debug.Log("Pos target: " + target);
                     this.transform.position = new Vector3(transform.position.x + incrementAux, transform.position.y, transform.position.z);
-                    if (Mathf.Abs(this.transform.position.x - target.x) <= 0.5f)
+                    if (Mathf.Abs(this.transform.position.x - target.x) <= 0.1f)
                     {
                         this.transform.position = target;
                         target = this.transform.position;
@@ -933,13 +933,31 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     //Debug.Log("Pos: " + this.transform.position);
                     //Debug.Log("Pos target: " + target);
                     this.transform.position = new Vector3(transform.position.x - incrementAux, transform.position.y, transform.position.z);
-                    if (Mathf.Abs(this.transform.position.x - target.x) <= 0.5f)
+                    if (Mathf.Abs(this.transform.position.x - target.x) <= 0.1f)
                     {
                         this.transform.position = target;
                         target = this.transform.position;
                         // Debug.Log("Acaba Casilla Izq");
                         moving = false;
                         lastMovement = 0;
+                        if (hayCambioCara)
+                        {
+                            camaraScript.back();
+                            this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.up, -90);
+                            this.gameObject.transform.Translate(new Vector3(0, 0, (cubo.width - 1f)), Space.World);
+                            cara = 1;
+                            //indexX = 1;
+                            indexX = ((int)(cubo.width - 1)) - indexY;
+                            indexY = 7;
+                            
+
+                            this.gameObject.transform.rotation = Quaternion.Euler(0, 0, 90);
+                            model.transform.localRotation = Quaternion.Euler(0, 0, 0);
+                            //Debug.LogWarning("Cambio de cara");
+                            moving = false;
+                            lastMovement = 3;
+                            hayCambioCara = false;
+                        }
                     }
                     else
                     {
@@ -959,6 +977,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             if (indexX - 1 < 0)
                             {
                                 //Debug.Log("Es la ultima casilla");
+                                hayCambioCara = true;
                                 break;
                             }
                             tile = cubo.faces[cara].tiles[indexX - 1, indexY].GetComponent<TileScript>();
@@ -1036,7 +1055,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     //Debug.Log("Pos: " + this.transform.position);
                     //Debug.Log("Pos target: " + target);
                     this.transform.position = new Vector3(transform.position.x, transform.position.y - incrementAux, transform.position.z);
-                    if (Mathf.Abs(this.transform.position.y - target.y) < 0.5f)
+                    if (Mathf.Abs(this.transform.position.y - target.y) < 0.1f)
                     {
                         this.transform.position = target;
                         //Debug.Log("Acaba Casilla Izq");
@@ -1132,7 +1151,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     //Debug.Log("Pos: " + this.transform.position);
                     //Debug.Log("Pos target: " + target);
                     this.transform.position = new Vector3(transform.position.x, transform.position.y + incrementAux, transform.position.z);
-                    if (Mathf.Abs(this.transform.position.y - target.y) < 0.5f)
+                    if (Mathf.Abs(this.transform.position.y - target.y) < 0.1f)
                     {
                         this.transform.position = target;
                         //Debug.Log("Acaba Casilla Izq");
@@ -1259,7 +1278,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 if (moving) //mas eficiente, mirar todas las casillas y ver hasta cualpuedes ir
                 {
                     this.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + incrementAux);
-                    if (Mathf.Abs(this.transform.position.z - target.z) < 0.5f)
+                    if (Mathf.Abs(this.transform.position.z - target.z) < 0.1f)
                     {
                         this.transform.position = target;
                         target = this.transform.position;
@@ -1385,7 +1404,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 if (moving) //mas eficiente, mirar todas las casillas y ver hasta cualpuedes ir
                 {
                     this.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - incrementAux);
-                    if (Mathf.Abs(this.transform.position.z - target.z) < 0.5f)
+                    if (Mathf.Abs(this.transform.position.z - target.z) < 0.1f)
                     {
                         this.transform.position = target;
                         target = this.transform.position;
@@ -1502,7 +1521,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 if (moving) //mas eficiente, mirar todas las casillas y ver hasta cualpuedes ir
                 {
                     this.transform.position = new Vector3(transform.position.x, transform.position.y - incrementAux, transform.position.z);
-                    if (Mathf.Abs(this.transform.position.y - target.y) < 0.5f)
+                    if (Mathf.Abs(this.transform.position.y - target.y) < 0.1f)
                     {
                         this.transform.position = target;
                         target = this.transform.position;
@@ -1596,7 +1615,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 if (moving) //mas eficiente, mirar todas las casillas y ver hasta cualpuedes ir
                 {
                     this.transform.position = new Vector3(transform.position.x, transform.position.y + incrementAux, transform.position.z);
-                    if (Mathf.Abs(this.transform.position.y - target.y) < 0.5f)
+                    if (Mathf.Abs(this.transform.position.y - target.y) < 0.1f)
                     {
                         this.transform.position = target;
                         target = this.transform.position;
@@ -1720,13 +1739,35 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     //Debug.Log("Pos: " + this.transform.position);
                     //Debug.Log("Pos target: " + target);
                     this.transform.position = new Vector3(transform.position.x - incrementAux, transform.position.y, transform.position.z);
-                    if (Mathf.Abs(this.transform.position.x - target.x) <= 0.5f)
+                    if (Mathf.Abs(this.transform.position.x - target.x) <= 0.1f)
                     {
                         this.transform.position = target;
                         target = this.transform.position;
                         // Debug.Log("Acaba Casilla Izq");
                         moving = false;
                         lastMovement = 0;
+                        if (hayCambioCara)
+                        {
+                            camaraScript.back();
+                            this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.up, 90);
+                            this.gameObject.transform.Translate(new Vector3(0, 0, -(cubo.width - 1f)), Space.World);
+                            cara = 1;
+                            //indexX = 1;
+                            indexX = /*((int)(cubo.width - 1)) -*/ indexY;
+                            indexY = 0;
+                            //Vennimos del 7,4
+                            //Hay que ir al 4,0
+
+                            //indexX = ((int)cubo.width) - 1 - indexX;       
+                            //indexX = 0;
+
+                            this.gameObject.transform.rotation = Quaternion.Euler(0, 0, 90);
+                            model.transform.localRotation = Quaternion.Euler(0, 180, 0);
+                            //Debug.LogWarning("Cambio de cara");
+                            moving = false;
+                            lastMovement = 1;
+                            hayCambioCara = false;
+                        }
                     }
                     else
                     {
@@ -1746,6 +1787,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             if (indexX - 1 < 0)
                             {
                                 //Debug.Log("Es la ultima casilla");
+                                hayCambioCara = true;
                                 break;
                             }
                             tile = cubo.faces[cara].tiles[indexX - 1, indexY].GetComponent<TileScript>();
@@ -1800,8 +1842,25 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     else
                     {
                         //Debug.LogWarning("Cambio de cara");
+                        camaraScript.back();
+                        this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.up, 90);
+                        this.gameObject.transform.Translate(new Vector3(0, 0, -(cubo.width - 1f)), Space.World);
+                        cara = 1;
+                        //indexX = 1;
+                        indexX = /*((int)(cubo.width - 1)) -*/ indexY;
+                        indexY = 0;
+                        //Vennimos del 7,4
+                        //Hay que ir al 4,0
+
+                        //indexX = ((int)cubo.width) - 1 - indexX;       
+                        //indexX = 0;
+
+                        this.gameObject.transform.rotation = Quaternion.Euler(0, 0, 90);
+                        model.transform.localRotation = Quaternion.Euler(0, 180, 0);
+                        //Debug.LogWarning("Cambio de cara");
                         moving = false;
-                        lastMovement = 0;
+                        lastMovement = 1;
+                        hayCambioCara = false;
                     }
                     //Debug.Log("Hola");
 
@@ -1820,7 +1879,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     //Debug.Log("Pos: " + this.transform.position);
                     //Debug.Log("Pos target: " + target);
                     this.transform.position = new Vector3(transform.position.x, transform.position.y - incrementAux, transform.position.z);
-                    if (Mathf.Abs(this.transform.position.y - target.y) < 0.5f)
+                    if (Mathf.Abs(this.transform.position.y - target.y) < 0.1f)
                     {
                         this.transform.position = target;
                         //Debug.Log("Acaba Casilla Izq");
@@ -1946,7 +2005,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     //Debug.Log("Pos: " + this.transform.position);
                     //Debug.Log("Pos target: " + target);
                     this.transform.position = new Vector3(transform.position.x + incrementAux, transform.position.y, transform.position.z);
-                    if (Mathf.Abs(this.transform.position.x - target.x) <= 0.5f)
+                    if (Mathf.Abs(this.transform.position.x - target.x) <= 0.1f)
                     {
                         this.transform.position = target;
                         target = this.transform.position;
@@ -2104,7 +2163,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     //Debug.Log("Pos: " + this.transform.position);
                     //Debug.Log("Pos target: " + target);
                     this.transform.position = new Vector3(transform.position.x, transform.position.y + incrementAux, transform.position.z);
-                    if (Mathf.Abs(this.transform.position.y - target.y) < 0.5f)
+                    if (Mathf.Abs(this.transform.position.y - target.y) < 0.1f)
                     {
                         this.transform.position = target;
                         //Debug.Log("Acaba Casilla Izq");
@@ -2221,12 +2280,34 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 if (moving) //mas eficiente, mirar todas las casillas y ver hasta cualpuedes ir
                 {
                     this.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + incrementAux);
-                    if (Mathf.Abs(this.transform.position.z - target.z) < 0.5f)
+                    if (Mathf.Abs(this.transform.position.z - target.z) < 0.1f)
                     {
                         this.transform.position = target;
                         target = this.transform.position;
                         //Debug.Log("Acaba Casilla Aba");
                         moving = false;
+                        if (hayCambioCara)
+                        {
+                            camaraScript.right();
+                            this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.up, 90);
+                            this.gameObject.transform.Translate(new Vector3(-(cubo.width - 1f), 0, 0), Space.World);
+                            cara = 3;
+                            //indexX = 1;
+                            indexY = ((int)(cubo.width - 1)) - indexX;
+                            indexX = 0;
+                            //Vennimos del 7,4
+                            //Hay que ir al 4,0
+
+                            //indexX = ((int)cubo.width) - 1 - indexX;       
+                            //indexX = 0;
+
+                            this.gameObject.transform.rotation = Quaternion.Euler(90, 0, 0);
+                            model.transform.localRotation = Quaternion.Euler(0, -90, 0);
+                            //Debug.LogWarning("Cambio de cara");
+                            moving = false;
+                            lastMovement = 1;
+                            hayCambioCara = false;
+                        }
                     }
                 }
                 else
@@ -2242,6 +2323,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             if (indexY + 1 >= cubo.width)
                             {
                                 //Debug.Log("Es la ultima casilla");
+                                hayCambioCara = true;
                                 break;
                             }
                             tile = cubo.faces[cara].tiles[indexX, indexY + 1].GetComponent<TileScript>();
@@ -2295,10 +2377,25 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     }
                     else
                     {
+                        camaraScript.right();
+                        this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.up, 90);
+                        this.gameObject.transform.Translate(new Vector3(-(cubo.width - 1f), 0, 0), Space.World);
+                        cara = 3;
+                        //indexX = 1;
+                        indexY = ((int)(cubo.width - 1)) - indexX;
+                        indexX = 0;
+                        //Vennimos del 7,4
+                        //Hay que ir al 4,0
 
-                        Debug.LogWarning("Cambio de cara");
+                        //indexX = ((int)cubo.width) - 1 - indexX;       
+                        //indexX = 0;
+
+                        this.gameObject.transform.rotation = Quaternion.Euler(90, 0, 0);
+                        model.transform.localRotation = Quaternion.Euler(0, -90, 0);
+                        //Debug.LogWarning("Cambio de cara");
                         moving = false;
-                        lastMovement = 0;
+                        lastMovement = 1;
+                        hayCambioCara = false;
                     }
 
                 }
@@ -2315,7 +2412,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 if (moving) //mas eficiente, mirar todas las casillas y ver hasta cualpuedes ir
                 {
                     this.transform.position = new Vector3(transform.position.x, transform.position.y - incrementAux, transform.position.z);
-                    if (Mathf.Abs(this.transform.position.y - target.y) < 0.5f)
+                    if (Mathf.Abs(this.transform.position.y - target.y) < 0.1f)
                     {
                         this.transform.position = target;
                         target = this.transform.position;
@@ -2433,7 +2530,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 if (moving) //mas eficiente, mirar todas las casillas y ver hasta cualpuedes ir
                 {
                     this.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - incrementAux);
-                    if (Mathf.Abs(this.transform.position.z - target.z) < 0.5f)
+                    if (Mathf.Abs(this.transform.position.z - target.z) < 0.1f)
                     {
                         this.transform.position = target;
                         target = this.transform.position;
@@ -2530,10 +2627,25 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     }
                     else
                     {
+                        camaraScript.left();
+                        this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.up, -90);
+                        this.gameObject.transform.Translate(new Vector3(-(cubo.width - 1f), 0, 0), Space.World);
+                        cara = 4;
+                        //indexX = 1;
+                        indexY = /*((int)(cubo.width - 1)) -*/ indexX;
+                        indexX = 0;
+                        //Vennimos del 7,4
+                        //Hay que ir al 4,0
 
-                        Debug.LogWarning("Cambio de cara");
+                        //indexX = ((int)cubo.width) - 1 - indexX;       
+                        //indexX = 0;
+
+                        this.gameObject.transform.rotation = Quaternion.Euler(-90, 0, 0);
+                        model.transform.localRotation = Quaternion.Euler(0, -90, 0);
+                        //Debug.LogWarning("Cambio de cara");
                         moving = false;
-                        lastMovement = 0;
+                        lastMovement = 3;
+                        hayCambioCara = false;
                     }
 
                 }
@@ -2549,7 +2661,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 if (moving) //mas eficiente, mirar todas las casillas y ver hasta cualpuedes ir
                 {
                     this.transform.position = new Vector3(transform.position.x, transform.position.y + incrementAux, transform.position.z);
-                    if (Mathf.Abs(this.transform.position.y - target.y) < 0.5f)
+                    if (Mathf.Abs(this.transform.position.y - target.y) < 0.1f)
                     {
                         this.transform.position = target;
                         target = this.transform.position;
