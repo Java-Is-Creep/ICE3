@@ -6,7 +6,7 @@ using Photon.Realtime;
 
 public class ControladorNivel : MonoBehaviourPunCallbacks
 {
-    int TimeToCreateAmmunition = 20;
+    int TimeToCreateAmmunition = 10;
     float actualTime = 0;
     Cube Cubo;
     // Start is called before the first frame update

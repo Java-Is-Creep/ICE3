@@ -274,17 +274,17 @@ public class CharacterController : MonoBehaviourPunCallbacks
             }
         }
 
-
+        /*
         if (Input.GetKeyDown(KeyCode.Space))
         {
 
             if (timeBetweenShots < timeWaitingShots)
             {
                 Debug.Log("Di`parando");
-                this.photonView.RPC("Shot", RpcTarget.All, this.photonView.GetInstanceID());
+                this.photonView.RPC("Shot", RpcTarget.All);
                 timeWaitingShots = 0;
             }
-        }
+        }*/
 
 
 
@@ -364,7 +364,6 @@ public class CharacterController : MonoBehaviourPunCallbacks
             cubo = FindObjectOfType<Cube>();
         }
         proyectil.initDireccion(childTransform.TransformDirection(Vector3.back), this.gameObject, cubo.heigth);
-
     }
 
     #endregion
