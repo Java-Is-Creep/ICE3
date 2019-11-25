@@ -1129,8 +1129,21 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     else
                     {
                         //Debug.LogWarning("Cambio de cara");
+                        camaraScript.back();
+                        this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.up, -90);
+                        this.gameObject.transform.Translate(new Vector3(0, 0, (cubo.width - 1f)), Space.World);
+                        cara = 1;
+                        //indexX = 1;
+                        indexX = ((int)(cubo.width - 1)) - indexY;
+                        indexY = 7;
+
+
+                        this.gameObject.transform.rotation = Quaternion.Euler(0, 0, 90);
+                        model.transform.localRotation = Quaternion.Euler(0, 0, 0);
+                        //Debug.LogWarning("Cambio de cara");
                         moving = false;
-                        lastMovement = 0;
+                        lastMovement = 3;
+                        hayCambioCara = false;
                     }
                     //Debug.Log("Hola");
 
@@ -1620,10 +1633,25 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     }
                     else
                     {
+                        camaraScript.left();
+                        this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.up, 90);
+                        this.gameObject.transform.Translate(new Vector3((cubo.width - 1f), 0, 0), Space.World);
+                        cara = 4;
+                        //indexX = 1;
+                        indexY = ((int)(cubo.width - 1)) - indexX;
+                        indexX = 7;
+                        //Vennimos del 7,4
+                        //Hay que ir al 4,0
 
-                        Debug.LogWarning("Cambio de cara");
+                        //indexX = ((int)cubo.width) - 1 - indexX;       
+                        //indexX = 0;
+
+                        this.gameObject.transform.rotation = Quaternion.Euler(-90, 0, 0);
+                        model.transform.localRotation = Quaternion.Euler(0, 90, 0);
+                        //Debug.LogWarning("Cambio de cara");
                         moving = false;
-                        lastMovement = 0;
+                        lastMovement = 1;
+                        hayCambioCara = false;
                     }
 
                 }
@@ -2442,15 +2470,24 @@ public class CharacterController : MonoBehaviourPunCallbacks
                         if (hayCambioCara)
                         {
                             ////////////////////////////FALTA HACERLO ABAJOOOOOOOOOO///////////////////////////////
-                            camaraScript.button();
-                            this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.forward, 90);
-                            this.gameObject.transform.Translate(new Vector3(-(cubo.width - 0.5f), 0.5f, 0), Space.World);
-                            cara = 5;
-                            lastMovement = 3;
-                            indexY = (Mathf.RoundToInt(cubo.width) - 1) - indexY;
+                            camaraScript.right();
+                            this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.up, 90);
+                            this.gameObject.transform.Translate(new Vector3(-(cubo.width - 1f), 0, 0), Space.World);
+                            cara = 3;
+                            //indexX = 1;
+                            indexY = ((int)(cubo.width - 1)) - indexX;
                             indexX = 0;
-                            this.gameObject.transform.rotation = Quaternion.Euler(0, 0, 90);
+                            //Vennimos del 7,4
+                            //Hay que ir al 4,0
+
+                            //indexX = ((int)cubo.width) - 1 - indexX;       
+                            //indexX = 0;
+
+                            this.gameObject.transform.rotation = Quaternion.Euler(90, 0, 0);
                             model.transform.localRotation = Quaternion.Euler(0, -90, 0);
+                            //Debug.LogWarning("Cambio de cara");
+                            moving = false;
+                            lastMovement = 1;
                             hayCambioCara = false;
                         }
                     }
@@ -2907,26 +2944,17 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     }
                     else
                     {
-                        /*
-                        camaraScript.right();
-                        this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.up, -90);
-                        this.gameObject.transform.Translate(new Vector3(cubo.width - 1f, 0, 0), Space.World);
-                        cara = 3;
-                        //indexX = 1;
-                        int aux = indexX;
-                        indexX = indexY;
-                        indexY = aux;
-                        //indexX = ((int)cubo.width) - 1 - indexX;       
-                        //indexX = 0;
-
-
-                        //Debug.LogWarning("Cambio de cara");
+                        camaraScript.top();
+                        this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.forward, -90);
+                        this.gameObject.transform.Translate(new Vector3(-(cubo.width - 1.5f), -0.5f, 0), Space.World);
+                        //this.gameObject.transform.Translate(new Vector3(-0.5f, 0, 0), Space.World);
+                        cara = 0;
                         moving = false;
-                        lastMovement = 3;
+                        //del 0,1 al 1,7
+                        lastMovement = 2;
+                        //indexX = indexY;
+                        indexX = 0;
                         hayCambioCara = false;
-                        //Debug.LogWarning("Cambio de cara");*/
-                        lastMovement = 0;
-                        moving = false;
                     }
 
                 }
