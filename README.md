@@ -5,7 +5,7 @@
 
 | Versión | Descripción |
 | ------------- | ------------- |
-|![develop](https://img.shields.io/badge/develop-v0.3.0-blue?style=for-the-badge&logo=appveyor) | - Movimiento entre todas las caras del cubo <br> - Colisiones, recoger objeto <br>- Disparo de bola de nieve <br> - Diseño del skybox <br> - Ampliación de los modos de juego <br> - Diseño esquemático de las interfaces ampliado para modo multijugador <br> - Cambios en Photon para mejorar la interpolación que realiza|
+|![develop](https://img.shields.io/badge/develop-v0.3.0-blue?style=for-the-badge&logo=appveyor) | - Movimiento entre todas las caras del cubo <br> - Colisiones, recoger objeto <br>- Disparo de bola de nieve <br> - Diseño del skybox <br> - Ampliación de los modos de juego <br> - Diseño esquemático de las interfaces ampliado para modo multijugador <br> - Cambios en Photon para mejorar la interpolación|
 |![develop](https://img.shields.io/badge/develop-v0.2.0-blue?style=for-the-badge&logo=appveyor) | - Movimiento en 3 de las caras del cubo <br> - Diseño de la interfaz básica (concept) y botones <br> - Modelos 3D de 6 personajes con texturizado <br> - Sala para dos jugadores <br> - Arreglos de colisiones en el cubo <br> - Arreglos de bugs varios| 
 ![develop](https://img.shields.io/badge/develop-v0.1.0-blue?style=for-the-badge&logo=appveyor)  | - Interacción con el cubo <br> - Movimientos de cámara<br>- Primeras aproximaciones respecto al movimiento del personaje <br> - GDD semi-completo<br> - Bocetos y diseños iniciales  
 |
