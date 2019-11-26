@@ -339,6 +339,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
             }
             if (other.tag == "Player")
             {
+                /*
                 Debug.Log("Colision con personaje");
                 //Si estamos en w, ponemos 2
                 if (lastMovement == 4)
@@ -360,7 +361,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 {
                     lastMovement = 3;
                     moving = false;
-                }
+                }*/
             }
         }
 
