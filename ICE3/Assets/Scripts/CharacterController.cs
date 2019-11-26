@@ -140,7 +140,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 if(ammunition > 0)
                 {
                     Debug.Log("Disparando");
-                    this.photonView.RPC("Shot", RpcTarget.All);
+                    this.photonView.RPC("Shot", RpcTarget.All,this.transform.position);
                     timeWaitingShots = 0;
                     ammunition--;
                 } else
@@ -346,7 +346,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
     ///
     [PunRPC]
-    void Shot()
+    void Shot(Vector3 posicion)
     {
         /* if(targetID == photonView.GetInstanceID())
          {
@@ -354,7 +354,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
              aux.GetComponent<Proyectil>().initDireccion(this.gameObject.transform.TransformDirection(Vector3.forward), this.gameObject);
          }*/
         Transform childTransform = this.gameObject.transform.GetChild(0);
-        GameObject aux = Instantiate(bolaDeNieve, this.transform.position + (childTransform.TransformDirection(Vector3.back * 0.2f)), Quaternion.identity);
+        GameObject aux = Instantiate(bolaDeNieve, posicion + (childTransform.TransformDirection(Vector3.back * 0.2f)), Quaternion.identity);
         Debug.Log(this.gameObject);
         Proyectil proyectil = aux.GetComponent<Proyectil>();
         Debug.Log(proyectil);
