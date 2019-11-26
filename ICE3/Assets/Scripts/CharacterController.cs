@@ -337,6 +337,31 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 añadirBalas();
                 //other.gameObject.GetComponent<KitBalas>().crash();
             }
+            if (other.tag == "Player")
+            {
+                Debug.Log("Colision con personaje");
+                //Si estamos en w, ponemos 2
+                if (lastMovement == 4)
+                {
+                    lastMovement = 2;
+                    moving = false;
+                }
+                else if (lastMovement == 2)
+                {
+                    lastMovement = 4;
+                    moving = false;
+                }
+                else if (lastMovement == 3)
+                {
+                    lastMovement = 1;
+                    moving = false;
+                }
+                else if (lastMovement == 1)
+                {
+                    lastMovement = 3;
+                    moving = false;
+                }
+            }
         }
 
     }
@@ -3478,12 +3503,5 @@ public class CharacterController : MonoBehaviourPunCallbacks
     #endregion
 
 
-    private void OnCollisionEnter(Collision collision)
-    {/*
-        if (collision.collider.tag == "Rock"){
-            lastMovement = 0;
-            this.transform.position = new Vector3(Mathf.Round(transform.position.x), transform.position.y, Mathf.Round(transform.position.z - 1 * velocity * Time.deltaTime));
-        }
-        */
-    }
+    
 }

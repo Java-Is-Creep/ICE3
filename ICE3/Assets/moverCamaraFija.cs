@@ -31,10 +31,14 @@ public class moverCamaraFija : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
         {
+            
             lastCara = cara;
             if (cara == 0)
             {
+                Debug.Log(freeLookCam.transform.position);
+                Debug.Log(topCam.transform.position);
                 freeLookCam.transform.position = topCam.transform.position;
+                Debug.Log(freeLookCam.transform.position);
             }
             else if (cara == 1)
             {
@@ -57,8 +61,10 @@ public class moverCamaraFija : MonoBehaviour
                 freeLookCam.transform.position = backCam.transform.position;
             }
             Free();
-        } else if (Input.GetMouseButtonUp(0) && !EventSystem.current.IsPointerOverGameObject())
+        }
+        else if (Input.GetMouseButtonUp(0) && !EventSystem.current.IsPointerOverGameObject())
         {
+            Debug.Log("ELSEEEEEEEEEEEEEEEEEEEE");
             if (lastCara == 0)
             {
                 top();
@@ -82,7 +88,7 @@ public class moverCamaraFija : MonoBehaviour
             {
                 back();
             }
-        } 
+        } /*
         else if (Input.GetKeyDown(KeyCode.Keypad0))
         {
            
@@ -112,7 +118,7 @@ public class moverCamaraFija : MonoBehaviour
         {
             button();
             Debug.Log("5");
-        } 
+        } */
     }
 
     public void front()

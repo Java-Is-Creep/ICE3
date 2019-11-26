@@ -174,6 +174,20 @@ MonoBehaviour:
   m_SynchronizePosition: 1
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
+--- !u!136 &7794163068387691738
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7494591414135690290}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 8.11
+  m_Height: 28.07
+  m_Direction: 1
+  m_Center: {x: 0, y: -2.3, z: 0}
 --- !u!114 &338521685845130310
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -221,6 +235,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: 957ef47ebb67f064abb0e4c94605834c, type: 3}
       propertyPath: m_Name
       value: ReindeerKawaiiDesune
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 957ef47ebb67f064abb0e4c94605834c, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 957ef47ebb67f064abb0e4c94605834c, type: 3}
       propertyPath: m_LocalPosition.x
