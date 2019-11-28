@@ -10,7 +10,6 @@
 ![develop](https://img.shields.io/badge/develop-v0.1.0-blue?style=for-the-badge&logo=appveyor)  | - Interacción con el cubo <br> - Movimientos de cámara<br>- Primeras aproximaciones respecto al movimiento del personaje <br> - GDD semi-completo<br> - Bocetos y diseños iniciales  
 |
 
-
 # Java is Creep
 
 Somos una empresa dedicada al desarrollo de videojuegos con un potencial de diversion explosivo.
