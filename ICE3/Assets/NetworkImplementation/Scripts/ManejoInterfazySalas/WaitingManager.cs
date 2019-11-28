@@ -18,6 +18,7 @@ public class WaitingManager : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
+ 
         if (startDirectly)
         {
             goToGameScene();
@@ -34,6 +35,8 @@ public class WaitingManager : MonoBehaviourPunCallbacks
     {
         if (!PhotonNetwork.IsMasterClient)
         {
+            Debug.Log(PhotonNetwork.CurrentRoom.Name);
+            Debug.Log(PhotonNetwork.CurrentRoom.PlayerCount);
             Debug.LogError("PhotonNetwork : Trying to Load a level but we are not the master Client");
         }
         Debug.Log("Loading game scene");
@@ -53,6 +56,7 @@ public class WaitingManager : MonoBehaviourPunCallbacks
     {
         Debug.LogFormat("OnPlayerEnteredRoom() {0}", other.NickName); // not seen if you're the player connecting
 
+        Debug.Log(PhotonNetwork.CurrentRoom.Name);
 
         if (PhotonNetwork.IsMasterClient)
         {
