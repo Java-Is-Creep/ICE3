@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Photon.Realtime;
 
 public class CharacterController : MonoBehaviourPunCallbacks
 {
@@ -323,6 +324,22 @@ public class CharacterController : MonoBehaviourPunCallbacks
     {
         ammunition += 3;
     }
+
+    /*
+    #region PunCallbacks
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        if (photonView.IsMine)
+        {
+
+        }
+        if (otherPlayer.IsMasterClient)
+        {
+
+        }
+    }
+    #endregion
+    */
 
     #region Colisiones
     private void OnTriggerEnter(Collider other)

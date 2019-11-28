@@ -3,11 +3,13 @@ using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WaitingManager : MonoBehaviourPunCallbacks
 {
 
-    public int minNumPlayers;
+    [SerializeField]
+    private Text textoInformativo;
 
     public bool startDirectly;
 
@@ -18,7 +20,7 @@ public class WaitingManager : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
- 
+        textoInformativo.text = "Players in room: " + PhotonNetwork.CurrentRoom.PlayerCount + "/" + PhotonNetwork.CurrentRoom.MaxPlayers;
         if (startDirectly)
         {
             goToGameScene();
@@ -54,6 +56,7 @@ public class WaitingManager : MonoBehaviourPunCallbacks
 
     public override void OnPlayerEnteredRoom(Player other)
     {
+        textoInformativo.text = "Players in room: " + PhotonNetwork.CurrentRoom.PlayerCount + "/" + PhotonNetwork.CurrentRoom.MaxPlayers;
         Debug.LogFormat("OnPlayerEnteredRoom() {0}", other.NickName); // not seen if you're the player connecting
 
         Debug.Log(PhotonNetwork.CurrentRoom.Name);
@@ -61,7 +64,7 @@ public class WaitingManager : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient)
         {
 
-            if (PhotonNetwork.CurrentRoom.PlayerCount == minNumPlayers)
+            if (PhotonNetwork.CurrentRoom.PlayerCount == PhotonNetwork.CurrentRoom.MaxPlayers)
             {
 
                 Debug.LogFormat("OnPlayerEnteredRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient); // called before OnPlayerLeftRoom
@@ -76,6 +79,7 @@ public class WaitingManager : MonoBehaviourPunCallbacks
 
     public override void OnPlayerLeftRoom(Player other)
     {
+        textoInformativo.text = "Players in room: " + PhotonNetwork.CurrentRoom.PlayerCount + "/" + PhotonNetwork.CurrentRoom.MaxPlayers;
         Debug.LogFormat("OnPlayerLeftRoom() {0}", other.NickName); // seen when other disconnects
 
     }

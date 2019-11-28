@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         // si eres el master, creas el cubo
         if (PhotonNetwork.IsMasterClient)
         {
-            GameObject a = PhotonNetwork.Instantiate(this.cubePrefab.name, new Vector3(0f, 0f, 0f), Quaternion.identity, 0);
+            GameObject a = PhotonNetwork.InstantiateSceneObject(this.cubePrefab.name, new Vector3(0f, 0f, 0f), Quaternion.identity, 0);
             //a.transform.position = new Vector3(-4, 4, -3.5f);
         } else
         {

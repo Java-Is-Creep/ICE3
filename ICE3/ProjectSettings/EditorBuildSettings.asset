@@ -15,7 +15,7 @@ EditorBuildSettings:
     path: Assets/NetworkImplementation/Scenes/WaitingRoom.unity
     guid: 8aad8d4f12e76a647a85c388a9e49267
   - enabled: 1
-    path: Assets/TileImplementation/Scenes/MapScene.unity
+    path: Assets/NetworkImplementation/Scenes/MapScene.unity
     guid: a654e8b39451ce641a7b7657bde09597
   - enabled: 1
     path: Assets/NetworkImplementation/Scenes/CrearSala.unity
