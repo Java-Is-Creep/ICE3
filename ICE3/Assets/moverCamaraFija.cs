@@ -64,7 +64,6 @@ public class moverCamaraFija : MonoBehaviour
         }
         else if (Input.GetMouseButtonUp(0) && !EventSystem.current.IsPointerOverGameObject())
         {
-            Debug.Log("ELSEEEEEEEEEEEEEEEEEEEE");
             if (lastCara == 0)
             {
                 top();
