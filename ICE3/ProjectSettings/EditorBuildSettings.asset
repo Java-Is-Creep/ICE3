@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/NetworkImplementation/Scenes/MultiplayerMenu.unity
     guid: 2a1b281ce83308d48b2316eec03187b8
   - enabled: 1
+    path: Assets/NetworkImplementation/Scenes/MainMenu.unity
+    guid: 305cca0a244e0a34688b73d6f79f522d
+  - enabled: 1
     path: Assets/NetworkImplementation/Scenes/Launcher.unity
     guid: 7840b248fc54aed469e459ad66dfe6b6
   - enabled: 1
