@@ -49,7 +49,11 @@ MonoBehaviour:
   heigth: 15
   prefabIce: {fileID: 3668460757368031271, guid: 46f030820e2d02141bcd8c831578a6eb,
     type: 3}
-  prefabRock: {fileID: 3363387174675438931, guid: b9d40711571ab8b488a85bd45c7a5de8,
+  prefabPresent1: {fileID: 3363387174675438931, guid: b9d40711571ab8b488a85bd45c7a5de8,
+    type: 3}
+  prefabPresent2: {fileID: 3363387174675438931, guid: de302dad6ebf8dd498952ae49052bdff,
+    type: 3}
+  prefabPresent3: {fileID: 3363387174675438931, guid: c0bdfb35408c72b469c9d750344f938d,
     type: 3}
   prefabTile: {fileID: 5260194616739594338, guid: b17832778413d9c40be6c5416fdd6b13,
     type: 3}
