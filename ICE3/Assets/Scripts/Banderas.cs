@@ -1,25 +1,24 @@
-﻿using Photon.Pun;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Realtime;
+using Photon.Pun;
 
-public class KitBalas : MonoBehaviourPunCallbacks
+public class Banderas : MonoBehaviourPunCallbacks
 {
     // Start is called before the first frame update
     void Start()
     {
-
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        
     }
-
     /// <summary>
-    /// Aviso al master de que destruya las balas
+    /// Si choco con algun jugador, aviso al master de que tiene que destruir ese objeto
     /// </summary>
     /// <param name="other"></param>
     private void OnTriggerEnter(Collider other)
@@ -28,21 +27,19 @@ public class KitBalas : MonoBehaviourPunCallbacks
         if (other.tag == "Player")
         {
             Debug.Log("Choque con jugador");
-            this.photonView.RPC("Destroy", RpcTarget.MasterClient);
+            this.photonView.RPC("DestroyBandera", RpcTarget.MasterClient);
         }
     }
 
     /// <summary>
-    /// Llamada remota para que el master destruya las balas
+    /// Aviso al master de que destruya la bandera
     /// </summary>
     [PunRPC]
-    void Destroy()
+    void DestroyBandera()
     {
-        
+
         Debug.Log("Destruido por master");
         PhotonNetwork.Destroy(this.gameObject);
 
     }
-
-
 }

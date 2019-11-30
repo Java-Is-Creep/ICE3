@@ -7,8 +7,16 @@ using Photon.Realtime;
 public class ControladorNivel : MonoBehaviourPunCallbacks
 {
     int TimeToCreateAmmunition = 10;
-    float actualTime = 0;
+    int TimeToCreateBandera = 15;
+    float actualTimeAmmunation = 0;
+    float actualTimeBandera = 0;
     Cube Cubo;
+
+    public bool hayBalas;
+    public bool hayBanderas;
+
+    enum ObjetosCreables { bandera, balas }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,22 +32,41 @@ public class ControladorNivel : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            if (actualTime < TimeToCreateAmmunition)
+            if (hayBalas)
             {
-                actualTime += Time.deltaTime;
+                if (actualTimeAmmunation < TimeToCreateAmmunition)
+                {
+                    actualTimeAmmunation += Time.deltaTime;
+                }
+                else
+                {
+                    createObject(ObjetosCreables.balas);
+                    TimeToCreateAmmunition = Random.Range(15, 26);
+                    actualTimeAmmunation = 0;
+                }
             }
-            else
+
+            if (hayBanderas)
             {
-                createAmmunationKit();
-                TimeToCreateAmmunition = Random.Range(15, 26);
-                actualTime = 0;
+
+                if (actualTimeBandera < TimeToCreateBandera)
+                {
+                    actualTimeBandera += Time.deltaTime;
+                }
+                else
+                {
+                    createObject(ObjetosCreables.bandera);
+                    TimeToCreateBandera = Random.Range(20, 30);
+                    actualTimeBandera = 0;
+                }
+
             }
         }
-       
+
     }
 
 
-    public void createAmmunationKit()
+    private void createObject(ObjetosCreables obj)
     {
         int indexX;
         int indexY;
@@ -53,8 +80,21 @@ public class ControladorNivel : MonoBehaviourPunCallbacks
             cara = Random.Range(0, 6);
             ts = Cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>();
         } while (ts.myObjectType != TileScript.tileObject.NULL);
+        GameObject aux;
+        switch (obj)
+        {
+            case ObjetosCreables.balas:
+                aux = PhotonNetwork.InstantiateSceneObject("KitBalas", ts.AbsolutePos, Quaternion.identity);
+                break;
+            case ObjetosCreables.bandera:
+                aux = PhotonNetwork.InstantiateSceneObject("BanderaCold", ts.AbsolutePos, Quaternion.identity);
+                break;
+            default:
+                aux = null;
+                break;
+        }
 
-        GameObject aux = PhotonNetwork.InstantiateSceneObject("KitBalas", ts.AbsolutePos,Quaternion.identity);
+
         switch (cara)
         {
             case (0):
