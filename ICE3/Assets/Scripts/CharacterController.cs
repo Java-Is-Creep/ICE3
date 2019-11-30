@@ -1853,8 +1853,19 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             lastMovement = 1;
                             indexY = (Mathf.RoundToInt(cubo.width) - 1) - indexY;
                             indexX = 7;
-                            this.gameObject.transform.rotation = Quaternion.Euler(-180, 0, 0);
-                            model.transform.localRotation = Quaternion.Euler(0, model.transform.rotation.eulerAngles.y + 180, 0);
+                           this.gameObject.transform.rotation = Quaternion.Euler(-180, 0, 0);
+                            
+                           if (Mathf.Abs(model.transform.localEulerAngles.y - 180) <= 1)
+                            {
+                                model.transform.localRotation = Quaternion.Euler(0, 0, 0);
+                            } else if (Mathf.Abs(model.transform.localEulerAngles.y) <= 1)
+                            {
+                                model.transform.localRotation = Quaternion.Euler(0, 180, 0);
+                            } else
+                            {
+                                model.transform.localRotation = Quaternion.Euler(0, model.transform.rotation.eulerAngles.y + 180, 0);
+                            }
+                            
                             //model.transform.localRotation = Quaternion.Euler(0, 90, 0);
                             hayCambioCara = false;
                         }
@@ -1927,10 +1938,6 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     }
                     else
                     {
-                        /*
-                        Debug.LogWarning("Cambio de cara");
-                        moving = false;
-                        lastMovement = 0;*/
                         camaraScript.button();
                         this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.forward, -90);
                         this.gameObject.transform.Translate(new Vector3((cubo.width - 0.5f), -0.5f, 0), Space.World);
@@ -1939,10 +1946,20 @@ public class CharacterController : MonoBehaviourPunCallbacks
                         indexY = (Mathf.RoundToInt(cubo.width) - 1) - indexY;
                         indexX = 7;
                         this.gameObject.transform.rotation = Quaternion.Euler(-180, 0, 0);
-                        if (model.transform.rotation.eulerAngles.y != 180 && model.transform.rotation.eulerAngles.y != 0)
+
+                        if (Mathf.Abs(model.transform.localEulerAngles.y - 180) <= 1)
+                        {
+                            model.transform.localRotation = Quaternion.Euler(0, 0, 0);
+                        }
+                        else if (Mathf.Abs(model.transform.localEulerAngles.y) <= 1)
+                        {
+                            model.transform.localRotation = Quaternion.Euler(0, 180, 0);
+                        }
+                        else
                         {
                             model.transform.localRotation = Quaternion.Euler(0, model.transform.rotation.eulerAngles.y + 180, 0);
                         }
+
                         //model.transform.localRotation = Quaternion.Euler(0, 90, 0);
                         hayCambioCara = false;
                     }
@@ -2791,6 +2808,18 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             indexY = (Mathf.RoundToInt(cubo.width) - 1) - indexY;
                             indexX = 0;
                             this.gameObject.transform.rotation = Quaternion.Euler(-180, 0, 0);
+                            if (Mathf.Abs(model.transform.localEulerAngles.y - 180) <= 1)
+                            {
+                                model.transform.localRotation = Quaternion.Euler(0, 0, 0);
+                            }
+                            else if (Mathf.Abs(model.transform.localEulerAngles.y) <= 1)
+                            {
+                                model.transform.localRotation = Quaternion.Euler(0, 180, 0);
+                            }
+                            else
+                            {
+                                model.transform.localRotation = Quaternion.Euler(0, model.transform.rotation.eulerAngles.y + 180, 0);
+                            }
                             //model.transform.localRotation = Quaternion.Euler(0, -90, 0);
                             hayCambioCara = false;
                         }
@@ -2871,6 +2900,18 @@ public class CharacterController : MonoBehaviourPunCallbacks
                         indexY = (Mathf.RoundToInt(cubo.width) - 1) - indexY;
                         indexX = 0;
                         this.gameObject.transform.rotation = Quaternion.Euler(-180, 0, 0);
+                        if (Mathf.Abs(model.transform.localEulerAngles.y - 180) <= 1)
+                        {
+                            model.transform.localRotation = Quaternion.Euler(0, 0, 0);
+                        }
+                        else if (Mathf.Abs(model.transform.localEulerAngles.y) <= 1)
+                        {
+                            model.transform.localRotation = Quaternion.Euler(0, 180, 0);
+                        }
+                        else
+                        {
+                            model.transform.localRotation = Quaternion.Euler(0, model.transform.rotation.eulerAngles.y + 180, 0);
+                        }
                         //model.transform.localRotation = Quaternion.Euler(0, -90, 0);
                         hayCambioCara = false;
                     }
@@ -3409,6 +3450,19 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             indexY = (Mathf.RoundToInt(cubo.width) - 1) - indexY;
                             indexX = 7;
                             this.gameObject.transform.rotation = Quaternion.Euler(0, 0, -90);
+
+                            if (Mathf.Abs(model.transform.localEulerAngles.y - 180) <= 1)
+                            {
+                                model.transform.localRotation = Quaternion.Euler(0, 0, 0);
+                            }
+                            else if (Mathf.Abs(model.transform.localEulerAngles.y) <= 1)
+                            {
+                                model.transform.localRotation = Quaternion.Euler(0, 180, 0);
+                            }
+                            else
+                            {
+                                model.transform.localRotation = Quaternion.Euler(0, model.transform.rotation.eulerAngles.y + 180, 0);
+                            }
                             //model.transform.localRotation = Quaternion.Euler(0, 90, 0);
                             hayCambioCara = false;
                         }
@@ -3531,6 +3585,18 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             indexY = (Mathf.RoundToInt(cubo.width) - 1) - indexY;
                             indexX = 0;
                             this.gameObject.transform.rotation = Quaternion.Euler(0, 0, 90);
+                            if (Mathf.Abs(model.transform.localEulerAngles.y - 180) <= 1)
+                            {
+                                model.transform.localRotation = Quaternion.Euler(0, 0, 0);
+                            }
+                            else if (Mathf.Abs(model.transform.localEulerAngles.y) <= 1)
+                            {
+                                model.transform.localRotation = Quaternion.Euler(0, 180, 0);
+                            }
+                            else
+                            {
+                                model.transform.localRotation = Quaternion.Euler(0, model.transform.rotation.eulerAngles.y + 180, 0);
+                            }
                             //model.transform.localRotation = Quaternion.Euler(0, -90, 0);
                             hayCambioCara = false;
                         }
@@ -3615,6 +3681,18 @@ public class CharacterController : MonoBehaviourPunCallbacks
                         indexY = (Mathf.RoundToInt(cubo.width) - 1) - indexY;
                         indexX = 0;
                         this.gameObject.transform.rotation = Quaternion.Euler(0, 0, 90);
+                        if (Mathf.Abs(model.transform.localEulerAngles.y - 180) <= 1)
+                        {
+                            model.transform.localRotation = Quaternion.Euler(0, 0, 0);
+                        }
+                        else if (Mathf.Abs(model.transform.localEulerAngles.y) <= 1)
+                        {
+                            model.transform.localRotation = Quaternion.Euler(0, 180, 0);
+                        }
+                        else
+                        {
+                            model.transform.localRotation = Quaternion.Euler(0, model.transform.rotation.eulerAngles.y + 180, 0);
+                        }
                         //model.transform.localRotation = Quaternion.Euler(0, -90, 0);
                         hayCambioCara = false;
                     }
