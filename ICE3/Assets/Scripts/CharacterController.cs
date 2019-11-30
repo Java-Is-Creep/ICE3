@@ -338,12 +338,13 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 {
                     Debug.Log("Colision con personaje");
                     timeoutCollision = maxTimeoutCollision;
+                    hayCambioCara = false;
                     //Si estamos en w, ponemos 2
                     if (lastMovement == 4)
                     {
-                        Debug.Log("Yendo hacia arriba");
+                        //Debug.Log("Yendo hacia arriba");
                         Vector3 aux = comprobarCasillaMasCercana();
-                        Debug.Log("antes: " + indexX + ", " + indexY + this.transform.position);
+                        //Debug.Log("antes: " + indexX + ", " + indexY + this.transform.position);
                         indexX = (int)aux.x;
                         indexY = (int)aux.y;
                         Vector3 posTile = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
@@ -362,7 +363,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                         {
                             this.transform.position = new Vector3(this.transform.position.x, posTile.y, posTile.z);
                         }
-                        Debug.Log("ahora: " + indexX + ", " + indexY + this.transform.position);
+                        //Debug.Log("ahora: " + indexX + ", " + indexY + this.transform.position);
                         lastMovement = 2;
                         moving = false;
                     }
@@ -507,7 +508,6 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
     public void MovimientoCaraTop(float incrementAux)
     {
-
         //Arriba
         if (lastMovement == 4) // arriba
         {
@@ -656,12 +656,12 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     this.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - incrementAux);
                     if (Mathf.Abs(this.transform.position.z - target.z) < 0.1f)
                     {
-
+                        //Debug.Log("He llegado a la casilla");
                         this.transform.position = target;
                         target = this.transform.position;
                         //Debug.Log("Acaba Casilla Aba");
                         moving = false;
-
+                        //lastMovement = 0;
                         if (hayCambioCara)
                         {
                             camaraScript.left();
@@ -708,7 +708,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             {
                                 if (tile.myObjectType == TileScript.tileObject.NULL)
                                 {
-                                    //Debug.Log("Siguien casilla sin obstaculos");
+                                   // Debug.Log("Siguien casilla sin obstaculos");
                                     //target = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y,this.transform.position.z);
                                     //target = new Vector3(this.transform.position.x + 1, target.y, target.z);
                                     moving = true;
@@ -718,14 +718,17 @@ public class CharacterController : MonoBehaviourPunCallbacks
                                 else
                                 {
                                     //Debug.Log("Hay Roca");
+                                    //Debug.Log("Iteraciones: " + iteracion);
                                     if (iteracion <= 0)
                                     {
+                                        Debug.Log(tile.AbsolutePos);
                                         // Debug.Log("iteracion menor o igual que 0");
                                         moving = false;
                                         lastMovement = 0;
                                     }
                                     else
                                     {
+                                        Debug.Log(tile.AbsolutePos);
                                         moving = true;
                                     }
                                     //lastMovement = 0;
@@ -749,7 +752,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
                         } while (true);
                         target = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z - iteracion);
-
+                        //Debug.Log("Target es:" + target);
 
                     }
                     else
@@ -3613,7 +3616,5 @@ public class CharacterController : MonoBehaviourPunCallbacks
         }
     }
     #endregion
-
-
     
 }
