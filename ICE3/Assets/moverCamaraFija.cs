@@ -35,10 +35,9 @@ public class moverCamaraFija : MonoBehaviour
             lastCara = cara;
             if (cara == 0)
             {
-                Debug.Log(freeLookCam.transform.position);
-                Debug.Log(topCam.transform.position);
+                
                 freeLookCam.transform.position = topCam.transform.position;
-                Debug.Log(freeLookCam.transform.position);
+
             }
             else if (cara == 1)
             {
@@ -64,7 +63,6 @@ public class moverCamaraFija : MonoBehaviour
         }
         else if (Input.GetMouseButtonUp(0) && !EventSystem.current.IsPointerOverGameObject())
         {
-            Debug.Log("ELSEEEEEEEEEEEEEEEEEEEE");
             if (lastCara == 0)
             {
                 top();
