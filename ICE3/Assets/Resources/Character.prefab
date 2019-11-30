@@ -137,6 +137,8 @@ MonoBehaviour:
   timeBetweenShots: 1
   timeWaitingShots: 0
   ammunition: 0
+  timeoutCollision: 0
+  maxTimeoutCollision: 0
 --- !u!114 &7116918764183407478
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,10 +186,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 8.11
+  m_Radius: 5.57
   m_Height: 28.07
   m_Direction: 1
-  m_Center: {x: 0, y: -2.3, z: 0}
+  m_Center: {x: 0, y: -2.3, z: -1.13}
 --- !u!114 &338521685845130310
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -238,7 +240,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 957ef47ebb67f064abb0e4c94605834c, type: 3}
       propertyPath: m_TagString
-      value: Player
+      value: CharacterCollider
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 957ef47ebb67f064abb0e4c94605834c, type: 3}
       propertyPath: m_LocalPosition.x

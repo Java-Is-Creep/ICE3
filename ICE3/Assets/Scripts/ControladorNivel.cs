@@ -73,7 +73,6 @@ public class ControladorNivel : MonoBehaviourPunCallbacks
                 aux.transform.Rotate(new Vector3(-90, 0, 0));
                 break;
             case (5):
-                Debug.Log("Cambiando de cara");
                 aux.transform.Rotate(new Vector3(0, 0, 180));
                 break;
         }
