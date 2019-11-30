@@ -142,6 +142,8 @@ MonoBehaviour:
   maxTimeoutCollision: 0
   timeoutCollisionBanderas: 0
   maxTimeoutCollisionBanderas: 0
+  timeoutCollisionProyectil: 0
+  maxTimeoutCollisionProyectil: 0
 --- !u!114 &7116918764183407478
 MonoBehaviour:
   m_ObjectHideFlags: 0

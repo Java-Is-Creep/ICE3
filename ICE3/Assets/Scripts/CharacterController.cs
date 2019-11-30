@@ -41,6 +41,9 @@ public class CharacterController : MonoBehaviourPunCallbacks
     private int puntos;
     public int MAXPUNTUACION;
 
+    // Vidas
+    private int vidas;
+
 
 
     bool ab = false;
@@ -56,6 +59,9 @@ public class CharacterController : MonoBehaviourPunCallbacks
     //Para colision con banderas
     public int timeoutCollisionBanderas;
     public int maxTimeoutCollisionBanderas;
+    // Para colision con bolas de nieve
+    public int timeoutCollisionProyectil;
+    public int maxTimeoutCollisionProyectil;
 
     // Start is called before the first frame update
     void Start()
@@ -64,10 +70,13 @@ public class CharacterController : MonoBehaviourPunCallbacks
         camaraScript = FindObjectOfType<moverCamaraFija>();
         maxTimeoutCollision = 3;
         maxTimeoutCollisionBanderas = 3;
+        maxTimeoutCollisionProyectil = 3;
         timeoutCollision = 0;
         timeoutCollisionBanderas = 0;
+        timeoutCollisionProyectil = 0;
         puntos = 0;
         MAXPUNTUACION = 6;
+        vidas = 3;
 
     }
 
@@ -81,6 +90,11 @@ public class CharacterController : MonoBehaviourPunCallbacks
         if (timeoutCollisionBanderas > 0)
         {
             timeoutCollisionBanderas--;
+        }
+
+        if(timeoutCollisionProyectil > 0)
+        {
+            timeoutCollisionProyectil--;
         }
 
         if (!photonView.IsMine)
@@ -331,7 +345,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
     }
 
-    #region funcionalidd coger Objetos
+    #region funcionalidd choques con objetos
     public void añadirBalas()
     {
         ammunition += 3;
@@ -347,7 +361,33 @@ public class CharacterController : MonoBehaviourPunCallbacks
             this.photonView.RPC("AcabarPartida", RpcTarget.All);
         }
     }
+
+    public void quitarVida()
+    {
+        vidas--;
+        Debug.Log("Vidas: " + vidas);
+        if(vidas <= 0)
+        {
+            salirmePartida();
+        }
+    }
+
     #endregion
+
+    public void salirmePartida()
+    {
+        if (photonView.IsMine)
+        {
+            PhotonNetwork.LeaveRoom();
+            SceneManager.LoadScene("Launcher");
+        }
+
+    }
+
+    public bool soyMaster()
+    {
+        return PhotonNetwork.IsMasterClient;
+    }
 
 
 
@@ -360,7 +400,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
             
             if (other.tag == "KitBalas")
             {
-                Debug.Log("Balas Cogidas");
+                //Debug.Log("Balas Cogidas");
                 añadirBalas();
                 //other.gameObject.GetComponent<KitBalas>().crash();
             }
@@ -369,18 +409,32 @@ public class CharacterController : MonoBehaviourPunCallbacks
             {
                 if(timeoutCollisionBanderas <= 0)
                 {
-                    Debug.Log("Bandera Cogida");
+                    //Debug.Log("Bandera Cogida");
                     sumarPuntuacion();
                     timeoutCollisionBanderas = maxTimeoutCollisionBanderas;
                 }
 
 
             }
+
+            if(other.tag == "Proyectil")
+            {
+                if(timeoutCollisionProyectil <= 0)
+                {
+                    if (other.GetComponent<Proyectil>().dueño != this.gameObject)
+                    {
+                        quitarVida();
+                        timeoutCollisionProyectil = maxTimeoutCollisionProyectil;
+                    }
+                }
+                
+            }
+
             if (other.tag == "CharacterCollider")
             {
                 if (timeoutCollision <= 0)
                 {
-                    Debug.Log("Colision con personaje");
+                    //Debug.Log("Colision con personaje");
                     timeoutCollision = maxTimeoutCollision;
                     hayCambioCara = false;
                     //Si estamos en w, ponemos 2
@@ -467,9 +521,9 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     }
                     else if (lastMovement == 1)
                     {
-                        Debug.Log("Yendo hacia izquierda");
+                        //Debug.Log("Yendo hacia izquierda");
                         Vector3 aux = comprobarCasillaMasCercana();
-                        Debug.Log("antes: " + indexX + ", " + indexY + this.transform.position);
+                        //Debug.Log("antes: " + indexX + ", " + indexY + this.transform.position);
                         indexX = (int)aux.x;
                         indexY = (int)aux.y;
                         Vector3 posTile = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
@@ -540,10 +594,8 @@ public class CharacterController : MonoBehaviourPunCallbacks
          }*/
         Transform childTransform = this.gameObject.transform.GetChild(0);
         GameObject aux = Instantiate(bolaDeNieve, posicion + (childTransform.TransformDirection(Vector3.back * 0.2f)), Quaternion.identity);
-        Debug.Log(this.gameObject);
+        
         Proyectil proyectil = aux.GetComponent<Proyectil>();
-        Debug.Log(proyectil);
-        Debug.Log(cubo);
         if(cubo == null)
         {
             cubo = FindObjectOfType<Cube>();
@@ -554,11 +606,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
     [PunRPC]
     void AcabarPartida()
     {
-
-        PhotonNetwork.LeaveRoom();
-        PhotonNetwork.LeaveLobby();
-        SceneManager.LoadScene("Launcher");
-
+        salirmePartida();
     }
 
     #endregion
@@ -2706,7 +2754,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                                 break;
                             }
                             tile = cubo.faces[cara].tiles[indexX, indexY + 1].GetComponent<TileScript>();
-                            Debug.Log("Leyendo casilla: " + (indexX) + ", " + (indexY + 1));
+                            //Debug.Log("Leyendo casilla: " + (indexX) + ", " + (indexY + 1));
                             if (tile.tileType == TileScript.type.ICE)
                             {
                                 if (tile.myObjectType == TileScript.tileObject.NULL)
