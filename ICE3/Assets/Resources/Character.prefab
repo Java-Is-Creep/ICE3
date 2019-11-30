@@ -137,8 +137,11 @@ MonoBehaviour:
   timeBetweenShots: 1
   timeWaitingShots: 0
   ammunition: 0
+  MAXPUNTUACION: 3
   timeoutCollision: 0
   maxTimeoutCollision: 0
+  timeoutCollisionBanderas: 0
+  maxTimeoutCollisionBanderas: 0
 --- !u!114 &7116918764183407478
 MonoBehaviour:
   m_ObjectHideFlags: 0

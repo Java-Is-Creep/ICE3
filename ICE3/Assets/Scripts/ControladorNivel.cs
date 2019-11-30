@@ -116,7 +116,19 @@ public class ControladorNivel : MonoBehaviourPunCallbacks
                 aux.transform.Rotate(new Vector3(0, 0, 180));
                 break;
         }
-        aux.transform.position += aux.transform.TransformDirection(Vector3.up);
+        switch (obj)
+        {
+            case ObjetosCreables.balas:
+                aux.transform.position += aux.transform.TransformDirection(Vector3.up);
+                break;
+            case ObjetosCreables.bandera:
+                aux.transform.position += aux.transform.TransformDirection(Vector3.up * 0.75f);
+                break;
+            default:
+                aux = null;
+                break;
+        }
+
     }
 
 

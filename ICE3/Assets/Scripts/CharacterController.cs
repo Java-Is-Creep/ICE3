@@ -39,7 +39,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
     //Puntuacion
     private int puntos;
-    public int MAXPUNTUACION = 3;
+    public int MAXPUNTUACION;
 
 
 
@@ -53,6 +53,9 @@ public class CharacterController : MonoBehaviourPunCallbacks
     //Para colision entre personajes
     public int timeoutCollision;
     public int maxTimeoutCollision;
+    //Para colision con banderas
+    public int timeoutCollisionBanderas;
+    public int maxTimeoutCollisionBanderas;
 
     // Start is called before the first frame update
     void Start()
@@ -60,8 +63,11 @@ public class CharacterController : MonoBehaviourPunCallbacks
         model = this.transform.GetChild(0).gameObject;
         camaraScript = FindObjectOfType<moverCamaraFija>();
         maxTimeoutCollision = 3;
+        maxTimeoutCollisionBanderas = 3;
         timeoutCollision = 0;
+        timeoutCollisionBanderas = 0;
         puntos = 0;
+        MAXPUNTUACION = 6;
 
     }
 
@@ -71,6 +77,10 @@ public class CharacterController : MonoBehaviourPunCallbacks
         if (timeoutCollision > 0)
         {
             timeoutCollision--;
+        }
+        if (timeoutCollisionBanderas > 0)
+        {
+            timeoutCollisionBanderas--;
         }
 
         if (!photonView.IsMine)
@@ -330,8 +340,10 @@ public class CharacterController : MonoBehaviourPunCallbacks
     public void sumarPuntuacion()
     {
         puntos++;
+        Debug.Log("Puntos: " + puntos);
         if (puntos >= MAXPUNTUACION)
         {
+            Debug.Log("Puntos  de verdad: " + puntos);
             this.photonView.RPC("AcabarPartida", RpcTarget.All);
         }
     }
@@ -355,8 +367,13 @@ public class CharacterController : MonoBehaviourPunCallbacks
             
             if(other.tag == "Bandera")
             {
-                Debug.Log("Bandera Cogida");
-                sumarPuntuacion();
+                if(timeoutCollisionBanderas <= 0)
+                {
+                    Debug.Log("Bandera Cogida");
+                    sumarPuntuacion();
+                    timeoutCollisionBanderas = maxTimeoutCollisionBanderas;
+                }
+
 
             }
             if (other.tag == "CharacterCollider")
@@ -2812,7 +2829,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                                 break;
                             }
                             tile = cubo.faces[cara].tiles[indexX - 1, indexY].GetComponent<TileScript>();
-                            Debug.Log("Leyendo casilla: " + (indexX - 1) + ", " + (indexY));
+                            //Debug.Log("Leyendo casilla: " + (indexX - 1) + ", " + (indexY));
                             if (tile.tileType == TileScript.type.ICE)
                             {
                                 if (tile.myObjectType == TileScript.tileObject.NULL)
