@@ -6,6 +6,7 @@ using Photon.Pun;
 
 public class Banderas : MonoBehaviourPunCallbacks
 {
+    public TileScript tile;
     // Start is called before the first frame update
     void Start()
     {
@@ -39,6 +40,7 @@ public class Banderas : MonoBehaviourPunCallbacks
     {
 
         Debug.Log("Destruido por master");
+        tile.myObjectType = TileScript.tileObject.NULL;
         PhotonNetwork.Destroy(this.gameObject);
 
     }

@@ -15,7 +15,20 @@ public class ControladorNivel : MonoBehaviourPunCallbacks
     public bool hayBalas;
     public bool hayBanderas;
 
+    public List<TileScript> spawnPersonajeCasillas;
+    public List<TileScript> spawnBazokaCasillas;
+    public List<TileScript> spawnBanderaCasillas;
+
     enum ObjetosCreables { bandera, balas }
+
+    public int intentos;
+
+    private void Awake()
+    {
+        spawnPersonajeCasillas = new List<TileScript>();
+        spawnBazokaCasillas = new List<TileScript>();
+        spawnBanderaCasillas = new List<TileScript>();
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -40,7 +53,8 @@ public class ControladorNivel : MonoBehaviourPunCallbacks
                 }
                 else
                 {
-                    createObject(ObjetosCreables.balas);
+                    //createObject(ObjetosCreables.balas);
+                    createBazoka();
                     TimeToCreateAmmunition = Random.Range(15, 26);
                     actualTimeAmmunation = 0;
                 }
@@ -55,7 +69,8 @@ public class ControladorNivel : MonoBehaviourPunCallbacks
                 }
                 else
                 {
-                    createObject(ObjetosCreables.bandera);
+                    createBandera();
+                    //createObject(ObjetosCreables.bandera);
                     TimeToCreateBandera = Random.Range(20, 30);
                     actualTimeBandera = 0;
                 }
@@ -65,7 +80,165 @@ public class ControladorNivel : MonoBehaviourPunCallbacks
 
     }
 
+    private void createBandera()
+    {
+        int indexX;
+        int indexY;
+        int cara;
+        TileScript miCasilla = null;
+        if (spawnBanderaCasillas.Count > 0)
+        {
+            TileScript casilla;
+            do
+            {
+                if(intentos == spawnBanderaCasillas.Count)
+                {
+                    intentos = 0;
+                    return;
+                }
+                int indice = Random.Range(0, spawnBanderaCasillas.Count);
+                casilla = spawnBanderaCasillas[indice];
+                intentos++;
+            } while (casilla.myObjectType != TileScript.tileObject.NULL);
+            miCasilla = casilla;
+        }
 
+        intentos = 0;
+
+        indexX = miCasilla.indexX;
+        indexY = miCasilla.indexY;
+        cara = miCasilla.cubeId;
+        GameObject aux = null;
+        if(miCasilla != null)
+        {
+            aux = PhotonNetwork.InstantiateSceneObject("BanderaCold", miCasilla.AbsolutePos, Quaternion.identity);
+        } else
+        {
+            return;
+        }
+
+        switch (cara)
+        {
+            case (0):
+
+                break;
+            case (1):
+                aux.transform.Rotate(new Vector3(0, 0, 90));
+                break;
+            case (2):
+                aux.transform.Rotate(new Vector3(0, 0, -90));
+                break;
+            case (3):
+                aux.transform.Rotate(new Vector3(90, 0, 0));
+                break;
+            case (4):
+                aux.transform.Rotate(new Vector3(-90, 0, 0));
+                break;
+            case (5):
+                aux.transform.Rotate(new Vector3(0, 0, 180));
+                break;
+        }
+
+        aux.transform.position += aux.transform.TransformDirection(Vector3.up * 0.75f);
+        miCasilla.myObjectType = TileScript.tileObject.BANDERA;
+        aux.GetComponent<Banderas>().tile = miCasilla;
+        
+
+    }
+
+    private void createBazoka()
+    {
+        int indexX;
+        int indexY;
+        int cara;
+        TileScript miCasilla = null;
+
+        if (spawnBazokaCasillas.Count > 0)
+        {
+            TileScript casilla;
+            do
+            {
+                if (intentos == spawnBazokaCasillas.Count)
+                {
+                    intentos = 0;
+                    return;
+                }
+                int indice = Random.Range(0, spawnBanderaCasillas.Count);
+                casilla = spawnBazokaCasillas[indice];
+                intentos++;
+            } while (casilla.myObjectType != TileScript.tileObject.NULL);
+            miCasilla = casilla;
+        }
+
+        intentos = 0;
+
+        indexX = miCasilla.indexX;
+        indexY = miCasilla.indexY;
+        cara = miCasilla.cubeId;
+        GameObject aux = null;
+        if (miCasilla != null)
+        {
+            aux = PhotonNetwork.InstantiateSceneObject("KitBalas", miCasilla.AbsolutePos, Quaternion.identity);
+        }
+        else
+        {
+            return;
+        }
+
+        switch (cara)
+        {
+            case (0):
+
+                break;
+            case (1):
+                aux.transform.Rotate(new Vector3(0, 0, 90));
+                break;
+            case (2):
+                aux.transform.Rotate(new Vector3(0, 0, -90));
+                break;
+            case (3):
+                aux.transform.Rotate(new Vector3(90, 0, 0));
+                break;
+            case (4):
+                aux.transform.Rotate(new Vector3(-90, 0, 0));
+                break;
+            case (5):
+                aux.transform.Rotate(new Vector3(0, 0, 180));
+                break;
+        }
+
+        aux.transform.position += aux.transform.TransformDirection(Vector3.up);
+        miCasilla.myObjectType = TileScript.tileObject.BAZOKA;
+        aux.GetComponent<KitBalas>().tile = miCasilla;
+
+    }
+
+    public TileScript getCasillaVacia()
+    {
+        if (spawnPersonajeCasillas.Count > 0)
+        {
+            TileScript casilla;
+            do
+            {
+                if (intentos == spawnPersonajeCasillas.Count)
+                {
+                    intentos = 0;
+                    return null;
+                }
+                int indice = Random.Range(0, spawnBanderaCasillas.Count);
+                casilla = spawnPersonajeCasillas[indice];
+                intentos++;
+            } while (casilla.myObjectType != TileScript.tileObject.NULL);
+            intentos = 0;
+            spawnPersonajeCasillas.Remove(casilla);
+            return casilla;
+        }
+
+        return null;
+    }
+
+
+    // cuando se cree el mapa nuevo no serían válidos
     private void createObject(ObjetosCreables obj)
     {
         int indexX;
@@ -130,6 +303,24 @@ public class ControladorNivel : MonoBehaviourPunCallbacks
         }
 
     }
+
+    #region llenar casillas clave
+    public void anadirCasillaPersonaje(TileScript casilla)
+    {
+        spawnPersonajeCasillas.Add(casilla);
+    }
+
+    public void anadirCasillaBazoka(TileScript casilla)
+    {
+        spawnBazokaCasillas.Add(casilla);
+    }
+
+    public void anadirCasillaBandera(TileScript casilla)
+    {
+        spawnBanderaCasillas.Add(casilla);
+    }
+
+    #endregion
 
 
 }

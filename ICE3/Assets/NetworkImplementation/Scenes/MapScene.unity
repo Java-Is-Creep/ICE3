@@ -1303,6 +1303,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 5330454364098527772, guid: 7b9ded1496edfae46904431f9162cdc9,
         type: 3}
+    - target: {fileID: 669851652224002710, guid: 70ac3138d67530c42911914b6e7bdfad,
+        type: 3}
+      propertyPath: controlador
+      value: 
+      objectReference: {fileID: 1048803627}
     - target: {fileID: 2412898396405972018, guid: 70ac3138d67530c42911914b6e7bdfad,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1380,6 +1385,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hayBalas: 1
   hayBanderas: 0
+  intentos: 0
 --- !u!1 &1076029693
 GameObject:
   m_ObjectHideFlags: 3

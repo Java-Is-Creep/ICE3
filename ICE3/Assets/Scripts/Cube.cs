@@ -36,10 +36,15 @@ public class Cube : MonoBehaviourPunCallbacks
     string[,] caraIzquierda;//4
     string[,] caraBottom;//5
 
-    
-    void Start()
+    //Controlador de nivel
+    ControladorNivel controlNivel;
+
+
+
+    void Awake()
     {
-        
+
+         controlNivel= FindObjectOfType<ControladorNivel>();
 
         readCSV();
         //this.transform.position = new Vector3(-this.width / 2, this.heigth / 2, -this.heigth / 2 + this.tamañoCara / 2);
@@ -60,6 +65,9 @@ public class Cube : MonoBehaviourPunCallbacks
                     GameObject tileGround = null;
                     TileScript.tileObject tileObjectType = TileScript.tileObject.NULL;
                     GameObject objectInTile = null;
+                    bool spawnPersonaje = false;
+                    bool spawnBandera = false;
+                    bool spawnBazoka = false;
 
                     string casilla = "none";
 
@@ -110,26 +118,24 @@ public class Cube : MonoBehaviourPunCallbacks
                             //objectInTile = prefabRock;
                             tileObjectType = TileScript.tileObject.ROCK;
                             break;
-                        
+                        case "SH.R":
+                            tileType = TileScript.type.ICE;
+                            tileGround = prefabIce;
+                            spawnPersonaje = true;
+                            break;
+                        case "SH.O":
+                            tileType = TileScript.type.ICE;
+                            tileGround = prefabIce;
+                            spawnBazoka = true;
+                            break;
+                        case "SH.F":
+                            tileType = TileScript.type.ICE;
+                            tileGround = prefabIce;
+                            spawnBandera = true;
+                            break;
+
+
                     }
-                    //TODO LO DE LOS TILES YA NO VALE PARA NADA
-                    /*
-                    if (y == 0 || x == 0 || x == width - 1 || y == heigth - 1)
-                    {
-                        tileType = TileScript.type.ROCK;
-                        tileTypeObject = prefabRock;
-                    }
-                    else if (random < probRock)
-                    {
-                        tileType = TileScript.type.ROCK;
-                        tileTypeObject = prefabRock;
-                    }
-                    else
-                    {
-                        tileType = TileScript.type.ICE;
-                        tileTypeObject = prefabIce;
-                    }
-                    */
                     
                     GameObject tileObject = Instantiate(prefabTile, facesObject[i].GetComponent < Transform>());
                     tileObject.transform.position = new Vector3(x, 0, y);
@@ -139,6 +145,32 @@ public class Cube : MonoBehaviourPunCallbacks
                     {
                         tile.hasObject(objectInTile, tileObjectType);
                     }
+
+
+                    // lo metemos en las listas de posiciones paera instanciar;
+                    if (spawnPersonaje)
+                    {
+                        if (controlNivel != null)
+                        {
+                            controlNivel.anadirCasillaPersonaje(tile);
+                        }
+                    }
+                    if (spawnBandera)
+                    {
+                        if (controlNivel != null)
+                        {
+                            controlNivel.anadirCasillaBandera(tile);
+                        }
+                    }
+                    if (spawnBazoka)
+                    {
+                        if(controlNivel != null)
+                        {
+                            controlNivel.anadirCasillaBazoka(tile);
+                        }
+                    }
+
+
                     cubeFace[x, y] = tileObject;
                 }
             }

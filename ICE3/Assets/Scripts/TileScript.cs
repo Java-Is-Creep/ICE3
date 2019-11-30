@@ -5,9 +5,9 @@ using UnityEngine;
 public class TileScript : MonoBehaviour
 {
 
-    int indexX;
-    int indexY;
-    int cubeId;
+    public int indexX;
+    public int indexY;
+    public int cubeId;
 
     GameObject myGround;
     GameObject myObject;
@@ -16,7 +16,7 @@ public class TileScript : MonoBehaviour
 
     public enum type { ICE,ROCK,NULL}
 
-    public enum tileObject { NULL, ROCK}
+    public enum tileObject { NULL, ROCK, BAZOKA, BANDERA}
 
     public type tileType;
 

@@ -41,8 +41,9 @@ public class CharacterController : MonoBehaviourPunCallbacks
     private int puntos;
     public int MAXPUNTUACION;
 
-    // Vidas
-    private int vidas;
+    // Puntos
+    private int puntosBolas;
+    private int MaxPuntuacionBolas;
 
 
 
@@ -76,7 +77,8 @@ public class CharacterController : MonoBehaviourPunCallbacks
         timeoutCollisionProyectil = 0;
         puntos = 0;
         MAXPUNTUACION = 6;
-        vidas = 3;
+        puntosBolas = 0;
+        MaxPuntuacionBolas = 5;
 
     }
 
@@ -119,10 +121,12 @@ public class CharacterController : MonoBehaviourPunCallbacks
             }
             else
             {
+                /*
                 Debug.Log("Cliente");
                 indexX = 3;
                 indexY = 4;
                 cara = 0;
+                */
             }
 
 
@@ -362,13 +366,13 @@ public class CharacterController : MonoBehaviourPunCallbacks
         }
     }
 
-    public void quitarVida()
+    public void sumarPuntosBolas()
     {
-        vidas--;
-        Debug.Log("Vidas: " + vidas);
-        if(vidas <= 0)
+        puntosBolas++;
+        Debug.Log("Puntos bolas: " + puntosBolas);
+        if(puntosBolas >= MaxPuntuacionBolas)
         {
-            salirmePartida();
+            this.photonView.RPC("AcabarPartida", RpcTarget.All);
         }
     }
 
@@ -379,7 +383,6 @@ public class CharacterController : MonoBehaviourPunCallbacks
         if (photonView.IsMine)
         {
             PhotonNetwork.LeaveRoom();
-            SceneManager.LoadScene("Launcher");
         }
 
     }
@@ -423,7 +426,6 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 {
                     if (other.GetComponent<Proyectil>().dueño != this.gameObject)
                     {
-                        quitarVida();
                         timeoutCollisionProyectil = maxTimeoutCollisionProyectil;
                     }
                 }
@@ -606,6 +608,10 @@ public class CharacterController : MonoBehaviourPunCallbacks
     [PunRPC]
     void AcabarPartida()
     {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.LoadLevel("Launcher");
+        }
         salirmePartida();
     }
 
