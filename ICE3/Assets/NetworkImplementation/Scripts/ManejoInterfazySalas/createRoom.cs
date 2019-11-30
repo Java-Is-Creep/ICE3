@@ -29,8 +29,22 @@ public class createRoom : MonoBehaviourPunCallbacks
         if (!PhotonNetwork.IsConnected)
         {
             PhotonNetwork.ConnectUsingSettings();
+            createRoomButton.SetActive(false);
+            return;
         }
-        createRoomButton.SetActive(false);
+
+        if (!PhotonNetwork.InLobby)
+        {
+            PhotonNetwork.JoinLobby();
+            createRoomButton.SetActive(false);
+            return;
+        }
+
+        if(PhotonNetwork.IsConnected && PhotonNetwork.InLobby)
+        {
+            createRoomButton.SetActive(true);
+        }
+
     }
 
     /// <summary>
@@ -67,6 +81,9 @@ public class createRoom : MonoBehaviourPunCallbacks
         if (!PhotonNetwork.InLobby)
         {
             PhotonNetwork.JoinLobby();
+        } else
+        {
+            createRoomButton.SetActive(true);
         }
     }
 

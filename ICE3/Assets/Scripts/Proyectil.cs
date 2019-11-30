@@ -7,21 +7,20 @@ public class Proyectil : MonoBehaviour
 {
     private Vector3 direccion;
     public float incrementoPosicion;
-    GameObject dueño;
+    public GameObject dueño;
     public float height;
-    
+
 
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
     void Update()
     {
-        this.transform.position += direccion *incrementoPosicion;
-        if(Vector3.Distance(this.transform.position, dueño.transform.position) > 2 * height)
+        this.transform.position += direccion * incrementoPosicion;
+        if (Vector3.Distance(this.transform.position, dueño.transform.position) > 2 * height)
         {
             Destroy(this.gameObject);
         }
@@ -31,24 +30,33 @@ public class Proyectil : MonoBehaviour
     {
         this.direccion = direccion.normalized;
         this.dueño = dueño;
+        Debug.Log("mi dueño es el master: " + dueño.gameObject.GetComponent<CharacterController>().soyMaster());
         this.height = height;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-       if(other.gameObject.tag.CompareTo("Rock") == 0)
+        if (other.gameObject.tag.CompareTo("Rock") == 0)
         {
             Destroy(this.gameObject);
-        } else if (other.gameObject.tag.CompareTo("Player") == 0)
+        }
+        else if (other.gameObject.tag.CompareTo("CharacterCollider") == 0)
         {
-            if(dueño == other.gameObject)
+            if (other.gameObject.transform.parent.gameObject == dueño)
             {
+
                 Debug.Log("choque contigo mismo");
-            } else
+            }
+            else
             {
                 Debug.Log("Choque con enemigo");
+                Destroy(this.gameObject);
             }
-            
         }
     }
+
+
+
+
 }
+
