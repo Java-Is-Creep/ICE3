@@ -12,7 +12,10 @@ public class Cube : MonoBehaviourPunCallbacks
 
     // prefabs de objetos de las caras
     public GameObject prefabIce;
-    public GameObject prefabRock;
+    //public GameObject prefabRock;
+    public GameObject prefabPresent1;
+    public GameObject prefabPresent2;
+    public GameObject prefabPresent3;
     public GameObject prefabTile;
     public GameObject prefabFace;
     int probRock = 10;
@@ -91,7 +94,20 @@ public class Cube : MonoBehaviourPunCallbacks
                         case "SH.P":
                             tileType = TileScript.type.ICE;
                             tileGround = prefabIce;
-                            objectInTile = prefabRock;
+                            int num = Random.Range(0, 3);
+                            switch (num)
+                            {
+                                case 0:
+                                    objectInTile = prefabPresent1;
+                                    break;
+                                case 1:
+                                    objectInTile = prefabPresent2;
+                                    break;
+                                case 2:
+                                    objectInTile = prefabPresent3;
+                                    break;
+                            }
+                            //objectInTile = prefabRock;
                             tileObjectType = TileScript.tileObject.ROCK;
                             break;
                         
