@@ -67,6 +67,9 @@ public class GameManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LeaveRoom();
     }
 
+    #region RPCs
+ 
+    #endregion
 
     #region Private methods
 

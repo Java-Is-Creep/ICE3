@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine.SceneManagement;
 
 public class CharacterController : MonoBehaviourPunCallbacks
 {
@@ -36,6 +37,10 @@ public class CharacterController : MonoBehaviourPunCallbacks
     public float timeWaitingShots = 0;
     public int ammunition = 0;
 
+    //Puntuacion
+    private int puntos;
+    public int MAXPUNTUACION = 3;
+
 
 
     bool ab = false;
@@ -53,10 +58,11 @@ public class CharacterController : MonoBehaviourPunCallbacks
     void Start()
     {
         model = this.transform.GetChild(0).gameObject;
-        Debug.Log(model);
         camaraScript = FindObjectOfType<moverCamaraFija>();
         maxTimeoutCollision = 3;
         timeoutCollision = 0;
+        puntos = 0;
+
     }
 
     // Update is called once per frame
@@ -315,26 +321,23 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
     }
 
+    #region funcionalidd coger Objetos
     public void añadirBalas()
     {
         ammunition += 3;
     }
 
-    /*
-    #region PunCallbacks
-    public override void OnPlayerLeftRoom(Player otherPlayer)
+    public void sumarPuntuacion()
     {
-        if (photonView.IsMine)
+        puntos++;
+        if (puntos >= MAXPUNTUACION)
         {
-
-        }
-        if (otherPlayer.IsMasterClient)
-        {
-
+            this.photonView.RPC("AcabarPartida", RpcTarget.All);
         }
     }
     #endregion
-    */
+
+
 
     #region Colisiones
     private void OnTriggerEnter(Collider other)
@@ -348,6 +351,13 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 Debug.Log("Balas Cogidas");
                 añadirBalas();
                 //other.gameObject.GetComponent<KitBalas>().crash();
+            }
+            
+            if(other.tag == "Bandera")
+            {
+                Debug.Log("Bandera Cogida");
+                sumarPuntuacion();
+
             }
             if (other.tag == "CharacterCollider")
             {
@@ -497,9 +507,12 @@ public class CharacterController : MonoBehaviourPunCallbacks
     }
     #endregion
 
-    #region Funciones Remotas
+    #region RPCs
 
-    ///
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="posicion"></param>
     [PunRPC]
     void Shot(Vector3 posicion)
     {
@@ -519,6 +532,16 @@ public class CharacterController : MonoBehaviourPunCallbacks
             cubo = FindObjectOfType<Cube>();
         }
         proyectil.initDireccion(childTransform.TransformDirection(Vector3.back), this.gameObject, cubo.heigth);
+    }
+
+    [PunRPC]
+    void AcabarPartida()
+    {
+
+        PhotonNetwork.LeaveRoom();
+        PhotonNetwork.LeaveLobby();
+        SceneManager.LoadScene("Launcher");
+
     }
 
     #endregion

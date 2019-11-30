@@ -1378,6 +1378,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7980ae6a3a922640af6c060656022d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hayBalas: 0
+  hayBanderas: 1
 --- !u!1 &1076029693
 GameObject:
   m_ObjectHideFlags: 3
