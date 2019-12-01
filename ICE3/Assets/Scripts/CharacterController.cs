@@ -559,10 +559,9 @@ public class CharacterController : MonoBehaviourPunCallbacks
         int indexYcerca = -1;
         float distanciaMasCercana = 100000f;
         Vector3 posTile;
-
-        for (int i = 0; i < cubo.width - 1; i++)
+        for (int i = 0; i <= cubo.width - 1; i++)
         {
-            for (int j = 0; j < cubo.heigth - 1; j++)
+            for (int j = 0; j <= cubo.heigth - 1; j++)
             {
                 posTile = cubo.faces[cara].tiles[i, j].GetComponent<TileScript>().AbsolutePos;
                 float aux = Vector3.Distance(this.transform.position, posTile);
@@ -574,7 +573,6 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 }
             }
         }
-        Debug.Log("la casilla mas cercana es :" + indexXcerca + " " + indexYcerca + " a la distancia de: " + distanciaMasCercana);
         return new Vector3(indexXcerca, indexYcerca, distanciaMasCercana);
     }
     #endregion
