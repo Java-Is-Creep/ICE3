@@ -175,6 +175,11 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         SceneManager.LoadScene("UnirseSala");
     }
+
+    public void exitMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
     #endregion
 
 }
