@@ -92,7 +92,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
             timeoutCollisionBanderas--;
         }
 
-        if(timeoutCollisionProyectil > 0)
+        if (timeoutCollisionProyectil > 0)
         {
             timeoutCollisionProyectil--;
         }
@@ -139,7 +139,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
                     break;
                 case (1):
-                    this.transform.Rotate(new Vector3(0,0,90));
+                    this.transform.Rotate(new Vector3(0, 0, 90));
                     camaraScript.back();
                     break;
                 case (2):
@@ -147,7 +147,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     camaraScript.front();
                     break;
                 case (3):
-                    this.transform.Rotate(new Vector3(90,0,0));
+                    this.transform.Rotate(new Vector3(90, 0, 0));
                     camaraScript.right();
                     break;
                 case (4):
@@ -167,7 +167,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
             this.transform.position = this.transform.position + new Vector3(0, 1, 0);
             */
             hecho = true;
-        } 
+        }
 
         float incrementAux = increment * Time.deltaTime;
 
@@ -176,13 +176,14 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
             if (timeBetweenShots < timeWaitingShots)
             {
-                if(ammunition > 0)
+                if (ammunition > 0)
                 {
                     Debug.Log("Disparando");
-                    this.photonView.RPC("Shot", RpcTarget.All,this.transform.position);
+                    this.photonView.RPC("Shot", RpcTarget.All, this.transform.position);
                     timeWaitingShots = 0;
                     ammunition--;
-                } else
+                }
+                else
                 {
                     Debug.Log("Sin municion");
                 }
@@ -194,7 +195,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
         //1
         if (Input.GetKeyDown("a") || ab)
         {
-            if (cara == 0 || cara == 2 )
+            if (cara == 0 || cara == 2)
             {
                 model.transform.localRotation = Quaternion.Euler(0, 0, 0);
             }
@@ -313,7 +314,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
             }
         }
 
-       
+
         switch (cara)
         {
             case 0:
@@ -366,7 +367,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
     {
         vidas--;
         Debug.Log("Vidas: " + vidas);
-        if(vidas <= 0)
+        if (vidas <= 0)
         {
             salirmePartida();
         }
@@ -394,20 +395,20 @@ public class CharacterController : MonoBehaviourPunCallbacks
     #region Colisiones
     private void OnTriggerEnter(Collider other)
     {
-        
+
         if (photonView.IsMine)
         {
-            
+
             if (other.tag == "KitBalas")
             {
                 //Debug.Log("Balas Cogidas");
                 añadirBalas();
                 //other.gameObject.GetComponent<KitBalas>().crash();
             }
-            
-            if(other.tag == "Bandera")
+
+            if (other.tag == "Bandera")
             {
-                if(timeoutCollisionBanderas <= 0)
+                if (timeoutCollisionBanderas <= 0)
                 {
                     //Debug.Log("Bandera Cogida");
                     sumarPuntuacion();
@@ -417,9 +418,9 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
             }
 
-            if(other.tag == "Proyectil")
+            if (other.tag == "Proyectil")
             {
-                if(timeoutCollisionProyectil <= 0)
+                if (timeoutCollisionProyectil <= 0)
                 {
                     if (other.GetComponent<Proyectil>().dueño != this.gameObject)
                     {
@@ -427,7 +428,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                         timeoutCollisionProyectil = maxTimeoutCollisionProyectil;
                     }
                 }
-                
+
             }
 
             if (other.tag == "CharacterCollider")
@@ -454,7 +455,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                         //Caras right y left
                         else if (cara == 3 || cara == 4)
                         {
-                            this.transform.position = new Vector3(posTile.x,  posTile.y, this.transform.position.z);
+                            this.transform.position = new Vector3(posTile.x, posTile.y, this.transform.position.z);
                         }
                         //Caras front y back
                         else if (cara == 1 || cara == 2)
@@ -558,14 +559,13 @@ public class CharacterController : MonoBehaviourPunCallbacks
         int indexYcerca = -1;
         float distanciaMasCercana = 100000f;
         Vector3 posTile;
-
-        for (int i = 0; i< cubo.width-1; i++)
+        for (int i = 0; i <= cubo.width - 1; i++)
         {
-            for (int j = 0; j < cubo.heigth-1; j++)
+            for (int j = 0; j <= cubo.heigth - 1; j++)
             {
                 posTile = cubo.faces[cara].tiles[i, j].GetComponent<TileScript>().AbsolutePos;
                 float aux = Vector3.Distance(this.transform.position, posTile);
-                if ( aux < distanciaMasCercana)
+                if (aux < distanciaMasCercana)
                 {
                     distanciaMasCercana = aux;
                     indexXcerca = i;
@@ -573,7 +573,6 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 }
             }
         }
-        Debug.Log("la casilla mas cercana es :" + indexXcerca + " " + indexYcerca + " a la distancia de: " + distanciaMasCercana);
         return new Vector3(indexXcerca, indexYcerca, distanciaMasCercana);
     }
     #endregion
@@ -594,13 +593,538 @@ public class CharacterController : MonoBehaviourPunCallbacks
          }*/
         Transform childTransform = this.gameObject.transform.GetChild(0);
         GameObject aux = Instantiate(bolaDeNieve, posicion + (childTransform.TransformDirection(Vector3.back * 0.2f)), Quaternion.identity);
-        
+
         Proyectil proyectil = aux.GetComponent<Proyectil>();
-        if(cubo == null)
+        if (cubo == null)
         {
             cubo = FindObjectOfType<Cube>();
         }
         proyectil.initDireccion(childTransform.TransformDirection(Vector3.back), this.gameObject, cubo.heigth);
+
+        //Moverte cuando disparas
+        hayCambioCara = false;
+        Vector3 aux2;
+
+        //Cara TOP
+        if (cara == 0)
+        {
+            //Estas mirando hacia arriba
+            if (Mathf.Abs(model.transform.localEulerAngles.y - 90) <= 1)
+            {
+                if (lastMovement != 2)
+                {
+                    aux2 = comprobarCasillaMasCercana();
+                    indexX = (int)aux2.x;
+                    indexY = (int)aux2.y;
+                    Vector3 posTile = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
+                    Debug.Log("Estoy mirando hacia arriba");
+                    lastMovement = 2;
+                    this.transform.position = new Vector3(posTile.x, this.transform.position.y, posTile.z);
+                    moving = false;
+                }
+            }
+
+            //Mirando hacia la izquierda
+            else if (Mathf.Abs(model.transform.localEulerAngles.y) <= 1)
+            {
+                if (lastMovement != 3)
+                {
+                    aux2 = comprobarCasillaMasCercana();
+                    indexX = (int)aux2.x;
+                    indexY = (int)aux2.y;
+                    Vector3 posTile = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
+                    Debug.Log("Estoy mirando hacia dcha");
+                    lastMovement = 3;
+                    this.transform.position = new Vector3(posTile.x, this.transform.position.y, posTile.z);
+                    moving = false;
+                }
+            }
+
+            //Mirando hacia la derecha
+            else if (Mathf.Abs(model.transform.localEulerAngles.y - 180) <= 1)
+            {
+                if (lastMovement != 1)
+                {
+                    aux2 = comprobarCasillaMasCercana();
+                    indexX = (int)aux2.x;
+                    indexY = (int)aux2.y;
+                    Vector3 posTile = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
+                    Debug.Log("Estoy mirando hacia izqda");
+                    lastMovement = 1;
+                    this.transform.position = new Vector3(posTile.x, this.transform.position.y, posTile.z);
+                    moving = false;
+                }
+            }
+
+            //Mirando hacia abajo
+            else
+            {
+                if (lastMovement != 4)
+                {
+                    aux2 = comprobarCasillaMasCercana();
+                    indexX = (int)aux2.x;
+                    indexY = (int)aux2.y;
+                    Vector3 posTile = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
+                    Debug.Log("Estoy mirando hacia abajo");
+                    lastMovement = 4;
+                    this.transform.position = new Vector3(posTile.x, this.transform.position.y, posTile.z);
+                    moving = false;
+                }
+            }
+        }
+
+        //Cara back
+        else if (cara == 1)
+        {
+            Debug.Log("Cara back");
+            //Estas mirando hacia abajo
+            if (Mathf.Abs(model.transform.localEulerAngles.y - 90) <= 1)
+            {
+                if (lastMovement != 4)
+                {
+                    aux2 = comprobarCasillaMasCercana();
+                    indexX = (int)aux2.x;
+                    indexY = (int)aux2.y;
+                    Vector3 posTile = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
+                    Debug.Log("Estoy mirando hacia abajo");
+                    lastMovement = 4;
+                    this.transform.position = new Vector3(this.transform.position.x, posTile.y, posTile.z);
+                    moving = false;
+                }
+            }
+
+            //Mirando hacia la derecha
+            else if (Mathf.Abs(model.transform.localEulerAngles.y) <= 1)
+            {
+                if (lastMovement != 1)
+                {
+                    aux2 = comprobarCasillaMasCercana();
+                    indexX = (int)aux2.x;
+                    indexY = (int)aux2.y;
+                    Vector3 posTile = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
+                    Debug.Log("Estoy mirando hacia dcha");
+                    lastMovement = 1;
+                    this.transform.position = new Vector3(this.transform.position.x, posTile.y, posTile.z);
+                    moving = false;
+                }
+            }
+
+            //Mirando hacia la izqda
+            else if (Mathf.Abs(model.transform.localEulerAngles.y - 180) <= 1)
+            {
+                if (lastMovement != 3)
+                {
+                    aux2 = comprobarCasillaMasCercana();
+                    indexX = (int)aux2.x;
+                    indexY = (int)aux2.y;
+                    Vector3 posTile = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
+                    Debug.Log("Estoy mirando hacia izqda");
+                    lastMovement = 3;
+                    this.transform.position = new Vector3(this.transform.position.x, posTile.y, posTile.z);
+                    moving = false;
+                }
+            }
+
+            //Mirando hacia arriba
+            else
+            {
+                if (lastMovement != 2)
+                {
+                    aux2 = comprobarCasillaMasCercana();
+                    indexX = (int)aux2.x;
+                    indexY = (int)aux2.y;
+                    Vector3 posTile = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
+                    Debug.Log("Estoy mirando hacia arriba");
+                    lastMovement = 2;
+                    this.transform.position = new Vector3(this.transform.position.x, posTile.y, posTile.z);
+                    moving = false;
+                }
+            }
+        }
+
+        //Cara front
+        else if (cara == 2)
+        {
+            Debug.Log("Cara front");
+            //Estas mirando hacia abajo
+            if (Mathf.Abs(model.transform.localEulerAngles.y - 90) <= 1)
+            {
+                if (lastMovement != 2)
+                {
+                    aux2 = comprobarCasillaMasCercana();
+                    indexX = (int)aux2.x;
+                    indexY = (int)aux2.y;
+                    Vector3 posTile = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
+                    Debug.Log("Estoy mirando hacia abajo");
+                    lastMovement = 2;
+                    this.transform.position = new Vector3(this.transform.position.x, posTile.y, posTile.z);
+                    moving = false;
+                }
+            }
+
+            //Mirando hacia la derecha
+            else if (Mathf.Abs(model.transform.localEulerAngles.y) <= 1)
+            {
+                if (lastMovement != 3)
+                {
+                    aux2 = comprobarCasillaMasCercana();
+                    indexX = (int)aux2.x;
+                    indexY = (int)aux2.y;
+                    Vector3 posTile = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
+                    Debug.Log("Estoy mirando hacia dcha");
+                    lastMovement = 3;
+                    this.transform.position = new Vector3(this.transform.position.x, posTile.y, posTile.z);
+                    moving = false;
+                }
+            }
+
+            //Mirando hacia la izqda
+            else if (Mathf.Abs(model.transform.localEulerAngles.y - 180) <= 1)
+            {
+                if (lastMovement != 1)
+                {
+                    aux2 = comprobarCasillaMasCercana();
+                    indexX = (int)aux2.x;
+                    indexY = (int)aux2.y;
+                    Vector3 posTile = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
+                    Debug.Log("Estoy mirando hacia izqda");
+                    lastMovement = 1;
+                    this.transform.position = new Vector3(this.transform.position.x, posTile.y, posTile.z);
+                    moving = false;
+                }
+            }
+
+            //Mirando hacia arriba
+            else
+            {
+                if (lastMovement != 4)
+                {
+                    aux2 = comprobarCasillaMasCercana();
+                    indexX = (int)aux2.x;
+                    indexY = (int)aux2.y;
+                    Vector3 posTile = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
+                    Debug.Log("Estoy mirando hacia arriba");
+                    lastMovement = 4;
+                    this.transform.position = new Vector3(this.transform.position.x, posTile.y, posTile.z);
+                    moving = false;
+                }
+            }
+        }
+
+        //Cara right
+        else if (cara == 3)
+        {
+            Debug.Log("Cara derecha");
+            //Estas mirando hacia abajo
+            if (Mathf.Abs(model.transform.localEulerAngles.y - 90) <= 1)
+            {
+                if (lastMovement != 1)
+                {
+                    aux2 = comprobarCasillaMasCercana();
+                    indexX = (int)aux2.x;
+                    indexY = (int)aux2.y;
+                    Vector3 posTile = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
+                    Debug.Log("Estoy mirando hacia derecha");
+                    lastMovement = 1;
+                    this.transform.position = new Vector3(posTile.x, posTile.y, this.transform.position.z);
+                    moving = false;
+                }
+            }
+
+            //Mirando hacia la arriba
+            else if (Mathf.Abs(model.transform.localEulerAngles.y) <= 1)
+            {
+                if (lastMovement != 2)
+                {
+                    aux2 = comprobarCasillaMasCercana();
+                    indexX = (int)aux2.x;
+                    indexY = (int)aux2.y;
+                    Vector3 posTile = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
+                    Debug.Log("Estoy mirando hacia arriba");
+                    lastMovement = 2;
+                    this.transform.position = new Vector3(posTile.x, posTile.y, this.transform.position.z);
+                    moving = false;
+                }
+            }
+
+            //Mirando hacia abajo
+            else if (Mathf.Abs(model.transform.localEulerAngles.y - 180) <= 1)
+            {
+                if (lastMovement != 4)
+                {
+                    aux2 = comprobarCasillaMasCercana();
+                    indexX = (int)aux2.x;
+                    indexY = (int)aux2.y;
+                    Vector3 posTile = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
+                    Debug.Log("Estoy mirando hacia abajo");
+                    lastMovement = 4;
+                    this.transform.position = new Vector3(posTile.x, posTile.y, this.transform.position.z);
+                    moving = false;
+                }
+            }
+
+            //Mirando hacia izqda
+            else
+            {
+                if (lastMovement != 3)
+                {
+                    aux2 = comprobarCasillaMasCercana();
+                    indexX = (int)aux2.x;
+                    indexY = (int)aux2.y;
+                    Vector3 posTile = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
+                    Debug.Log("Estoy mirando hacia izqda");
+                    lastMovement = 3;
+                    this.transform.position = new Vector3(posTile.x, posTile.y, this.transform.position.z);
+                    moving = false;
+                }
+            }
+        }
+
+        //Cara left
+        else if (cara == 4)
+        {
+            Debug.Log("Cara left");
+            //Estas mirando hacia izquierda
+            if (Mathf.Abs(model.transform.localEulerAngles.y - 90) <= 1)
+            {
+                if (lastMovement != 3)
+                {
+                    aux2 = comprobarCasillaMasCercana();
+                    indexX = (int)aux2.x;
+                    indexY = (int)aux2.y;
+                    Vector3 posTile = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
+                    Debug.Log("Estoy mirando hacia izquierda");
+                    lastMovement = 3;
+                    this.transform.position = new Vector3(posTile.x, posTile.y, this.transform.position.z);
+                    moving = false;
+                }
+            }
+
+            //Mirando hacia la abajo
+            else if (Mathf.Abs(model.transform.localEulerAngles.y) <= 1)
+            {
+                if (lastMovement != 4)
+                {
+                    aux2 = comprobarCasillaMasCercana();
+                    indexX = (int)aux2.x;
+                    indexY = (int)aux2.y;
+                    Vector3 posTile = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
+                    Debug.Log("Estoy mirando hacia abajo");
+                    lastMovement = 4;
+                    this.transform.position = new Vector3(posTile.x, posTile.y, this.transform.position.z);
+                    moving = false;
+                }
+            }
+
+            //Mirando hacia arriba
+            else if (Mathf.Abs(model.transform.localEulerAngles.y - 180) <= 1)
+            {
+                if (lastMovement != 2)
+                {
+                    aux2 = comprobarCasillaMasCercana();
+                    indexX = (int)aux2.x;
+                    indexY = (int)aux2.y;
+                    Vector3 posTile = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
+                    Debug.Log("Estoy mirando hacia arriba");
+                    lastMovement = 2;
+                    this.transform.position = new Vector3(posTile.x, posTile.y, this.transform.position.z);
+                    moving = false;
+                }
+            }
+
+            //Mirando hacia dcha
+            else
+            {
+                if (lastMovement != 1)
+                {
+                    aux2 = comprobarCasillaMasCercana();
+                    indexX = (int)aux2.x;
+                    indexY = (int)aux2.y;
+                    Vector3 posTile = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
+                    Debug.Log("Estoy mirando hacia dcha");
+                    lastMovement = 1;
+                    this.transform.position = new Vector3(posTile.x, posTile.y, this.transform.position.z);
+                    moving = false;
+                }
+            }
+        }
+
+        //Cara bottom
+        else if (cara == 5)
+        {
+            //Estas mirando hacia izquierda
+            if (Mathf.Abs(model.transform.localEulerAngles.y - 90) <= 1)
+            {
+                if (lastMovement != 3)
+                {
+                    aux2 = comprobarCasillaMasCercana();
+                    indexX = (int)aux2.x;
+                    indexY = (int)aux2.y;
+                    Vector3 posTile = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
+                    Debug.Log("Estoy mirando hacia izquierda");
+                    lastMovement = 3;
+                    this.transform.position = new Vector3(posTile.x, this.transform.position.y, posTile.z);
+                    moving = false;
+                }
+            }
+
+            //Mirando hacia la abajo
+            else if (Mathf.Abs(model.transform.localEulerAngles.y) <= 1)
+            {
+                if (lastMovement != 4)
+                {
+                    aux2 = comprobarCasillaMasCercana();
+                    indexX = (int)aux2.x;
+                    indexY = (int)aux2.y;
+                    Vector3 posTile = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
+                    Debug.Log("Estoy mirando hacia abajo");
+                    lastMovement = 4;
+                    this.transform.position = new Vector3(posTile.x, this.transform.position.y, posTile.z);
+                    moving = false;
+                }
+            }
+
+            //Mirando hacia la arriba
+            else if (Mathf.Abs(model.transform.localEulerAngles.y - 180) <= 1)
+            {
+                if (lastMovement != 2)
+                {
+                    aux2 = comprobarCasillaMasCercana();
+                    indexX = (int)aux2.x;
+                    indexY = (int)aux2.y;
+                    Vector3 posTile = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
+                    Debug.Log("Estoy mirando hacia arriba");
+                    lastMovement = 2;
+                    this.transform.position = new Vector3(posTile.x, this.transform.position.y, posTile.z);
+                    moving = false;
+                }
+            }
+
+            //Mirando hacia dcha
+            else
+            {
+                if (lastMovement != 1)
+                {
+                    aux2 = comprobarCasillaMasCercana();
+                    indexX = (int)aux2.x;
+                    indexY = (int)aux2.y;
+                    Vector3 posTile = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
+                    Debug.Log("Estoy mirando hacia dcha");
+                    lastMovement = 1;
+                    this.transform.position = new Vector3(posTile.x, this.transform.position.y, posTile.z);
+                    moving = false;
+                }
+            }
+        }
+        /*
+        if (lastMovement == 4)
+        {
+            //Debug.Log("Yendo hacia arriba");
+            aux2 = comprobarCasillaMasCercana();
+            //Debug.Log("antes: " + indexX + ", " + indexY + this.transform.position);
+            indexX = (int)aux2.x;
+            indexY = (int)aux2.y;
+            Vector3 posTile = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
+            //Caras top y bottom
+            if (cara == 0 || cara == 5)
+            {
+                this.transform.position = new Vector3(posTile.x, this.transform.position.y, posTile.z);
+            }
+            //Caras right y left
+            else if (cara == 3 || cara == 4)
+            {
+                this.transform.position = new Vector3(posTile.x, posTile.y, this.transform.position.z);
+            }
+            //Caras front y back
+            else if (cara == 1 || cara == 2)
+            {
+                this.transform.position = new Vector3(this.transform.position.x, posTile.y, posTile.z);
+            }
+            //Debug.Log("ahora: " + indexX + ", " + indexY + this.transform.position);
+            lastMovement = 2;
+            moving = false;
+        }
+        else if (lastMovement == 2)
+        {
+            Debug.Log("Yendo hacia abajo");
+            aux2 = comprobarCasillaMasCercana();
+            Debug.Log("antes: " + indexX + ", " + indexY + this.transform.position);
+            indexX = (int)aux2.x;
+            indexY = (int)aux2.y;
+            Vector3 posTile = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
+            //Caras top y bottom
+            if (cara == 0 || cara == 5)
+            {
+                this.transform.position = new Vector3(posTile.x, this.transform.position.y, posTile.z);
+            }
+            //Caras right y left
+            else if (cara == 3 || cara == 4)
+            {
+                this.transform.position = new Vector3(posTile.x, posTile.y, this.transform.position.z);
+            }
+            //Caras front y back
+            else if (cara == 1 || cara == 2)
+            {
+                this.transform.position = new Vector3(this.transform.position.x, posTile.y, posTile.z);
+            }
+            Debug.Log("ahora: " + indexX + ", " + indexY + this.transform.position);
+            lastMovement = 4;
+            moving = false;
+        }
+        else if (lastMovement == 3)
+        {
+            Debug.Log("Yendo hacia derecha");
+            aux2 = comprobarCasillaMasCercana();
+            Debug.Log("antes: " + indexX + ", " + indexY + this.transform.position);
+            indexX = (int)aux2.x;
+            indexY = (int)aux2.y;
+            Vector3 posTile = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
+            //Caras top y bottom
+            if (cara == 0 || cara == 5)
+            {
+                this.transform.position = new Vector3(posTile.x, this.transform.position.y, posTile.z);
+            }
+            //Caras right y left
+            else if (cara == 3 || cara == 4)
+            {
+                this.transform.position = new Vector3(posTile.x, posTile.y, this.transform.position.z);
+            }
+            //Caras front y back
+            else if (cara == 1 || cara == 2)
+            {
+                this.transform.position = new Vector3(this.transform.position.x, posTile.y, posTile.z);
+            }
+            Debug.Log("ahora: " + indexX + ", " + indexY + this.transform.position);
+            lastMovement = 1;
+            moving = false;
+        }
+        else if (lastMovement == 1)
+        {
+            //Debug.Log("Yendo hacia izquierda");
+            aux2 = comprobarCasillaMasCercana();
+            //Debug.Log("antes: " + indexX + ", " + indexY + this.transform.position);
+            indexX = (int)aux2.x;
+            indexY = (int)aux2.y;
+            Vector3 posTile = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
+            //Caras top y bottom
+            if (cara == 0 || cara == 5)
+            {
+                this.transform.position = new Vector3(posTile.x, this.transform.position.y, posTile.z);
+            }
+            //Caras right y left
+            else if (cara == 3 || cara == 4)
+            {
+                this.transform.position = new Vector3(posTile.x, posTile.y, this.transform.position.z);
+            }
+            //Caras front y back
+            else if (cara == 1 || cara == 2)
+            {
+                this.transform.position = new Vector3(this.transform.position.x, posTile.y, posTile.z);
+            }
+            Debug.Log("ahora: " + indexX + ", " + indexY + this.transform.position);
+            lastMovement = 3;
+            moving = false;
+        }*/
     }
 
     [PunRPC]
@@ -816,7 +1340,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             {
                                 if (tile.myObjectType == TileScript.tileObject.NULL)
                                 {
-                                   // Debug.Log("Siguien casilla sin obstaculos");
+                                    // Debug.Log("Siguien casilla sin obstaculos");
                                     //target = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y,this.transform.position.z);
                                     //target = new Vector3(this.transform.position.x + 1, target.y, target.z);
                                     moving = true;
@@ -1299,7 +1823,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             //indexX = 1;
                             indexX = ((int)(cubo.width - 1)) - indexY;
                             indexY = 7;
-                            
+
 
                             this.gameObject.transform.rotation = Quaternion.Euler(0, 0, 90);
                             model.transform.localRotation = Quaternion.Euler(0, model.transform.rotation.eulerAngles.y - 90, 0);
@@ -1936,24 +2460,26 @@ public class CharacterController : MonoBehaviourPunCallbacks
                         {
                             camaraScript.button();
                             this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.forward, -90);
-                            this.gameObject.transform.Translate(new Vector3((cubo.width -0.5f),-0.5f, 0), Space.World);
+                            this.gameObject.transform.Translate(new Vector3((cubo.width - 0.5f), -0.5f, 0), Space.World);
                             cara = 5;
                             lastMovement = 1;
                             indexY = (Mathf.RoundToInt(cubo.width) - 1) - indexY;
                             indexX = 7;
-                           this.gameObject.transform.rotation = Quaternion.Euler(-180, 0, 0);
-                            
-                           if (Mathf.Abs(model.transform.localEulerAngles.y - 180) <= 1)
+                            this.gameObject.transform.rotation = Quaternion.Euler(-180, 0, 0);
+
+                            if (Mathf.Abs(model.transform.localEulerAngles.y - 180) <= 1)
                             {
                                 model.transform.localRotation = Quaternion.Euler(0, 0, 0);
-                            } else if (Mathf.Abs(model.transform.localEulerAngles.y) <= 1)
+                            }
+                            else if (Mathf.Abs(model.transform.localEulerAngles.y) <= 1)
                             {
                                 model.transform.localRotation = Quaternion.Euler(0, 180, 0);
-                            } else
+                            }
+                            else
                             {
                                 model.transform.localRotation = Quaternion.Euler(0, model.transform.rotation.eulerAngles.y + 180, 0);
                             }
-                            
+
                             //model.transform.localRotation = Quaternion.Euler(0, 90, 0);
                             hayCambioCara = false;
                         }
@@ -2339,7 +2865,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
                         if (hayCambioCara)
                         {
-                            
+
                             camaraScript.button();
                             this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.right, -90);
                             this.gameObject.transform.Translate(new Vector3(0, -0.5f, -(cubo.width - 0.5f)), Space.World);
@@ -2890,7 +3416,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                         {
                             camaraScript.button();
                             this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.forward, 90);
-                            this.gameObject.transform.Translate(new Vector3(-(cubo.width - 0.5f), -0.5f , 0), Space.World);
+                            this.gameObject.transform.Translate(new Vector3(-(cubo.width - 0.5f), -0.5f, 0), Space.World);
                             cara = 5;
                             lastMovement = 3;
                             indexY = (Mathf.RoundToInt(cubo.width) - 1) - indexY;
@@ -3404,7 +3930,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 {
                     //Debug.Log("Pos: " + this.transform.position);
                     //Debug.Log("Pos target: " + target);
-                    this.transform.position = new Vector3(transform.position.x, transform.position.y , transform.position.z - incrementAux);
+                    this.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - incrementAux);
                     if (Mathf.Abs(this.transform.position.z - target.z) < 0.1f)
                     {
                         this.transform.position = target;
@@ -3414,7 +3940,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                         {
                             camaraScript.left();
                             this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.right, 90);
-                            this.gameObject.transform.Translate(new Vector3(0, -(cubo.width - 0.5f),0.5f), Space.World);
+                            this.gameObject.transform.Translate(new Vector3(0, -(cubo.width - 0.5f), 0.5f), Space.World);
                             //this.gameObject.transform.Translate(new Vector3(-0.5f, 0, 0), Space.World);
                             cara = 4;
                             moving = false;
@@ -3488,7 +4014,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             }
 
                         } while (true);
-                        target = new Vector3(this.transform.position.x, this.transform.position.y , this.transform.position.z - iteracion);
+                        target = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z - iteracion);
 
                     }
                     else
@@ -3825,5 +4351,5 @@ public class CharacterController : MonoBehaviourPunCallbacks
         }
     }
     #endregion
-    
+
 }

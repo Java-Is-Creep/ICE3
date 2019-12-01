@@ -12,6 +12,10 @@ public class createRoom : MonoBehaviourPunCallbacks
     [SerializeField]
     private InputField numPlayers;
     [SerializeField]
+    private InputField roomNameMobile;
+    [SerializeField]
+    private InputField numPlayersMobile;
+    [SerializeField]
     private GameObject createRoomButton;
 
     /// <summary>
@@ -26,6 +30,22 @@ public class createRoom : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
+        if (Application.isMobilePlatform)
+        {
+            Debug.Log("Movil");
+            roomNameMobile.gameObject.SetActive(true);
+            numPlayersMobile.gameObject.SetActive(true);
+            roomName.gameObject.SetActive(false);
+            numPlayers.gameObject.SetActive(false);
+        }
+        else
+        {
+            Debug.Log("no movil");
+            roomNameMobile.gameObject.SetActive(false);
+            numPlayersMobile.gameObject.SetActive(false);
+            roomName.gameObject.SetActive(true);
+            numPlayers.gameObject.SetActive(true);
+        }
         if (!PhotonNetwork.IsConnected)
         {
             PhotonNetwork.ConnectUsingSettings();
@@ -40,11 +60,11 @@ public class createRoom : MonoBehaviourPunCallbacks
             return;
         }
 
-        if(PhotonNetwork.IsConnected && PhotonNetwork.InLobby)
+        if (PhotonNetwork.IsConnected && PhotonNetwork.InLobby)
         {
             createRoomButton.SetActive(true);
         }
-
+        
     }
 
     /// <summary>
@@ -58,8 +78,13 @@ public class createRoom : MonoBehaviourPunCallbacks
         {
             Debug.Log("Estamos conectados");
             //if(int.Parse(numPlayers.text) != int)
-
-            PhotonNetwork.CreateRoom(roomName.text, new RoomOptions { MaxPlayers = byte.Parse(numPlayers.text) });
+            if (Application.isMobilePlatform)
+            {
+                PhotonNetwork.CreateRoom(roomNameMobile.text, new RoomOptions { MaxPlayers = byte.Parse(numPlayersMobile.text) });
+            } else
+            {
+                PhotonNetwork.CreateRoom(roomName.text, new RoomOptions { MaxPlayers = byte.Parse(numPlayers.text) });
+            }
             //PhotonNetwork.JoinRoom(roomName.text);
 
         } else
@@ -84,6 +109,7 @@ public class createRoom : MonoBehaviourPunCallbacks
         } else
         {
             createRoomButton.SetActive(true);
+            
         }
     }
 
@@ -94,6 +120,23 @@ public class createRoom : MonoBehaviourPunCallbacks
     {
         Debug.Log("Unido al lobby");
         createRoomButton.SetActive(true);
+        /*
+        if (Application.isMobilePlatform)
+        {
+            Debug.Log("Movil");
+            roomNameMobile.gameObject.SetActive(true);
+            numPlayersMobile.gameObject.SetActive(true);
+            roomName.gameObject.SetActive(false);
+            numPlayers.gameObject.SetActive(false);
+        }
+        else
+        {
+            Debug.Log("no movil");
+            roomNameMobile.gameObject.SetActive(false);
+            numPlayersMobile.gameObject.SetActive(false);
+            roomName.gameObject.SetActive(true);
+            numPlayers.gameObject.SetActive(true);
+        }*/
     }
 
     /// <summary>
