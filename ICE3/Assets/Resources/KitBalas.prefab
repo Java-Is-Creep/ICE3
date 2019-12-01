@@ -145,6 +145,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec5ec8a06f8587b4c81fcad39a2d8679, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tile: {fileID: 0}
 --- !u!54 &2375916138909713795
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -49,6 +49,7 @@ public class Proyectil : MonoBehaviour
             }
             else
             {
+                dueño.GetComponent<CharacterController>().sumarPuntosBolas();
                 Debug.Log("Choque con enemigo");
                 Destroy(this.gameObject);
             }

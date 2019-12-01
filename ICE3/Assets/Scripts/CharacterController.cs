@@ -41,8 +41,9 @@ public class CharacterController : MonoBehaviourPunCallbacks
     private int puntos;
     public int MAXPUNTUACION;
 
-    // Vidas
-    private int vidas;
+    // Puntos
+    private int puntosBolas;
+    private int MaxPuntuacionBolas;
 
 
 
@@ -76,13 +77,15 @@ public class CharacterController : MonoBehaviourPunCallbacks
         timeoutCollisionProyectil = 0;
         puntos = 0;
         MAXPUNTUACION = 6;
-        vidas = 3;
+        puntosBolas = 0;
+        MaxPuntuacionBolas = 5;
 
     }
 
     // Update is called once per frame
     void Update()
     {
+
         if (timeoutCollision > 0)
         {
             timeoutCollision--;
@@ -108,30 +111,36 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
         if (!hecho)
         {
-            if (PhotonNetwork.IsMasterClient)
+            object tile;
+            int index = -1;
+            int numTries = 0;
+            object numSpawns;
+            PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("numSpawns", out numSpawns);
+            int numeroSpawns = (int)numSpawns;
+            do
             {
-                /*
-                Debug.Log("Server");
-                indexX = 3;
-                indexY = 3;
-                cara = 0;
-                */
-            }
-            else
-            {
-                Debug.Log("Cliente");
-                indexX = 3;
-                indexY = 4;
-                cara = 0;
-            }
+                if (numTries == numeroSpawns-1)
+                {
+                    Debug.Log("Intentos superados");
+                    return;
+                }
+                index = Random.Range(0, numeroSpawns);
+                PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("pos" + index, out tile);
+                Debug.Log(tile);
+                numTries++;
 
+            } while (tile == null);
+            PhotonNetwork.CurrentRoom.CustomProperties.Remove("pos" + index);
+
+            TileScript ts = (TileScript)tile;
 
             cubo = FindObjectOfType<Cube>();
 
-            hayCambioCara = false;
-            CubeFace face = cubo.faces[cara];
-            GameObject au = face.tiles[indexX, indexY];
-            TileScript ts = au.GetComponent<TileScript>();
+            indexX = ts.indexX;
+            indexY = ts.indexY;
+            cara = ts.cubeId;
+
+  
             this.transform.position = ts.AbsolutePos;
             switch (cara)
             {
@@ -363,13 +372,13 @@ public class CharacterController : MonoBehaviourPunCallbacks
         }
     }
 
-    public void quitarVida()
+    public void sumarPuntosBolas()
     {
-        vidas--;
-        Debug.Log("Vidas: " + vidas);
-        if (vidas <= 0)
+        puntosBolas++;
+        Debug.Log("Puntos bolas: " + puntosBolas);
+        if(puntosBolas >= MaxPuntuacionBolas)
         {
-            salirmePartida();
+            this.photonView.RPC("AcabarPartida", RpcTarget.All);
         }
     }
 
@@ -380,7 +389,6 @@ public class CharacterController : MonoBehaviourPunCallbacks
         if (photonView.IsMine)
         {
             PhotonNetwork.LeaveRoom();
-            SceneManager.LoadScene("Launcher");
         }
 
     }
@@ -424,7 +432,6 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 {
                     if (other.GetComponent<Proyectil>().dueño != this.gameObject)
                     {
-                        quitarVida();
                         timeoutCollisionProyectil = maxTimeoutCollisionProyectil;
                     }
                 }
@@ -1130,6 +1137,10 @@ public class CharacterController : MonoBehaviourPunCallbacks
     [PunRPC]
     void AcabarPartida()
     {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.LoadLevel("Launcher");
+        }
         salirmePartida();
     }
 
