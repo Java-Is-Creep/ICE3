@@ -1212,7 +1212,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             //Debug.Log("Leyendo casilla: " + (indexX) + ", " + (indexY - 1));
                             if (tile.tileType == TileScript.type.ICE)
                             {
-                                if (tile.myObjectType == TileScript.tileObject.NULL)
+                                if (tile.myObjectType != TileScript.tileObject.ROCK)
                                 {
                                     //Debug.Log("Siguien casilla sin obstaculos");
                                     //target = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y,this.transform.position.z);
@@ -1349,7 +1349,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             //Debug.Log("Leyendo casilla: " + (indexX) + ", " + (indexY - 1));
                             if (tile.tileType == TileScript.type.ICE)
                             {
-                                if (tile.myObjectType == TileScript.tileObject.NULL)
+                                if (tile.myObjectType != TileScript.tileObject.ROCK)
                                 {
                                     // Debug.Log("Siguien casilla sin obstaculos");
                                     //target = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y,this.transform.position.z);
@@ -1472,7 +1472,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             //Debug.Log("Leyendo casilla: " + (indexX+1) + ", " + (indexY));
                             if (tile.tileType == TileScript.type.ICE)
                             {
-                                if (tile.myObjectType == TileScript.tileObject.NULL)
+                                if (tile.myObjectType != TileScript.tileObject.ROCK)
                                 {
                                     //Debug.Log("Siguien casilla sin obstaculos");
                                     //target = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y,this.transform.position.z);
@@ -1594,7 +1594,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             //Debug.Log("Leyendo casilla: " + (indexX) + ", " + (indexY - 1));
                             if (tile.tileType == TileScript.type.ICE)
                             {
-                                if (tile.myObjectType == TileScript.tileObject.NULL)
+                                if (tile.myObjectType != TileScript.tileObject.ROCK)
                                 {
                                     //Debug.Log("Siguien casilla sin obstaculos");
                                     //target = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y,this.transform.position.z);
@@ -1732,7 +1732,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             //Debug.Log("Leyendo casilla: " + (indexX+1) + ", " + (indexY));
                             if (tile.tileType == TileScript.type.ICE)
                             {
-                                if (tile.myObjectType == TileScript.tileObject.NULL)
+                                if (tile.myObjectType != TileScript.tileObject.ROCK)
                                 {
                                     //Debug.Log("Siguien casilla sin obstaculos");
                                     //target = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y,this.transform.position.z);
@@ -1870,7 +1870,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             //Debug.Log("Leyendo casilla: " + (indexX - 1) + ", " + (indexY));
                             if (tile.tileType == TileScript.type.ICE)
                             {
-                                if (tile.myObjectType == TileScript.tileObject.NULL)
+                                if (tile.myObjectType != TileScript.tileObject.ROCK)
                                 {
                                     // Debug.Log("Siguien casilla sin obstaculos");
                                     //target = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y,this.transform.position.z);
@@ -1996,7 +1996,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             //Debug.Log("Leyendo casilla: " + (indexX) + ", " + (indexY + 1));
                             if (tile.tileType == TileScript.type.ICE)
                             {
-                                if (tile.myObjectType == TileScript.tileObject.NULL)
+                                if (tile.myObjectType != TileScript.tileObject.ROCK)
                                 {
                                     //Debug.Log("Siguien casilla sin obstaculos");
                                     //target = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y,this.transform.position.z);
@@ -2120,7 +2120,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             //Debug.Log("Leyendo casilla: " + (indexX) + ", " + (indexY - 1));
                             if (tile.tileType == TileScript.type.ICE)
                             {
-                                if (tile.myObjectType == TileScript.tileObject.NULL)
+                                if (tile.myObjectType != TileScript.tileObject.ROCK)
                                 {
                                     //Debug.Log("Siguien casilla sin obstaculos");
                                     //target = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y,this.transform.position.z);
@@ -2247,7 +2247,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             //Debug.Log("Leyendo casilla: " + (indexX) + ", " + (indexY+1));
                             if (tile.tileType == TileScript.type.ICE)
                             {
-                                if (tile.myObjectType == TileScript.tileObject.NULL)
+                                if (tile.myObjectType != TileScript.tileObject.ROCK)
                                 {
                                     //Debug.Log("Siguien casilla sin obstaculos");
                                     //target = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y,this.transform.position.z);
@@ -2379,7 +2379,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             //Debug.Log("Leyendo casilla: " + (indexX) + ", " + (indexY - 1));
                             if (tile.tileType == TileScript.type.ICE)
                             {
-                                if (tile.myObjectType == TileScript.tileObject.NULL)
+                                if (tile.myObjectType != TileScript.tileObject.ROCK)
                                 {
                                     //Debug.Log("Siguien casilla sin obstaculos");
                                     //target = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y,this.transform.position.z);
@@ -2516,7 +2516,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             // Debug.Log("Leyendo casilla: " + (indexX + 1) + ", " + (indexY ));
                             if (tile.tileType == TileScript.type.ICE)
                             {
-                                if (tile.myObjectType == TileScript.tileObject.NULL)
+                                if (tile.myObjectType != TileScript.tileObject.ROCK)
                                 {
                                     // Debug.Log("Siguien casilla sin obstaculos");
                                     //target = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y,this.transform.position.z);
@@ -2649,7 +2649,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             // Debug.Log("Leyendo casilla: " + (indexX - 1) + ", " + (indexY));
                             if (tile.tileType == TileScript.type.ICE)
                             {
-                                if (tile.myObjectType == TileScript.tileObject.NULL)
+                                if (tile.myObjectType != TileScript.tileObject.ROCK)
                                 {
                                     // Debug.Log("Siguien casilla sin obstaculos");
                                     //target = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y,this.transform.position.z);
@@ -2782,7 +2782,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             //Debug.Log("Leyendo casilla: " + (indexX - 1) + ", " + (indexY));
                             if (tile.tileType == TileScript.type.ICE)
                             {
-                                if (tile.myObjectType == TileScript.tileObject.NULL)
+                                if (tile.myObjectType != TileScript.tileObject.ROCK)
                                 {
                                     // Debug.Log("Siguien casilla sin obstaculos");
                                     //target = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y,this.transform.position.z);
@@ -2926,7 +2926,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             //Debug.Log("Leyendo casilla: " + (indexX) + ", " + (indexY - 1));
                             if (tile.tileType == TileScript.type.ICE)
                             {
-                                if (tile.myObjectType == TileScript.tileObject.NULL)
+                                if (tile.myObjectType != TileScript.tileObject.ROCK)
                                 {
                                     //Debug.Log("Siguien casilla sin obstaculos");
                                     //target = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y,this.transform.position.z);
@@ -3062,7 +3062,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             //Debug.Log("Leyendo casilla: " + (indexX+1) + ", " + (indexY));
                             if (tile.tileType == TileScript.type.ICE)
                             {
-                                if (tile.myObjectType == TileScript.tileObject.NULL)
+                                if (tile.myObjectType != TileScript.tileObject.ROCK)
                                 {
                                     //Debug.Log("Siguien casilla sin obstaculos");
                                     //target = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y,this.transform.position.z);
@@ -3204,7 +3204,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             //Debug.Log("Leyendo casilla: " + (indexX) + ", " + (indexY + 1));
                             if (tile.tileType == TileScript.type.ICE)
                             {
-                                if (tile.myObjectType == TileScript.tileObject.NULL)
+                                if (tile.myObjectType != TileScript.tileObject.ROCK)
                                 {
                                     //Debug.Log("Siguien casilla sin obstaculos");
                                     //target = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y,this.transform.position.z);
@@ -3334,7 +3334,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             //Debug.Log("Leyendo casilla: " + (indexX) + ", " + (indexY + 1));
                             if (tile.tileType == TileScript.type.ICE)
                             {
-                                if (tile.myObjectType == TileScript.tileObject.NULL)
+                                if (tile.myObjectType != TileScript.tileObject.ROCK)
                                 {
                                     // Debug.Log("Siguien casilla sin obstaculos");
                                     //target = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y,this.transform.position.z);
@@ -3470,7 +3470,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             //Debug.Log("Leyendo casilla: " + (indexX - 1) + ", " + (indexY));
                             if (tile.tileType == TileScript.type.ICE)
                             {
-                                if (tile.myObjectType == TileScript.tileObject.NULL)
+                                if (tile.myObjectType != TileScript.tileObject.ROCK)
                                 {
                                     //Debug.Log("Siguien casilla sin obstaculos");
                                     //target = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y,this.transform.position.z);
@@ -3606,7 +3606,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             Debug.Log("Leyendo casilla: " + (indexX) + ", " + (indexY - 1));
                             if (tile.tileType == TileScript.type.ICE)
                             {
-                                if (tile.myObjectType == TileScript.tileObject.NULL)
+                                if (tile.myObjectType != TileScript.tileObject.ROCK)
                                 {
                                     //Debug.Log("Siguien casilla sin obstaculos");
                                     //target = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y,this.transform.position.z);
@@ -3746,7 +3746,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             Debug.Log("Leyendo casilla: " + (indexX + 1) + ", " + (indexY));
                             if (tile.tileType == TileScript.type.ICE)
                             {
-                                if (tile.myObjectType == TileScript.tileObject.NULL)
+                                if (tile.myObjectType != TileScript.tileObject.ROCK)
                                 {
                                     //Debug.Log("Siguien casilla sin obstaculos");
                                     //target = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y,this.transform.position.z);
@@ -3868,7 +3868,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             //Debug.Log("Leyendo casilla: " + (indexX) + ", " + (indexY - 1));
                             if (tile.tileType == TileScript.type.ICE)
                             {
-                                if (tile.myObjectType == TileScript.tileObject.NULL)
+                                if (tile.myObjectType != TileScript.tileObject.ROCK)
                                 {
                                     //Debug.Log("Siguien casilla sin obstaculos");
                                     //target = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y,this.transform.position.z);
@@ -3983,7 +3983,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             //Debug.Log("Leyendo casilla: " + (indexX) + ", " + (indexY + 1));
                             if (tile.tileType == TileScript.type.ICE)
                             {
-                                if (tile.myObjectType == TileScript.tileObject.NULL)
+                                if (tile.myObjectType != TileScript.tileObject.ROCK)
                                 {
                                     //Debug.Log("Siguien casilla sin obstaculos");
                                     //target = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y,this.transform.position.z);
@@ -4117,7 +4117,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             //Debug.Log("Leyendo casilla: " + (indexX+1) + ", " + (indexY));
                             if (tile.tileType == TileScript.type.ICE)
                             {
-                                if (tile.myObjectType == TileScript.tileObject.NULL)
+                                if (tile.myObjectType != TileScript.tileObject.ROCK)
                                 {
                                     //Debug.Log("Siguien casilla sin obstaculos");
                                     //target = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y,this.transform.position.z);
@@ -4251,7 +4251,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             //Debug.Log("Leyendo casilla: " + (indexX - 1) + ", " + (indexY));
                             if (tile.tileType == TileScript.type.ICE)
                             {
-                                if (tile.myObjectType == TileScript.tileObject.NULL)
+                                if (tile.myObjectType != TileScript.tileObject.ROCK)
                                 {
                                     // Debug.Log("Siguien casilla sin obstaculos");
                                     //target = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y,this.transform.position.z);

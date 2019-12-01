@@ -26,7 +26,8 @@ public class KitBalas : MonoBehaviourPunCallbacks
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("Choque con algo");
-        if (other.tag == "Player")
+        Debug.Log(other.tag);
+        if (other.tag == "CharacterCollider")
         {
             Debug.Log("Choque con jugador");
             this.photonView.RPC("Destroy", RpcTarget.MasterClient);
