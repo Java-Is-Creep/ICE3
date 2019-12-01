@@ -8,8 +8,8 @@ public class moverCamaraFija : MonoBehaviour
 {
 
     Animator anim;
-    int cara;
-    int lastCara;
+    //int cara;
+    //int lastCara;
     public CinemachineVirtualCamera topCam;
     public CinemachineVirtualCamera buttonCam;
     public CinemachineVirtualCamera frontCam;
@@ -19,74 +19,102 @@ public class moverCamaraFija : MonoBehaviour
 
     public CinemachineFreeLook freeLookCam;
 
+    public CharacterController personaje;
+
     // Start is called before the first frame update
     void Start()
     {
         anim = this.gameObject.GetComponent<Animator>();
-        cara = 0;
+        //cara = 0;
+        CharacterController[] cc = FindObjectsOfType<CharacterController>();
+        foreach(CharacterController c in cc)
+        {
+            if (c.photonView.IsMine)
+            {
+                personaje = c;
+            }
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+        if (!Application.isMobilePlatform)
         {
-            
-            lastCara = cara;
-            if (cara == 0)
+            if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
             {
-                
+                Free();
+            }
+            else if (Input.GetMouseButtonUp(0) && !EventSystem.current.IsPointerOverGameObject())
+            {
+                Debug.Log("Solar raton");
+                if (personaje.cara == 0)
+                {
+                    top();
+                }
+                else if (personaje.cara == 4)
+                {
+                    left();
+                }
+                else if (personaje.cara == 5)
+                {
+                    button();
+                }
+                else if (personaje.cara == 3)
+                {
+                    right();
+                }
+                else if (personaje.cara == 2)
+                {
+                    front();
+                }
+                else if (personaje.cara == 1)
+                {
+                    back();
+                }
+            }
+        }
+        else
+        {
+
+        }
+            //Debug.Log("Clic" + Input.GetMouseButtonDown(0));
+            //Debug.Log("Estoy no tocando interfaz" + !EventSystem.current.IsPointerOverGameObject());
+            //Debug.Log("Pos camara free: " + freeLookCam.transform.position);
+            
+            /*
+            lastCara = cara;
+            if (personaje.cara == 0)
+            {
+                Debug.Log("Cara top colocando camara");
+                Debug.Log("Pos camara free antes: " + freeLookCam.transform.position);
+                Debug.Log("Pos camara top antes: " + topCam.transform.position);
                 freeLookCam.transform.position = topCam.transform.position;
+                Debug.Log("Pos camara free despues: " + freeLookCam.transform.position);
 
             }
-            else if (cara == 1)
+            else if (personaje.cara == 4)
             {
                 freeLookCam.transform.position = leftCam.transform.position;
             }
-            else if (cara == 2)
+            else if (personaje.cara == 5)
             {
                 freeLookCam.transform.position = buttonCam.transform.position; 
             }
-            else if (cara == 3)
+            else if (personaje.cara == 3)
             {
                 freeLookCam.transform.position = rightCam.transform.position;
             }
-            else if (cara == 4)
+            else if (personaje.cara == 2)
             {
                 freeLookCam.transform.position = frontCam.transform.position;
             }
-            else if (cara == 5)
+            else if (personaje.cara == 1)
             {
                 freeLookCam.transform.position = backCam.transform.position;
-            }
-            Free();
-        }
-        else if (Input.GetMouseButtonUp(0) && !EventSystem.current.IsPointerOverGameObject())
-        {
-            if (lastCara == 0)
-            {
-                top();
-            } else if (lastCara == 1)
-            {
-                left();
-            }
-            else if (lastCara == 2)
-            {
-                button();
-            }
-            else if (lastCara == 3)
-            {
-                right();
-            }
-            else if (lastCara == 4)
-            {
-                front();
-            }
-            else if (lastCara == 5)
-            {
-                back();
-            }
-        } /*
+            }*/
+            
+        /*
         else if (Input.GetKeyDown(KeyCode.Keypad0))
         {
            
@@ -121,37 +149,37 @@ public class moverCamaraFija : MonoBehaviour
 
     public void front()
     {
-        cara = 4;
+        //cara = 4;
         anim.SetInteger("cara", 4);
     }
 
     public void back()
     {
-        cara = 5;
+        //cara = 5;
         anim.SetInteger("cara", 5);
     }
 
     public void top()
     {
-        cara = 0;
+        //cara = 0;
         anim.SetInteger("cara", 0);
     }
 
     public void button()
     {
-        cara = 2;
+        //cara = 2;
         anim.SetInteger("cara", 2);
     }
 
     public void left()
     {
-        cara = 1;
+        //cara = 1;
         anim.SetInteger("cara", 1);
     }
 
     public void right()
     {
-        cara = 3;
+        //cara = 3;
         anim.SetInteger("cara", 3);
     }
 
