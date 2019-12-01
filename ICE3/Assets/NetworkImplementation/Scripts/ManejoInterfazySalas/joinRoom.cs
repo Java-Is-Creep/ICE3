@@ -10,6 +10,8 @@ public class joinRoom : MonoBehaviourPunCallbacks
     [SerializeField]
     private InputField roomName;
     [SerializeField]
+    private InputField roomNameMobile;
+    [SerializeField]
     private GameObject joinRoomButton;
 
 
@@ -27,6 +29,19 @@ public class joinRoom : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
+        if (Application.isMobilePlatform)
+        {
+            Debug.Log("Movil");
+            roomNameMobile.gameObject.SetActive(true);
+            roomName.gameObject.SetActive(false);
+        }
+        else
+        {
+            Debug.Log("no movil");
+            roomNameMobile.gameObject.SetActive(false);
+            roomName.gameObject.SetActive(true);
+        }
+
         if (!PhotonNetwork.IsConnected)
         {
             PhotonNetwork.ConnectUsingSettings();
