@@ -20,7 +20,7 @@ public class CanvasManager : MonoBehaviour
         bindeado = false;
         //if (Application.isMobilePlatform)
         //{
-        Debug.Log("Haciendo start de canvas manager");
+        //debug.log("Haciendo start de canvas manager");
             up.gameObject.SetActive(true);
             down.gameObject.SetActive(true);
             right.gameObject.SetActive(true);
@@ -33,10 +33,10 @@ public class CanvasManager : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log("Update canvas manager");
+        //debug.log("Update canvas manager");
         if (!bindeado)
         {
-            Debug.Log("Intento de bindear");
+            //debug.log("Intento de bindear");
             CharacterController[] cc = FindObjectsOfType<CharacterController>();
             
             foreach (CharacterController c in cc)
@@ -48,10 +48,10 @@ public class CanvasManager : MonoBehaviour
             }
             if (personaje != null)
             {
-                Debug.Log("Personaje que soy yo no es null");
+                //debug.log("Personaje que soy yo no es null");
                 if (personaje.photonView.IsMine)
                 {
-                    Debug.Log("Bindeando las funciones");
+                    //debug.log("Bindeando las funciones");
                     up.onClick.AddListener(personaje.w);
                     down.onClick.AddListener(personaje.s);
                     left.onClick.AddListener(personaje.a);
@@ -62,7 +62,7 @@ public class CanvasManager : MonoBehaviour
             }
         } else
         {
-            Debug.Log("Bindeado es true");
+            //debug.log("Bindeado es true");
         }
     }
 }
