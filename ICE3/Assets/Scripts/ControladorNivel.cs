@@ -308,11 +308,15 @@ public class ControladorNivel : MonoBehaviourPunCallbacks
     public void anadirCasillaPersonaje(TileScript casilla)
     {
         spawnPersonajeCasillas.Add(casilla);
-        
-        
-        ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable();
-        hash.Add("pos"+ spawnPersonajeCasillas.Count, casilla);
-        PhotonNetwork.CurrentRoom.CustomProperties.Merge(hash);
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            Vector3 aux = new Vector3(casilla.indexX, casilla.indexY, casilla.cubeId);
+            ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable();
+            hash.Add("pos" + spawnPersonajeCasillas.Count, aux);
+            PhotonNetwork.CurrentRoom.SetCustomProperties(hash);
+
+        }
 
 
     }

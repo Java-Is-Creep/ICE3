@@ -20,10 +20,17 @@ public class Proyectil : MonoBehaviour
     void Update()
     {
         this.transform.position += direccion * incrementoPosicion;
-        if (Vector3.Distance(this.transform.position, dueño.transform.position) > 2 * height)
+        if(dueño != null)
+        {
+            if (Vector3.Distance(this.transform.position, dueño.transform.position) > 2 * height)
+            {
+                Destroy(this.gameObject);
+            }
+        } else
         {
             Destroy(this.gameObject);
         }
+
     }
 
     public void initDireccion(Vector3 direccion, GameObject dueño, float height)

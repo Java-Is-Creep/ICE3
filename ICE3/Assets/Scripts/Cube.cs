@@ -186,9 +186,13 @@ public class Cube : MonoBehaviourPunCallbacks
 
         updateFaces();
 
-        ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable();
-        hash.Add("numSpawns", numeroSpawnsPlayers);
-        PhotonNetwork.CurrentRoom.CustomProperties.Merge(hash);
+        if (PhotonNetwork.IsMasterClient)
+        {
+            ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable();
+            hash.Add("numSpawns", numeroSpawnsPlayers);
+            PhotonNetwork.CurrentRoom.SetCustomProperties(hash);
+        }
+
     }
 
     /// <summary>
