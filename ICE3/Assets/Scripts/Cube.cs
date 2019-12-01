@@ -1,4 +1,5 @@
 ﻿using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -39,6 +40,7 @@ public class Cube : MonoBehaviourPunCallbacks
     //Controlador de nivel
     ControladorNivel controlNivel;
 
+    int numeroSpawnsPlayers = 0;
 
 
     void Awake()
@@ -118,7 +120,7 @@ public class Cube : MonoBehaviourPunCallbacks
                             //objectInTile = prefabRock;
                             tileObjectType = TileScript.tileObject.ROCK;
                             break;
-                        case "SH.R":
+                        case "SH.S":
                             tileType = TileScript.type.ICE;
                             tileGround = prefabIce;
                             spawnPersonaje = true;
@@ -153,6 +155,7 @@ public class Cube : MonoBehaviourPunCallbacks
                         if (controlNivel != null)
                         {
                             controlNivel.anadirCasillaPersonaje(tile);
+                            numeroSpawnsPlayers++;
                         }
                     }
                     if (spawnBandera)
@@ -182,6 +185,10 @@ public class Cube : MonoBehaviourPunCallbacks
         //this.transform.position = new Vector3(-width / 2, heigth / 2, -heigth / 2 +tamañoCara/2);
 
         updateFaces();
+
+        ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable();
+        hash.Add("numSpawns", numeroSpawnsPlayers);
+        PhotonNetwork.CurrentRoom.CustomProperties.Merge(hash);
     }
 
     /// <summary>

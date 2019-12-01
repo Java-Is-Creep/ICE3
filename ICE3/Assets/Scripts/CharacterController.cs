@@ -85,6 +85,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
     // Update is called once per frame
     void Update()
     {
+
         if (timeoutCollision > 0)
         {
             timeoutCollision--;
@@ -110,32 +111,36 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
         if (!hecho)
         {
-            if (PhotonNetwork.IsMasterClient)
+            object tile;
+            int index = -1;
+            int numTries = 0;
+            object numSpawns;
+            PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("numSpawns", out numSpawns);
+            int numeroSpawns = (int)numSpawns;
+            do
             {
-                /*
-                Debug.Log("Server");
-                indexX = 3;
-                indexY = 3;
-                cara = 0;
-                */
-            }
-            else
-            {
-                /*
-                Debug.Log("Cliente");
-                indexX = 3;
-                indexY = 4;
-                cara = 0;
-                */
-            }
+                if (numTries == numeroSpawns-1)
+                {
+                    Debug.Log("Intentos superados");
+                    return;
+                }
+                index = Random.Range(0, numeroSpawns);
+                PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("pos" + index, out tile);
+                Debug.Log(tile);
+                numTries++;
 
+            } while (tile == null);
+            PhotonNetwork.CurrentRoom.CustomProperties.Remove("pos" + index);
+
+            TileScript ts = (TileScript)tile;
 
             cubo = FindObjectOfType<Cube>();
 
-            hayCambioCara = false;
-            CubeFace face = cubo.faces[cara];
-            GameObject au = face.tiles[indexX, indexY];
-            TileScript ts = au.GetComponent<TileScript>();
+            indexX = ts.indexX;
+            indexY = ts.indexY;
+            cara = ts.cubeId;
+
+  
             this.transform.position = ts.AbsolutePos;
             switch (cara)
             {

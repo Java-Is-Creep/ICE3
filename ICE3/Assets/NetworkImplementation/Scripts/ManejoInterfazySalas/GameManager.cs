@@ -47,12 +47,8 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             Debug.LogFormat("We are Instantiating LocalPlayer from {0}", Application.loadedLevelName);
             // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
-            TileScript casilla = controlador.getCasillaVacia();
-             GameObject aux = PhotonNetwork.Instantiate(this.playerPrefab.name, casilla.AbsolutePos, Quaternion.identity, 0);
-            CharacterController characterCont = aux.GetComponent<CharacterController>();
-            characterCont.indexX = casilla.indexX;
-            characterCont.indexY = casilla.indexY;
-            characterCont.cara = casilla.cubeId;
+
+             GameObject aux = PhotonNetwork.Instantiate(this.playerPrefab.name, Vector3.zero, Quaternion.identity, 0);
         }
 
     }

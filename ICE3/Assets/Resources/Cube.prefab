@@ -73,7 +73,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  MapInfo: {fileID: 4900000, guid: 6985537a0adc86f4b84ecf70fdb70a2d, type: 3}
+  MapInfo: {fileID: 4900000, guid: 28471a394e7de8245944f73e13472cb2, type: 3}
   "tama\xF1oCara": 1
 --- !u!114 &1330174981098044732
 MonoBehaviour:
