@@ -48,7 +48,7 @@ public class TileScript : MonoBehaviour
                 break;
             case (4):
                 AbsolutePos = cf.transform.position + new Vector3(indexX, indexY, 0);
-                Debug.Log(indexX + ", " + indexY + "  " + AbsolutePos);
+                //Debug.Log(indexX + ", " + indexY + "  " + AbsolutePos);
                 break;
             case (5):
                 AbsolutePos = cf.transform.position + new Vector3(indexX, 0, -indexY);

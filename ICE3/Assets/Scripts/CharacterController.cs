@@ -108,33 +108,60 @@ public class CharacterController : MonoBehaviourPunCallbacks
         timeWaitingShots += Time.deltaTime;
         isFiring = false;
 
+        
 
         if (!hecho)
         {
-            object tile;
+            object tileData;
             int index = -1;
             int numTries = 0;
             object numSpawns;
+            Vector3 aux = Vector3.zero;
             PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("numSpawns", out numSpawns);
+            Debug.Log(PhotonNetwork.CurrentRoom.CustomProperties.Count-1 + " spawns que quedan");
+            Debug.Log("antes");
+            foreach (object value in PhotonNetwork.CurrentRoom.CustomProperties.Keys)
+            {
+                object aux5;
+                PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(value, out aux5);
+                Debug.Log("La clave es: " + value + " el valor es: " + aux5);
+            }
             int numeroSpawns = (int)numSpawns;
             do
             {
-                if (numTries == numeroSpawns-1)
+                if (numTries == numeroSpawns)
                 {
                     Debug.Log("Intentos superados");
+                    hecho = true;
                     return;
                 }
-                index = Random.Range(0, numeroSpawns);
-                PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("pos" + index, out tile);
-                Debug.Log(tile);
+                index = Random.Range(1, numeroSpawns+1);
+                PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("pos" + index, out tileData);
+                Debug.Log(tileData);
                 numTries++;
+                aux = (Vector3)tileData;
 
-            } while (tile == null);
-            PhotonNetwork.CurrentRoom.CustomProperties.Remove("pos" + index);
+            } while (aux == Vector3.zero);
+            Debug.Log("Casilal elegida ha sido: " + index);
+            
+            ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable();
+            hash.Add("pos" + index, Vector3.zero);
+            PhotonNetwork.CurrentRoom.SetCustomProperties(hash);
 
-            TileScript ts = (TileScript)tile;
 
+
+            Debug.Log("Despues");
+            foreach (object value in PhotonNetwork.CurrentRoom.CustomProperties.Keys)
+            {
+                object aux5;
+                PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(value,out aux5);
+                Debug.Log( "La clave es: " +value  + " el valor es: " + aux5);
+            }
+
+
+            Vector3 datosCasilla = (Vector3)tileData;
             cubo = FindObjectOfType<Cube>();
+            TileScript ts = cubo.faces[(int)datosCasilla.z].tiles[(int)datosCasilla.x,(int)datosCasilla.y].GetComponent<TileScript>();
 
             indexX = ts.indexX;
             indexY = ts.indexY;
@@ -386,10 +413,9 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
     public void salirmePartida()
     {
-        if (photonView.IsMine)
-        {
-            PhotonNetwork.LeaveRoom();
-        }
+
+       PhotonNetwork.LeaveRoom();
+        
 
     }
 
@@ -1137,11 +1163,13 @@ public class CharacterController : MonoBehaviourPunCallbacks
     [PunRPC]
     void AcabarPartida()
     {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            PhotonNetwork.LoadLevel("Launcher");
-        }
+        //Debug.Log("Veces que se llama");
         salirmePartida();
+    }
+
+    public override void OnLeftRoom()
+    {
+        SceneManager.LoadScene("Main Menu");
     }
 
     #endregion
