@@ -79,7 +79,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
         MAXPUNTUACION = 6;
         puntosBolas = 0;
         MaxPuntuacionBolas = 5;
-
+        cara = -1;
     }
 
     // Update is called once per frame
@@ -183,30 +183,17 @@ public class CharacterController : MonoBehaviourPunCallbacks
         if (Input.GetKeyDown(KeyCode.Space))
         {
 
-            if (timeBetweenShots < timeWaitingShots)
-            {
-                if (ammunition > 0)
-                {
-                    Debug.Log("Disparando");
-                    this.photonView.RPC("Shot", RpcTarget.All, this.transform.position);
-                    timeWaitingShots = 0;
-                    ammunition--;
-                }
-                else
-                {
-                    Debug.Log("Sin municion");
-                }
-
-            }
+            ComprobarDisparo();
         }
 
 
         //1
         if (Input.GetKeyDown("a") || ab)
         {
+            Debug.Log("He pulsado la A en boton movil: " + ab);
             if (cara == 0 || cara == 2)
             {
-                model.transform.localRotation = Quaternion.Euler(0, 0, 0);
+               model.transform.localRotation = Quaternion.Euler(0, 0, 0);
             }
             else if (cara == 3)
             {
@@ -224,16 +211,19 @@ public class CharacterController : MonoBehaviourPunCallbacks
             {
                 model.transform.localRotation = Quaternion.Euler(0, 90, 0);
             }
+            
             if (lastMovement == 0)
             {
                 lastMovement = 1;
-                ab = false;
+                
             }
+            ab = false;
         }
 
         //2
         else if (Input.GetKeyDown("s") || sb)
         {
+            Debug.Log("He pulsado la S en boton movil: " + sb);
             if (cara == 0 || cara == 2)
             {
                 model.transform.localRotation = Quaternion.Euler(0, -90, 0);
@@ -257,14 +247,15 @@ public class CharacterController : MonoBehaviourPunCallbacks
             if (lastMovement == 0)
             {
                 lastMovement = 2;
-                sb = false;
+                
             }
+            sb = false;
         }
 
         //3
         else if (Input.GetKeyDown("d") || db)
         {
-
+            Debug.Log("He pulsado la D en boton movil: " + db);
             if (cara == 0 || cara == 2)
             {
                 model.transform.localRotation = Quaternion.Euler(0, 180, 0);
@@ -285,17 +276,18 @@ public class CharacterController : MonoBehaviourPunCallbacks
             {
                 model.transform.localRotation = Quaternion.Euler(0, -90, 0);
             }
-            if (lastMovement == 0)
+           if (lastMovement == 0)
             {
                 lastMovement = 3;
-                db = false;
-            }
+                
+           }
+            db = false;
         }
 
         //4
         else if (Input.GetKeyDown("w") || wb)
         {
-
+            Debug.Log("He pulsado la W en boton movil: " + wb);
             if (cara == 0 || cara == 2)
             {
                 model.transform.localRotation = Quaternion.Euler(0, 90, 0);
@@ -319,8 +311,9 @@ public class CharacterController : MonoBehaviourPunCallbacks
             if (lastMovement == 0)
             {
                 lastMovement = 4;
-                wb = false;
+                
             }
+            wb = false;
         }
 
 
@@ -353,6 +346,25 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
         }
 
+    }
+
+    public void ComprobarDisparo()
+    {
+        if (timeBetweenShots < timeWaitingShots)
+        {
+            if (ammunition > 0)
+            {
+                Debug.Log("Disparando");
+                this.photonView.RPC("Shot", RpcTarget.All, this.transform.position);
+                timeWaitingShots = 0;
+                ammunition--;
+            }
+            else
+            {
+                Debug.Log("Sin municion");
+            }
+
+        }
     }
 
     #region funcionalidd choques con objetos
@@ -4332,34 +4344,30 @@ public class CharacterController : MonoBehaviourPunCallbacks
     #region botones para movil
     public void w()
     {
-        if (lastMovement == 0)
-        {
+        
             wb = true;
-        }
+        
     }
 
     public void a()
     {
-        if (lastMovement == 0)
-        {
+        
             ab = true;
-        }
+        
     }
 
     public void s()
     {
-        if (lastMovement == 0)
-        {
+        
             sb = true;
-        }
+        
     }
 
     public void d()
     {
-        if (lastMovement == 0)
-        {
+        
             db = true;
-        }
+        
     }
     #endregion
 
