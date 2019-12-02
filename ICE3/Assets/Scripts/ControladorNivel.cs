@@ -179,12 +179,13 @@ public class ControladorNivel : MonoBehaviourPunCallbacks
 
         intentos = 0;
 
-        indexX = miCasilla.indexX;
-        indexY = miCasilla.indexY;
-        cara = miCasilla.cubeId;
         GameObject aux = null;
         if (miCasilla != null)
         {
+
+            indexX = miCasilla.indexX;
+            indexY = miCasilla.indexY;
+            cara = miCasilla.cubeId;
             aux = PhotonNetwork.InstantiateSceneObject("KitBalas", miCasilla.AbsolutePos, Quaternion.identity);
         }
         else

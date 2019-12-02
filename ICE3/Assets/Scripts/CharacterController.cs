@@ -153,6 +153,10 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(value, out aux5);
                 Debug.Log("La clave es: " + value + " el valor es: " + aux5);
             }
+            if(numSpawns == null)
+            {
+                return;
+            }
             int numeroSpawns = (int)numSpawns;
             do
             {
