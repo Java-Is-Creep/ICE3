@@ -4,6 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class CharacterController : MonoBehaviourPunCallbacks
 {
@@ -64,10 +65,14 @@ public class CharacterController : MonoBehaviourPunCallbacks
     public int timeoutCollisionProyectil;
     public int maxTimeoutCollisionProyectil;
 
+    public Text textoBalas;
+    public Text textoPuntos;
+
     // Start is called before the first frame update
     void Start()
     {
-
+        textoBalas = GameObject.Find("Balas").GetComponent<Text>();
+        textoPuntos = GameObject.Find("PuntuacionTexto").GetComponent<Text>();
         Debug.Log("Cuantas veces he hecho el start");
         model = this.transform.GetChild(0).gameObject;
         camaraScript = FindObjectOfType<moverCamaraFija>();
@@ -110,7 +115,11 @@ public class CharacterController : MonoBehaviourPunCallbacks
         timeWaitingShots += Time.deltaTime;
         isFiring = false;
 
-        
+        if (photonView.IsMine)
+        {
+            textoBalas.text = ammunition+"";
+            textoPuntos.text = puntosBolas + "";
+        }
 
         if (!hecho)
         {

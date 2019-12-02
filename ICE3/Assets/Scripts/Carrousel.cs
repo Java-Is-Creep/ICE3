@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Carrousel : MonoBehaviour
 {
 
-
+    public AudioSource audio;
     public RectTransform[] images;
     public RectTransform view_window;
 
@@ -130,6 +130,8 @@ public class Carrousel : MonoBehaviour
                 else
                 {
                     current_index--;
+                    //Sonido
+                    audio.Play();
                     lerpTimer = 0;
                     if (current_index < 0)
                         current_index = 0;
@@ -154,6 +156,8 @@ public class Carrousel : MonoBehaviour
                 {
                     lerpTimer = 0;
                     current_index++;
+                    //Sonido
+                    audio.Play();
                     lerpPosition = (image_width + image_gap) * current_index;
                 }
             }

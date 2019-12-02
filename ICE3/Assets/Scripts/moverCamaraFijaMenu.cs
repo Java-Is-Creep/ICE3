@@ -25,6 +25,8 @@ public class moverCamaraFijaMenu : MonoBehaviour
     public Canvas cvBack;
 
     private Canvas activedCanvas;
+
+    public AudioSource accion;
     
 
     // Start is called before the first frame update
@@ -77,6 +79,7 @@ public class moverCamaraFijaMenu : MonoBehaviour
         activedCanvas= cvFront;
         cara = 4;
         anim.SetInteger("cara", 4);
+        accion.Play();
     }
 
     public void back()
@@ -86,6 +89,7 @@ public class moverCamaraFijaMenu : MonoBehaviour
         activedCanvas = cvBack;
         cara = 5;
         anim.SetInteger("cara", 5);
+        accion.Play();
     }
 
     public void top()
@@ -96,6 +100,7 @@ public class moverCamaraFijaMenu : MonoBehaviour
         activedCanvas = cvTop;
         cara = 0;
         anim.SetInteger("cara", 0);
+        accion.Play();
     }
 
     public void button()
@@ -105,6 +110,7 @@ public class moverCamaraFijaMenu : MonoBehaviour
         activedCanvas = cvBottom;
         cara = 2;
         anim.SetInteger("cara", 2);
+        accion.Play();
     }
 
     public void left()
@@ -114,6 +120,7 @@ public class moverCamaraFijaMenu : MonoBehaviour
         activedCanvas = cvLeft;
         cara = 1;
         anim.SetInteger("cara", 1);
+        accion.Play();
     }
 
     public void right()
@@ -123,10 +130,12 @@ public class moverCamaraFijaMenu : MonoBehaviour
         activedCanvas = cvRight;
         cara = 3;
         anim.SetInteger("cara", 3);
+        accion.Play();
     }
 
     public void jugar()
     {
+        //accion.Play();
         SceneManager.LoadScene("Launcher");
     }
 
