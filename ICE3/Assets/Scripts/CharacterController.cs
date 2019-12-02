@@ -89,7 +89,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
     {
         textoBalas = GameObject.Find("Balas").GetComponent<Text>();
         textoPuntos = GameObject.Find("PuntuacionTexto").GetComponent<Text>();
-        Debug.Log("Cuantas veces he hecho el start");
+        Debug.Log("Cuantas veces he hecho el start" + " " + photonView.ViewID);
         model = this.transform.GetChild(0).gameObject;
         camaraScript = FindObjectOfType<moverCamaraFija>();
         maxTimeoutCollision = 3;
@@ -224,7 +224,11 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 if (controladorNivel != null)
                 {
                     jugadores = FindObjectsOfType<CharacterController>();
-                    Debug.Log("Cantidad de jugadores: " + jugadores.Length);
+                    if (jugadores.Length != PhotonNetwork.CurrentRoom.MaxPlayers)
+                    {
+                        return;
+                    }
+                    Debug.Log("Cantidad de jugadores: " + jugadores.Length + " " + photonView.ViewID);
                     object[] parametros = new object[2];
                     parametros[0] = jugadores[0].photonView.ViewID;
                     Debug.Log("ID a mandar: " + (int)parametros[0]);
@@ -1170,9 +1174,9 @@ public class CharacterController : MonoBehaviourPunCallbacks
     {
         int id = (int)parametros[0];
         Vector3 datosCasilla = (Vector3)parametros[1];
-        Debug.Log("Photon view a colocar: " + id);
-        Debug.Log("Posiciones al que mandarlo" + datosCasilla);
-        Debug.Log(photonView.ViewID + " es mi photon id");
+        Debug.Log("Photon view a colocar: " + id + " " + photonView.ViewID);
+        Debug.Log("Posiciones al que mandarlo" + datosCasilla + " " + photonView.ViewID);
+        Debug.Log(photonView.ViewID + " es mi photon id" + " " + photonView.ViewID);
         int aux = photonView.ViewID;
         if (photonView.ViewID == id)
         {
@@ -1180,7 +1184,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
             // cosas start
             textoBalas = GameObject.Find("Balas").GetComponent<Text>();
             textoPuntos = GameObject.Find("PuntuacionTexto").GetComponent<Text>();
-            Debug.Log("Cuantas veces he hecho el Colocarme");
+            Debug.Log("Cuantas veces he hecho el Colocarme" + photonView.ViewID);
             model = this.transform.GetChild(0).gameObject;
             camaraScript = FindObjectOfType<moverCamaraFija>();
             maxTimeoutCollision = 3;
