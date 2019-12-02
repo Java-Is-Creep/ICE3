@@ -47,8 +47,32 @@ public class Carrousel : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //titel.text = current_index.ToString();
 
-        titel.text = current_index.ToString();
+        switch (current_index)
+        {
+            case 0:
+                titel.text = "Pingu II Frosty";
+                break;
+            case 1:
+                titel.text = "Bad Bear BB";
+                break;
+            case 2:
+                titel.text = "Azeri The Fox";
+                break;
+            case 3:
+                titel.text = "Frifri The Snowman";
+                break;
+            case 4:
+                titel.text = "Rodolfo The Reindeer";
+                break;
+            case 5:
+                titel.text = "Glovillo The Walrus";
+                break;
+            case 6:
+                titel.text = "Teapot Ft. TeapotStudio";
+                break;
+        }
 
         lerpTimer = lerpTimer + Time.deltaTime;
 
