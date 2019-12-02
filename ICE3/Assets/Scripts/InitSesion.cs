@@ -10,6 +10,7 @@ public class InitSesion : MonoBehaviour
     private InputField playerName;
     [SerializeField]
     private InputField playerNameMobile;
+    
 
     // Start is called before the first frame update
     void Start()
