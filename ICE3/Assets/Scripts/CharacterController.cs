@@ -68,6 +68,10 @@ public class CharacterController : MonoBehaviourPunCallbacks
     public int timeoutCollisionProyectil;
     public int maxTimeoutCollisionProyectil;
 
+    //Para colision con bazoka
+    public int timeoutCollisionBazoka;
+    public int maxTimeoutCollisionBazoka;
+
     public Text textoBalas;
     public Text textoPuntos;
 
@@ -82,9 +86,11 @@ public class CharacterController : MonoBehaviourPunCallbacks
         maxTimeoutCollision = 3;
         maxTimeoutCollisionBanderas = 3;
         maxTimeoutCollisionProyectil = 3;
+        maxTimeoutCollisionBazoka = 3;
         timeoutCollision = 0;
         timeoutCollisionBanderas = 0;
         timeoutCollisionProyectil = 0;
+        timeoutCollisionBazoka = 0;
         puntos = 0;
         MAXPUNTUACION = 6;
         puntosBolas = 0;
@@ -109,6 +115,11 @@ public class CharacterController : MonoBehaviourPunCallbacks
         if (timeoutCollisionProyectil > 0)
         {
             timeoutCollisionProyectil--;
+        }
+
+        if (timeoutCollisionBazoka > 0)
+        {
+            timeoutCollisionBazoka--;
         }
 
         if (!photonView.IsMine)
@@ -460,9 +471,14 @@ public class CharacterController : MonoBehaviourPunCallbacks
     {
         if (other.tag == "KitBalas")
         {
-            //Debug.Log("Balas Cogidas");
-            añadirBalas();
-            //other.gameObject.GetComponent<KitBalas>().crash();
+            if(timeoutCollisionBazoka <= 0)
+            {
+                //Debug.Log("Balas Cogidas");
+                añadirBalas();
+                timeoutCollisionBazoka = maxTimeoutCollisionBazoka;
+                //other.gameObject.GetComponent<KitBalas>().crash();
+            }
+
         }
 
         if (photonView.IsMine)

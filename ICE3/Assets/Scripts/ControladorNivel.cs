@@ -22,12 +22,14 @@ public class ControladorNivel : MonoBehaviourPunCallbacks
     enum ObjetosCreables { bandera, balas }
 
     public int intentos;
+    public int bazokasIniciales;
 
     private void Awake()
     {
         spawnPersonajeCasillas = new List<TileScript>();
         spawnBazokaCasillas = new List<TileScript>();
         spawnBanderaCasillas = new List<TileScript>();
+        bazokasIniciales = 4;
     }
 
     // Start is called before the first frame update
@@ -36,6 +38,11 @@ public class ControladorNivel : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient)
         {
             Cubo = FindObjectOfType<Cube>();
+        }
+
+        for(int i = 0; i< bazokasIniciales; i++)
+        {
+            createBazoka();
         }
 
     }

@@ -45,6 +45,7 @@ public class Proyectil : MonoBehaviour
     {
         if (other.gameObject.tag.CompareTo("Rock") == 0)
         {
+            Debug.Log("Choque con roca");
             Destroy(this.gameObject);
         }
         else if (other.gameObject.tag.CompareTo("CharacterCollider") == 0)
