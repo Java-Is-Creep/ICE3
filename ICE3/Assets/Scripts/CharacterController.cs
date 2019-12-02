@@ -67,6 +67,8 @@ public class CharacterController : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
+
+        Debug.Log("Cuantas veces he hecho el start");
         model = this.transform.GetChild(0).gameObject;
         camaraScript = FindObjectOfType<moverCamaraFija>();
         maxTimeoutCollision = 3;
@@ -112,6 +114,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
         if (!hecho)
         {
+            Debug.Log("He hecho el hecho");
             object tileData;
             int index = -1;
             int numTries = 0;
