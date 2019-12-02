@@ -67,10 +67,6 @@ public class CharacterController : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
-        if (!photonView.IsMine)
-        {
-            return;
-        }
         model = this.transform.GetChild(0).gameObject;
         camaraScript = FindObjectOfType<moverCamaraFija>();
         maxTimeoutCollision = 3;
