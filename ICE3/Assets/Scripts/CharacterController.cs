@@ -1177,6 +1177,35 @@ public class CharacterController : MonoBehaviourPunCallbacks
         if (photonView.ViewID == id)
         {
 
+            // cosas start
+            textoBalas = GameObject.Find("Balas").GetComponent<Text>();
+            textoPuntos = GameObject.Find("PuntuacionTexto").GetComponent<Text>();
+            Debug.Log("Cuantas veces he hecho el Colocarme");
+            model = this.transform.GetChild(0).gameObject;
+            camaraScript = FindObjectOfType<moverCamaraFija>();
+            maxTimeoutCollision = 3;
+            maxTimeoutCollisionBanderas = 3;
+            maxTimeoutCollisionProyectil = 3;
+            maxTimeoutCollisionBazoka = 3;
+            maxTimeoutCollisionRock = 3;
+            timeoutCollision = 0;
+            timeoutCollisionBanderas = 0;
+            timeoutCollisionProyectil = 0;
+            timeoutCollisionBazoka = 0;
+            timeoutCollisionRock = 0;
+            puntos = 0;
+            MAXPUNTUACION = 6;
+            puntosBolas = 0;
+            MaxPuntuacionBolas = 5;
+            cara = -1;
+            Bazoka.SetActive(false);
+
+
+            //incializacion spawn
+            controladorNivel = FindObjectOfType<ControladorNivel>();
+
+
+
             camaraScript = FindObjectOfType<moverCamaraFija>();
             cubo = FindObjectOfType<Cube>();
 
