@@ -288,6 +288,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerName: {fileID: 2088130953}
   playerNameMobile: {fileID: 1295679332}
+  a: {fileID: 0}
 --- !u!4 &539324500
 Transform:
   m_ObjectHideFlags: 0
