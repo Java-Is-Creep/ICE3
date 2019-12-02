@@ -72,6 +72,10 @@ public class CharacterController : MonoBehaviourPunCallbacks
     public int timeoutCollisionBazoka;
     public int maxTimeoutCollisionBazoka;
 
+    //Para colision con piedras
+    public int timeoutCollisionRock;
+    public int maxTimeoutCollisionRock;
+
     public Text textoBalas;
     public Text textoPuntos;
 
@@ -87,10 +91,12 @@ public class CharacterController : MonoBehaviourPunCallbacks
         maxTimeoutCollisionBanderas = 3;
         maxTimeoutCollisionProyectil = 3;
         maxTimeoutCollisionBazoka = 3;
+        maxTimeoutCollisionRock = 3;
         timeoutCollision = 0;
         timeoutCollisionBanderas = 0;
         timeoutCollisionProyectil = 0;
         timeoutCollisionBazoka = 0;
+        timeoutCollisionRock = 0;
         puntos = 0;
         MAXPUNTUACION = 6;
         puntosBolas = 0;
@@ -120,6 +126,12 @@ public class CharacterController : MonoBehaviourPunCallbacks
         if (timeoutCollisionBazoka > 0)
         {
             timeoutCollisionBazoka--;
+        }
+
+
+        if (timeoutCollisionRock > 0)
+        {
+            timeoutCollisionRock--;
         }
 
         if (!photonView.IsMine)
@@ -512,6 +524,41 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     }
                 }
 
+            }
+
+            if(other.tag == "Rock")
+            {
+                if(timeoutCollisionRock <= 0)
+                {
+                    //Debug.Log("Yendo hacia arriba");
+                    Vector3 aux = comprobarCasillaMasCercana();
+                    //Debug.Log("antes: " + indexX + ", " + indexY + this.transform.position);
+                    indexX = (int)aux.x;
+                    indexY = (int)aux.y;
+                    Vector3 posTile = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
+                    //Caras top y bottom
+                    if (cara == 0 || cara == 5)
+                    {
+                        this.transform.position = new Vector3(posTile.x, this.transform.position.y, posTile.z);
+                    }
+                    //Caras right y left
+                    else if (cara == 3 || cara == 4)
+                    {
+                        this.transform.position = new Vector3(posTile.x, posTile.y, this.transform.position.z);
+                    }
+                    //Caras front y back
+                    else if (cara == 1 || cara == 2)
+                    {
+                        this.transform.position = new Vector3(this.transform.position.x, posTile.y, posTile.z);
+                    }
+                    //Debug.Log("ahora: " + indexX + ", " + indexY + this.transform.position);
+                    lastMovement = 0;
+                    moving = false;
+
+                    Debug.Log("Choque por roca");
+
+                    timeoutCollisionRock = maxTimeoutCollisionRock;
+                }
             }
 
             if (other.tag == "CharacterCollider")

@@ -145,6 +145,12 @@ MonoBehaviour:
   maxTimeoutCollisionBanderas: 0
   timeoutCollisionProyectil: 0
   maxTimeoutCollisionProyectil: 0
+  timeoutCollisionBazoka: 0
+  maxTimeoutCollisionBazoka: 0
+  timeoutCollisionRock: 0
+  maxTimeoutCollisionRock: 0
+  textoBalas: {fileID: 0}
+  textoPuntos: {fileID: 0}
 --- !u!114 &7013383074723312388
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -192,10 +198,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 5.57
+  m_Radius: 4.5
   m_Height: 28.07
   m_Direction: 1
-  m_Center: {x: 0, y: -2.3, z: -1.13}
+  m_Center: {x: 0, y: -2.3, z: -0.5}
 --- !u!114 &514112918765749300
 MonoBehaviour:
   m_ObjectHideFlags: 0

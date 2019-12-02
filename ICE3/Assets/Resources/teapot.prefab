@@ -10,10 +10,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 5.57
+  m_Radius: 4.5
   m_Height: 28.07
   m_Direction: 1
-  m_Center: {x: 0, y: -2.3, z: -1.13}
+  m_Center: {x: 0, y: -2.3, z: -0.5}
 --- !u!114 &458134727238790946
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -196,6 +196,12 @@ MonoBehaviour:
   maxTimeoutCollisionBanderas: 0
   timeoutCollisionProyectil: 0
   maxTimeoutCollisionProyectil: 0
+  timeoutCollisionBazoka: 0
+  maxTimeoutCollisionBazoka: 0
+  timeoutCollisionRock: 0
+  maxTimeoutCollisionRock: 0
+  textoBalas: {fileID: 0}
+  textoPuntos: {fileID: 0}
 --- !u!114 &2571000661538915239
 MonoBehaviour:
   m_ObjectHideFlags: 0
