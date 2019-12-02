@@ -236,10 +236,14 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     return;
                 }
 
-                hecho = true;
             }
 
           
+        }
+
+        if (!hecho)
+        {
+            return;
         }
 
         float incrementAux = increment * Time.deltaTime;
@@ -1173,6 +1177,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
         if (photonView.ViewID == id)
         {
 
+            camaraScript = FindObjectOfType<moverCamaraFija>();
             cubo = FindObjectOfType<Cube>();
 
             TileScript ts = cubo.faces[(int)datosCasilla.z].tiles[(int)datosCasilla.x, (int)datosCasilla.y].GetComponent<TileScript>();
@@ -1211,6 +1216,8 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     break;
             }
             this.transform.position += this.transform.TransformDirection(Vector3.up);
+            hecho = true;
+            Debug.Log("Mando inicializar a otro");
             this.photonView.RPC("siguienteJugador", RpcTarget.All);
         }
 
