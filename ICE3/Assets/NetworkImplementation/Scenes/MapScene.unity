@@ -1438,6 +1438,48 @@ PrefabInstance:
       propertyPath: controlador
       value: 
       objectReference: {fileID: 1048803627}
+    - target: {fileID: 669851652224002710, guid: 70ac3138d67530c42911914b6e7bdfad,
+        type: 3}
+      propertyPath: renoPlayer
+      value: 
+      objectReference: {fileID: 1004734438933948730, guid: 88d692c919ff27f46bdc6bc55d971a97,
+        type: 3}
+    - target: {fileID: 669851652224002710, guid: 70ac3138d67530c42911914b6e7bdfad,
+        type: 3}
+      propertyPath: pinguinoPlayer
+      value: 
+      objectReference: {fileID: 1036212682541896008, guid: b8656702106f14742bb42e9a39eee09e,
+        type: 3}
+    - target: {fileID: 669851652224002710, guid: 70ac3138d67530c42911914b6e7bdfad,
+        type: 3}
+      propertyPath: morsaPlayer
+      value: 
+      objectReference: {fileID: 4543978692763821777, guid: bcd500cdcb0f2a04db7a6e1675c314c6,
+        type: 3}
+    - target: {fileID: 669851652224002710, guid: 70ac3138d67530c42911914b6e7bdfad,
+        type: 3}
+      propertyPath: teapotPlayer
+      value: 
+      objectReference: {fileID: 5520234691915342315, guid: 4eeac4d831e206444ae2dd7d66ef049c,
+        type: 3}
+    - target: {fileID: 669851652224002710, guid: 70ac3138d67530c42911914b6e7bdfad,
+        type: 3}
+      propertyPath: osoPlayer
+      value: 
+      objectReference: {fileID: 8400327294832621268, guid: 1c993a176d98ea14c9755ff37acff9e0,
+        type: 3}
+    - target: {fileID: 669851652224002710, guid: 70ac3138d67530c42911914b6e7bdfad,
+        type: 3}
+      propertyPath: zorraPlayer
+      value: 
+      objectReference: {fileID: 5565682681549352943, guid: ff0e137a1aaf2cc45ae8bd33b6749e72,
+        type: 3}
+    - target: {fileID: 669851652224002710, guid: 70ac3138d67530c42911914b6e7bdfad,
+        type: 3}
+      propertyPath: munecoPlayer
+      value: 
+      objectReference: {fileID: 1749725487661531508, guid: 8c023cf76921b674e84c4dbcdd90b11b,
+        type: 3}
     - target: {fileID: 2412898396405972018, guid: 70ac3138d67530c42911914b6e7bdfad,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3432,3 +3474,5 @@ MonoBehaviour:
   right: {fileID: 1324428506}
   left: {fileID: 14803576}
   fire: {fileID: 445282789}
+  bindeado: 0
+  personaje: {fileID: 0}

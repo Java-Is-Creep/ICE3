@@ -125,9 +125,4 @@ public class moverCamaraFijaMenu : MonoBehaviour
         anim.SetInteger("cara", 3);
     }
 
-    public void jugar()
-    {
-        SceneManager.LoadScene("Launcher");
-    }
-
 }

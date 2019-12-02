@@ -12,7 +12,13 @@ public class GameManager : MonoBehaviourPunCallbacks
     public ControladorNivel controlador;
 
     [Tooltip("The prefab to use for representing the player")]
-    public GameObject playerPrefab;
+    public GameObject renoPlayer;
+    public GameObject pinguinoPlayer;
+    public GameObject morsaPlayer;
+    public GameObject teapotPlayer;
+    public GameObject osoPlayer;
+    public GameObject zorraPlayer;
+    public GameObject munecoPlayer;
     public GameObject cubePrefab;
 
 
@@ -39,17 +45,44 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         }
 
-        if (playerPrefab == null)
+        GameObject aux;
+        switch (PlayerPrefs.GetInt("IndiceEscenario"))
         {
-            Debug.LogError("<Color=Red><a>Missing</a></Color> playerPrefab Reference. Please set it up in GameObject 'Game Manager'", this);
-        }
-        else
-        {
-            Debug.LogFormat("We are Instantiating LocalPlayer from {0}", Application.loadedLevelName);
-            // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
+            // pinguino
+            case 0:
+                aux = PhotonNetwork.Instantiate(this.pinguinoPlayer.name, Vector3.zero, Quaternion.identity, 0);
+                break;
+            // oso
+            case 1:
+                 aux = PhotonNetwork.Instantiate(this.osoPlayer.name, Vector3.zero, Quaternion.identity, 0);
+                break;
 
-             GameObject aux = PhotonNetwork.Instantiate(this.playerPrefab.name, Vector3.zero, Quaternion.identity, 0);
+            //zorro
+            case 2:
+                aux = PhotonNetwork.Instantiate(this.zorraPlayer.name, Vector3.zero, Quaternion.identity, 0);
+                break;
+            //muñeco
+            case 3:
+                aux = PhotonNetwork.Instantiate(this.munecoPlayer.name, Vector3.zero, Quaternion.identity, 0);
+                break;
+            //reno
+            case 4:
+                aux = PhotonNetwork.Instantiate(this.renoPlayer.name, Vector3.zero, Quaternion.identity, 0);
+                break;
+            //morsa
+            case 5:
+                aux = PhotonNetwork.Instantiate(this.morsaPlayer.name, Vector3.zero, Quaternion.identity, 0);
+                break;
+            //teapot
+            case 6:
+                aux = PhotonNetwork.Instantiate(this.teapotPlayer.name, Vector3.zero, Quaternion.identity, 0);
+                break;
+            default:
+                aux = PhotonNetwork.Instantiate(this.pinguinoPlayer.name, Vector3.zero, Quaternion.identity, 0);
+                break;
         }
+
+        
 
     }
 
