@@ -38,5 +38,7 @@ MonoBehaviour:
   - Destroy
   - DestroyBandera
   - AcabarPartida
+  - Colocarme
+  - siguienteJugador
   DisableAutoOpenWizard: 1
   ShowSettings: 1

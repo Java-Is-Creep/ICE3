@@ -29,7 +29,7 @@ public class ControladorNivel : MonoBehaviourPunCallbacks
         spawnPersonajeCasillas = new List<TileScript>();
         spawnBazokaCasillas = new List<TileScript>();
         spawnBanderaCasillas = new List<TileScript>();
-        bazokasIniciales = 4;
+        bazokasIniciales = 6;
     }
 
     // Start is called before the first frame update
@@ -62,7 +62,7 @@ public class ControladorNivel : MonoBehaviourPunCallbacks
                 {
                     //createObject(ObjetosCreables.balas);
                     createBazoka();
-                    TimeToCreateAmmunition = Random.Range(15, 26);
+                    TimeToCreateAmmunition = Random.Range(7, 15);
                     actualTimeAmmunation = 0;
                 }
             }
@@ -224,7 +224,7 @@ public class ControladorNivel : MonoBehaviourPunCallbacks
     public TileScript getCasillaVacia()
     {
         if (spawnPersonajeCasillas.Count > 0)
-        {
+        {/*
             TileScript casilla;
             do
             {
@@ -238,6 +238,12 @@ public class ControladorNivel : MonoBehaviourPunCallbacks
                 intentos++;
             } while (casilla.myObjectType != TileScript.tileObject.NULL);
             intentos = 0;
+            spawnPersonajeCasillas.Remove(casilla);
+            return casilla;
+            */
+            TileScript casilla;
+            int indice = Random.Range(0, spawnBanderaCasillas.Count);
+            casilla = spawnPersonajeCasillas[indice];
             spawnPersonajeCasillas.Remove(casilla);
             return casilla;
         }
@@ -319,11 +325,13 @@ public class ControladorNivel : MonoBehaviourPunCallbacks
 
         if (PhotonNetwork.IsMasterClient)
         {
-            Vector3 aux = new Vector3(casilla.indexX, casilla.indexY, casilla.cubeId);
+            spawnPersonajeCasillas.Add(casilla);
+            //Vector3 aux = new Vector3(casilla.indexX, casilla.indexY, casilla.cubeId);
+            /*
             ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable();
             hash.Add("pos" + spawnPersonajeCasillas.Count, aux);
             PhotonNetwork.CurrentRoom.SetCustomProperties(hash);
-
+            */
         }
 
 

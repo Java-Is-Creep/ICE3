@@ -79,6 +79,11 @@ public class CharacterController : MonoBehaviourPunCallbacks
     public Text textoBalas;
     public Text textoPuntos;
 
+    //spawns
+    int indiceJugador;
+    public CharacterController[] jugadores;
+    ControladorNivel controladorNivel;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -103,6 +108,11 @@ public class CharacterController : MonoBehaviourPunCallbacks
         MaxPuntuacionBolas = 5;
         cara = -1;
         Bazoka.SetActive(false);
+
+
+        //incializacion spawn
+        controladorNivel = FindObjectOfType<ControladorNivel>();
+
     }
 
     // Update is called once per frame
@@ -150,6 +160,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
         if (!hecho)
         {
+            /*
             Debug.Log("He hecho el hecho");
             object tileData;
             int index = -1;
@@ -165,10 +176,12 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(value, out aux5);
                 Debug.Log("La clave es: " + value + " el valor es: " + aux5);
             }
+            
             if(numSpawns == null)
             {
                 return;
             }
+
             int numeroSpawns = (int)numSpawns;
             do
             {
@@ -192,7 +205,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
             PhotonNetwork.CurrentRoom.SetCustomProperties(hash);
 
 
-
+            
             Debug.Log("Despues");
             foreach (object value in PhotonNetwork.CurrentRoom.CustomProperties.Keys)
             {
@@ -200,52 +213,33 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(value,out aux5);
                 Debug.Log( "La clave es: " +value  + " el valor es: " + aux5);
             }
-
-
-            Vector3 datosCasilla = (Vector3)tileData;
-            cubo = FindObjectOfType<Cube>();
-            TileScript ts = cubo.faces[(int)datosCasilla.z].tiles[(int)datosCasilla.x,(int)datosCasilla.y].GetComponent<TileScript>();
-
-            indexX = ts.indexX;
-            indexY = ts.indexY;
-            cara = ts.cubeId;
-
-  
-            this.transform.position = ts.AbsolutePos;
-            switch (cara)
-            {
-                case (0):
-
-                    break;
-                case (1):
-                    this.transform.Rotate(new Vector3(0, 0, 90));
-                    camaraScript.back();
-                    break;
-                case (2):
-                    this.transform.Rotate(new Vector3(0, 0, -90));
-                    camaraScript.front();
-                    break;
-                case (3):
-                    this.transform.Rotate(new Vector3(90, 0, 0));
-                    camaraScript.right();
-                    break;
-                case (4):
-                    this.transform.Rotate(new Vector3(-90, 0, 0));
-                    camaraScript.left();
-                    break;
-                case (5):
-                    Debug.Log("Cambiando de cara");
-                    this.transform.Rotate(new Vector3(0, 0, 180));
-                    camaraScript.button();
-                    break;
-            }
-            this.transform.position += this.transform.TransformDirection(Vector3.up);
-            /* ANTERIOR
-            this.transform.position = ts.AbsolutePos;
-
-            this.transform.position = this.transform.position + new Vector3(0, 1, 0);
             */
-            hecho = true;
+            /*
+                Vector3 datosCasilla = (Vector3)tileData;
+                cubo = FindObjectOfType<Cube>();
+                TileScript ts = cubo.faces[(int)datosCasilla.z].tiles[(int)datosCasilla.x,(int)datosCasilla.y].GetComponent<TileScript>();
+            */
+            if (PhotonNetwork.IsMasterClient)
+            {
+                if (controladorNivel != null)
+                {
+                    jugadores = FindObjectsOfType<CharacterController>();
+                    Debug.Log("Cantidad de jugadores: " + jugadores.Length);
+                    object[] parametros = new object[2];
+                    parametros[0] = jugadores[0].photonView.ViewID;
+                    Debug.Log("ID a mandar: " + (int)parametros[0]);
+                    parametros[1] = obtenerVector(controladorNivel.getCasillaVacia());
+                    this.photonView.RPC("Colocarme", RpcTarget.All, parametros);
+                }
+                else
+                {
+                    return;
+                }
+
+                hecho = true;
+            }
+
+          
         }
 
         float incrementAux = increment * Time.deltaTime;
@@ -467,6 +461,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
     #endregion
 
+    #region funciones auxiliares
     public void salirmePartida()
     {
 
@@ -480,7 +475,12 @@ public class CharacterController : MonoBehaviourPunCallbacks
         return PhotonNetwork.IsMasterClient;
     }
 
+    public Vector3 obtenerVector(TileScript casilla)
+    {
+        return new Vector3(casilla.indexX, casilla.indexY, casilla.cubeId);
+    }
 
+    #endregion
 
     #region Colisiones
     private void OnTriggerEnter(Collider other)
@@ -1159,6 +1159,86 @@ public class CharacterController : MonoBehaviourPunCallbacks
     {
         //Debug.Log("Veces que se llama");
         salirmePartida();
+    }
+
+    [PunRPC]
+    void Colocarme(object[] parametros)
+    {
+        int id = (int)parametros[0];
+        Vector3 datosCasilla = (Vector3)parametros[1];
+        Debug.Log("Photon view a colocar: " + id);
+        Debug.Log("Posiciones al que mandarlo" + datosCasilla);
+        Debug.Log(photonView.ViewID + " es mi photon id");
+        int aux = photonView.ViewID;
+        if (photonView.ViewID == id)
+        {
+
+            cubo = FindObjectOfType<Cube>();
+
+            TileScript ts = cubo.faces[(int)datosCasilla.z].tiles[(int)datosCasilla.x, (int)datosCasilla.y].GetComponent<TileScript>();
+
+            indexX = ts.indexX;
+            indexY = ts.indexY;
+            cara = ts.cubeId;
+
+
+            this.transform.position = ts.AbsolutePos;
+            switch (cara)
+            {
+                case (0):
+
+                    break;
+                case (1):
+                    this.transform.Rotate(new Vector3(0, 0, 90));
+                    camaraScript.back();
+                    break;
+                case (2):
+                    this.transform.Rotate(new Vector3(0, 0, -90));
+                    camaraScript.front();
+                    break;
+                case (3):
+                    this.transform.Rotate(new Vector3(90, 0, 0));
+                    camaraScript.right();
+                    break;
+                case (4):
+                    this.transform.Rotate(new Vector3(-90, 0, 0));
+                    camaraScript.left();
+                    break;
+                case (5):
+                    Debug.Log("Cambiando de cara");
+                    this.transform.Rotate(new Vector3(0, 0, 180));
+                    camaraScript.button();
+                    break;
+            }
+            this.transform.position += this.transform.TransformDirection(Vector3.up);
+            this.photonView.RPC("siguienteJugador", RpcTarget.All);
+        }
+
+
+    }
+
+    [PunRPC]
+    void siguienteJugador()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            indiceJugador++;
+            Debug.Log(indiceJugador + "indice jugador");
+            if (indiceJugador < jugadores.Length)
+            {
+                object[] parametros = new object[2];
+                parametros[0] = jugadores[indiceJugador].photonView.ViewID;
+                Debug.Log("ID a mandar: " + (int)parametros[indiceJugador]);
+                parametros[1] = obtenerVector(controladorNivel.getCasillaVacia());
+                Debug.Log("Casilla: " + (Vector3)parametros[1]);
+                this.photonView.RPC("Colocarme", RpcTarget.All, parametros);
+            }
+
+        } else
+        {
+            Debug.Log("No soy el master");
+        }
+
     }
 
     public override void OnLeftRoom()

@@ -21,33 +21,39 @@ public class moverCamaraFija : MonoBehaviour
 
     public CharacterController personaje;
 
+    public bool hecho = false;
+
     // Start is called before the first frame update
     void Start()
     {
         anim = this.gameObject.GetComponent<Animator>();
         //cara = 0;
-        CharacterController[] cc = FindObjectsOfType<CharacterController>();
-        foreach(CharacterController c in cc)
-        {
-            if (c.photonView.IsMine)
-            {
-                personaje = c;
-            }
-        }
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!hecho)
+        {
+            CharacterController[] cc = FindObjectsOfType<CharacterController>();
+            foreach (CharacterController c in cc)
+            {
+                if (c.photonView.IsMine)
+                {
+                    personaje = c;
+                }
+            }
+            hecho = true;
+        }
+
         if (!Application.isMobilePlatform)
         {
-            if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+            if (Input.GetMouseButtonDown(0))
             {
                 Free();
             }
-            else if (Input.GetMouseButtonUp(0) && !EventSystem.current.IsPointerOverGameObject())
+            else if (Input.GetMouseButtonUp(0))
             {
-                Debug.Log("Solar raton");
                 if (personaje.cara == 0)
                 {
                     top();

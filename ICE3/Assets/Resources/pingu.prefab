@@ -151,6 +151,7 @@ MonoBehaviour:
   maxTimeoutCollisionRock: 0
   textoBalas: {fileID: 0}
   textoPuntos: {fileID: 0}
+  jugadores: []
 --- !u!114 &7013383074723312388
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -336,6 +337,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1036212682541896012}
     m_Modifications:
+    - target: {fileID: 100000, guid: 957ef47ebb67f064abb0e4c94605834c, type: 3}
+      propertyPath: m_Name
+      value: pinguKawaiiDesune
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 957ef47ebb67f064abb0e4c94605834c, type: 3}
+      propertyPath: m_TagString
+      value: CharacterCollider
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 957ef47ebb67f064abb0e4c94605834c, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0
@@ -391,14 +400,6 @@ PrefabInstance:
     - target: {fileID: 400000, guid: 957ef47ebb67f064abb0e4c94605834c, type: 3}
       propertyPath: m_LocalScale.z
       value: 0.08
-      objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: 957ef47ebb67f064abb0e4c94605834c, type: 3}
-      propertyPath: m_Name
-      value: pinguKawaiiDesune
-      objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: 957ef47ebb67f064abb0e4c94605834c, type: 3}
-      propertyPath: m_TagString
-      value: CharacterCollider
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: 957ef47ebb67f064abb0e4c94605834c, type: 3}
       propertyPath: m_Materials.Array.data[0]

@@ -40,6 +40,7 @@ public class moverCamaraFijaMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        /*
         if (Input.GetKeyDown(KeyCode.Keypad0))
         {
             Debug.Log("0");
@@ -69,6 +70,7 @@ public class moverCamaraFijaMenu : MonoBehaviour
             Debug.Log("5");
             back();
         } 
+        */
     }
 
     public void front()

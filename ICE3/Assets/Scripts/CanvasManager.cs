@@ -18,8 +18,8 @@ public class CanvasManager : MonoBehaviour
     void Start()
     {
         bindeado = false;
-        //if (Application.isMobilePlatform)
-        //{
+        if (Application.isMobilePlatform)
+        {
         //Debug.Log("Haciendo start de canvas manager");
             up.gameObject.SetActive(true);
             down.gameObject.SetActive(true);
@@ -27,8 +27,12 @@ public class CanvasManager : MonoBehaviour
             left.gameObject.SetActive(true);
             fire.gameObject.SetActive(true);
             
+            
 
-       // }
+        } else
+        {
+            bindeado = true;
+        }
     }
 
     private void Update()
