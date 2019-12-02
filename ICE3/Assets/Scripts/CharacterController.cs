@@ -52,7 +52,10 @@ public class CharacterController : MonoBehaviourPunCallbacks
     bool sb = false;
     bool db = false;
 
+    //Modelos
     GameObject model;
+    [SerializeField]
+    GameObject Bazoka;
 
     //Para colision entre personajes
     public int timeoutCollision;
@@ -82,6 +85,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
         puntosBolas = 0;
         MaxPuntuacionBolas = 5;
         cara = -1;
+        Bazoka.SetActive(false);
     }
 
     // Update is called once per frame
@@ -387,7 +391,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 Debug.Log("Disparando");
                 this.photonView.RPC("Shot", RpcTarget.All, this.transform.position);
                 timeWaitingShots = 0;
-                ammunition--;
+
             }
             else
             {
@@ -401,6 +405,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
     public void añadirBalas()
     {
         ammunition += 3;
+        Bazoka.SetActive(true);
     }
 
     public void sumarPuntuacion()
@@ -444,16 +449,17 @@ public class CharacterController : MonoBehaviourPunCallbacks
     #region Colisiones
     private void OnTriggerEnter(Collider other)
     {
+        if (other.tag == "KitBalas")
+        {
+            //Debug.Log("Balas Cogidas");
+            añadirBalas();
+            //other.gameObject.GetComponent<KitBalas>().crash();
+        }
 
         if (photonView.IsMine)
         {
 
-            if (other.tag == "KitBalas")
-            {
-                //Debug.Log("Balas Cogidas");
-                añadirBalas();
-                //other.gameObject.GetComponent<KitBalas>().crash();
-            }
+
 
             if (other.tag == "Bandera")
             {
@@ -1064,115 +1070,12 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 }
             }
         }
-        /*
-        if (lastMovement == 4)
+        ammunition--;
+        if (ammunition <= 0)
         {
-            //Debug.Log("Yendo hacia arriba");
-            aux2 = comprobarCasillaMasCercana();
-            //Debug.Log("antes: " + indexX + ", " + indexY + this.transform.position);
-            indexX = (int)aux2.x;
-            indexY = (int)aux2.y;
-            Vector3 posTile = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
-            //Caras top y bottom
-            if (cara == 0 || cara == 5)
-            {
-                this.transform.position = new Vector3(posTile.x, this.transform.position.y, posTile.z);
-            }
-            //Caras right y left
-            else if (cara == 3 || cara == 4)
-            {
-                this.transform.position = new Vector3(posTile.x, posTile.y, this.transform.position.z);
-            }
-            //Caras front y back
-            else if (cara == 1 || cara == 2)
-            {
-                this.transform.position = new Vector3(this.transform.position.x, posTile.y, posTile.z);
-            }
-            //Debug.Log("ahora: " + indexX + ", " + indexY + this.transform.position);
-            lastMovement = 2;
-            moving = false;
+            Bazoka.SetActive(false);
         }
-        else if (lastMovement == 2)
-        {
-            Debug.Log("Yendo hacia abajo");
-            aux2 = comprobarCasillaMasCercana();
-            Debug.Log("antes: " + indexX + ", " + indexY + this.transform.position);
-            indexX = (int)aux2.x;
-            indexY = (int)aux2.y;
-            Vector3 posTile = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
-            //Caras top y bottom
-            if (cara == 0 || cara == 5)
-            {
-                this.transform.position = new Vector3(posTile.x, this.transform.position.y, posTile.z);
-            }
-            //Caras right y left
-            else if (cara == 3 || cara == 4)
-            {
-                this.transform.position = new Vector3(posTile.x, posTile.y, this.transform.position.z);
-            }
-            //Caras front y back
-            else if (cara == 1 || cara == 2)
-            {
-                this.transform.position = new Vector3(this.transform.position.x, posTile.y, posTile.z);
-            }
-            Debug.Log("ahora: " + indexX + ", " + indexY + this.transform.position);
-            lastMovement = 4;
-            moving = false;
-        }
-        else if (lastMovement == 3)
-        {
-            Debug.Log("Yendo hacia derecha");
-            aux2 = comprobarCasillaMasCercana();
-            Debug.Log("antes: " + indexX + ", " + indexY + this.transform.position);
-            indexX = (int)aux2.x;
-            indexY = (int)aux2.y;
-            Vector3 posTile = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
-            //Caras top y bottom
-            if (cara == 0 || cara == 5)
-            {
-                this.transform.position = new Vector3(posTile.x, this.transform.position.y, posTile.z);
-            }
-            //Caras right y left
-            else if (cara == 3 || cara == 4)
-            {
-                this.transform.position = new Vector3(posTile.x, posTile.y, this.transform.position.z);
-            }
-            //Caras front y back
-            else if (cara == 1 || cara == 2)
-            {
-                this.transform.position = new Vector3(this.transform.position.x, posTile.y, posTile.z);
-            }
-            Debug.Log("ahora: " + indexX + ", " + indexY + this.transform.position);
-            lastMovement = 1;
-            moving = false;
-        }
-        else if (lastMovement == 1)
-        {
-            //Debug.Log("Yendo hacia izquierda");
-            aux2 = comprobarCasillaMasCercana();
-            //Debug.Log("antes: " + indexX + ", " + indexY + this.transform.position);
-            indexX = (int)aux2.x;
-            indexY = (int)aux2.y;
-            Vector3 posTile = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
-            //Caras top y bottom
-            if (cara == 0 || cara == 5)
-            {
-                this.transform.position = new Vector3(posTile.x, this.transform.position.y, posTile.z);
-            }
-            //Caras right y left
-            else if (cara == 3 || cara == 4)
-            {
-                this.transform.position = new Vector3(posTile.x, posTile.y, this.transform.position.z);
-            }
-            //Caras front y back
-            else if (cara == 1 || cara == 2)
-            {
-                this.transform.position = new Vector3(this.transform.position.x, posTile.y, posTile.z);
-            }
-            Debug.Log("ahora: " + indexX + ", " + indexY + this.transform.position);
-            lastMovement = 3;
-            moving = false;
-        }*/
+
     }
 
     [PunRPC]

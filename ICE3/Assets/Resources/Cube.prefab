@@ -55,6 +55,8 @@ MonoBehaviour:
     type: 3}
   prefabPresent3: {fileID: 3363387174675438931, guid: c0bdfb35408c72b469c9d750344f938d,
     type: 3}
+  rock2: {fileID: 2089980056147029683, guid: 795860491781b2d4a98592201d44c578, type: 3}
+  rock3: {fileID: 8918572350809796274, guid: 7d645c0af98b9054fb58c50648da657a, type: 3}
   prefabTile: {fileID: 5260194616739594338, guid: b17832778413d9c40be6c5416fdd6b13,
     type: 3}
   prefabFace: {fileID: 7201357569648388395, guid: 3494140c464f14442be394eb4d287f4d,
