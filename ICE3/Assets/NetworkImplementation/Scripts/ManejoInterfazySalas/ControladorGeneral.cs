@@ -3,6 +3,7 @@ using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ControladorGeneral : MonoBehaviourPunCallbacks
@@ -155,6 +156,11 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
         {
             Debug.Log("Error");
         }
+    }
+
+    public void exitMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
     #endregion
 
