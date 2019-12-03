@@ -41,5 +41,7 @@ MonoBehaviour:
   - Colocarme
   - siguienteJugador
   - pruebaMandarCosas
+  - QuitarBazoka
+  - SacarBazoka
   DisableAutoOpenWizard: 1
   ShowSettings: 1

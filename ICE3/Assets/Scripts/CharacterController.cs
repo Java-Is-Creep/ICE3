@@ -448,8 +448,17 @@ public class CharacterController : MonoBehaviourPunCallbacks
     #region funcionalidd choques con objetos
     public void añadirBalas()
     {
-        ammunition += 3;
-        Bazoka.SetActive(true);
+        if (photonView.IsMine)
+        {
+            if (ammunition <= 0)
+            {
+                Bazoka.SetActive(true);
+                this.photonView.RPC("SacarBazoka", RpcTarget.Others);
+            }
+            ammunition += 3;
+
+        }
+
     }
 
     public void sumarPuntuacion()
@@ -748,11 +757,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
     [PunRPC]
     void Shot(Vector3 posicion)
     {
-        /* if(targetID == photonView.GetInstanceID())
-         {
-             GameObject aux = Instantiate(bolaDeNieve, this.transform.position + (Vector3.forward * 0.2f), Quaternion.identity);
-             aux.GetComponent<Proyectil>().initDireccion(this.gameObject.transform.TransformDirection(Vector3.forward), this.gameObject);
-         }*/
+        
         Transform childTransform = this.gameObject.transform.GetChild(0);
         GameObject aux = Instantiate(bolaDeNieve, posicion + (childTransform.TransformDirection(Vector3.back * 0.2f)), Quaternion.identity);
 
@@ -1178,11 +1183,17 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 }
             }
         }
-        ammunition--;
-        if (ammunition <= 0)
+        if (photonView.IsMine)
         {
-            Bazoka.SetActive(false);
+            ammunition--;
+            if (ammunition <= 0)
+            {
+                Bazoka.SetActive(false);
+                this.photonView.RPC("QuitarBazoka", RpcTarget.Others);
+                
+            }
         }
+
 
     }
 
@@ -1266,57 +1277,6 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
         }
 
-        /*
-        if (this.photonView.ViewID == id)
-        {
-
-            camaraScript = FindObjectOfType<moverCamaraFija>();
-            cubo = FindObjectOfType<Cube>();
-
-            TileScript ts = cubo.faces[(int)datosCasilla.z].tiles[(int)datosCasilla.x, (int)datosCasilla.y].GetComponent<TileScript>();
-
-            indexX = ts.indexX;
-            indexY = ts.indexY;
-            cara = ts.cubeId;
-
-
-            this.transform.position = ts.AbsolutePos;
-            switch (cara)
-            {
-                case (0):
-
-                    break;
-                case (1):
-                    this.transform.Rotate(new Vector3(0, 0, 90));
-                    camaraScript.back();
-                    break;
-                case (2):
-                    this.transform.Rotate(new Vector3(0, 0, -90));
-                    camaraScript.front();
-                    break;
-                case (3):
-                    this.transform.Rotate(new Vector3(90, 0, 0));
-                    camaraScript.right();
-                    break;
-                case (4):
-                    this.transform.Rotate(new Vector3(-90, 0, 0));
-                    camaraScript.left();
-                    break;
-                case (5):
-                    Debug.Log("Cambiando de cara");
-                    this.transform.Rotate(new Vector3(0, 0, 180));
-                    camaraScript.button();
-                    break;
-            }
-            this.transform.position += this.transform.TransformDirection(Vector3.up);
-            hecho = true;
-            Debug.Log("Mando inicializar a otro");
-            this.photonView.RPC("siguienteJugador", RpcTarget.All);
-            
-        }
-        */
-
-
     }
 
     [PunRPC]
@@ -1339,13 +1299,28 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
     }
 
+    [PunRPC]
+    void SacarBazoka()
+    {
+        Bazoka.SetActive(true);
+    }
+
+    [PunRPC]
+    void QuitarBazoka()
+    {
+        Bazoka.SetActive(false);
+    }
+
+
+
+    #endregion
+
     public override void OnLeftRoom()
     {
         SceneManager.LoadScene("Main Menu");
     }
 
-    #endregion
-
+    #region Movimientos
     public void MovimientoCaraTop(float incrementAux)
     {
         //Arriba
@@ -4528,6 +4503,8 @@ public class CharacterController : MonoBehaviourPunCallbacks
             }
         }
     }
+
+    #endregion
 
     #region botones para movil
     public void w()
