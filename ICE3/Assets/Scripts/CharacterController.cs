@@ -229,11 +229,17 @@ public class CharacterController : MonoBehaviourPunCallbacks
                         return;
                     }
                     Debug.Log("Cantidad de jugadores: " + jugadores.Length + " " + photonView.ViewID);
+                    // llamamos a inicializar a ese jugador, ese jugador manda una rpc a todos y el que sea lo hará
+                    jugadores[0].inicializateTu(photonView.ViewID,obtenerVector(controladorNivel.getCasillaVacia()));
+                    hecho = true;
+                    /*
                     object[] parametros = new object[2];
                     parametros[0] = jugadores[0].photonView.ViewID;
                     Debug.Log("ID a mandar: " + (int)parametros[0]);
                     parametros[1] = obtenerVector(controladorNivel.getCasillaVacia());
+                    
                     this.photonView.RPC("Colocarme", RpcTarget.All, parametros);
+                    */
                 }
                 else
                 {
@@ -486,6 +492,24 @@ public class CharacterController : MonoBehaviourPunCallbacks
     public Vector3 obtenerVector(TileScript casilla)
     {
         return new Vector3(casilla.indexX, casilla.indexY, casilla.cubeId);
+    }
+
+    public void inicializateTu( int masterId, Vector3 casilla)
+    {
+        object[] parametros = new object[2];
+        Debug.Log("Holiwis");
+        parametros[0] = masterId;
+        Debug.Log("ID a mandar: " + (int)parametros[0]);
+        parametros[1] = casilla;
+        this.photonView.RPC("Colocarme", RpcTarget.All, parametros);
+    }
+
+    // Manda RPC hasta que de con el master que llama al resto
+    public void avisarAlSiguiente()
+    {
+        Debug.Log("Manada siguiente orden");
+        this.photonView.RPC("siguienteJugador", RpcTarget.MasterClient);
+       
     }
 
     #endregion
@@ -1169,46 +1193,82 @@ public class CharacterController : MonoBehaviourPunCallbacks
         salirmePartida();
     }
 
+
     [PunRPC]
     void Colocarme(object[] parametros)
     {
-        int id = (int)parametros[0];
-        Vector3 datosCasilla = (Vector3)parametros[1];
-        Debug.Log("Photon view a colocar: " + id + " " + photonView.ViewID);
-        Debug.Log("Posiciones al que mandarlo" + datosCasilla + " " + photonView.ViewID);
-        Debug.Log(photonView.ViewID + " es mi photon id" + " " + photonView.ViewID);
-        int aux = photonView.ViewID;
-        if (photonView.ViewID == id)
+        // este personaje se actualiza solo en su cliente, ahora hay que avisar al cliente de que avise a otros.
+        if (photonView.IsMine)
         {
+            int idMaster = (int)parametros[0];
+            Vector3 datosCasilla = (Vector3)parametros[1];
+            Debug.Log("Photon view a colocar: " + this.photonView.ViewID );
+            Debug.Log("Posiciones al que mandarlo" + datosCasilla + " " + this.photonView.ViewID);
+            Debug.Log(photonView.ViewID + " es mi photon id" + " " + this.photonView.ViewID);
+            int aux = this.photonView.ViewID;
 
-            // cosas start
-            textoBalas = GameObject.Find("Balas").GetComponent<Text>();
-            textoPuntos = GameObject.Find("PuntuacionTexto").GetComponent<Text>();
-            Debug.Log("Cuantas veces he hecho el Colocarme" + photonView.ViewID);
-            model = this.transform.GetChild(0).gameObject;
             camaraScript = FindObjectOfType<moverCamaraFija>();
-            maxTimeoutCollision = 3;
-            maxTimeoutCollisionBanderas = 3;
-            maxTimeoutCollisionProyectil = 3;
-            maxTimeoutCollisionBazoka = 3;
-            maxTimeoutCollisionRock = 3;
-            timeoutCollision = 0;
-            timeoutCollisionBanderas = 0;
-            timeoutCollisionProyectil = 0;
-            timeoutCollisionBazoka = 0;
-            timeoutCollisionRock = 0;
-            puntos = 0;
-            MAXPUNTUACION = 6;
-            puntosBolas = 0;
-            MaxPuntuacionBolas = 5;
-            cara = -1;
-            Bazoka.SetActive(false);
+            cubo = FindObjectOfType<Cube>();
+
+            TileScript ts = cubo.faces[(int)datosCasilla.z].tiles[(int)datosCasilla.x, (int)datosCasilla.y].GetComponent<TileScript>();
+
+            indexX = ts.indexX;
+            indexY = ts.indexY;
+            cara = ts.cubeId;
 
 
-            //incializacion spawn
-            controladorNivel = FindObjectOfType<ControladorNivel>();
+            this.transform.position = ts.AbsolutePos;
+            switch (cara)
+            {
+                case (0):
+
+                    break;
+                case (1):
+                    this.transform.Rotate(new Vector3(0, 0, 90));
+                    camaraScript.back();
+                    break;
+                case (2):
+                    this.transform.Rotate(new Vector3(0, 0, -90));
+                    camaraScript.front();
+                    break;
+                case (3):
+                    this.transform.Rotate(new Vector3(90, 0, 0));
+                    camaraScript.right();
+                    break;
+                case (4):
+                    this.transform.Rotate(new Vector3(-90, 0, 0));
+                    camaraScript.left();
+                    break;
+                case (5):
+                    Debug.Log("Cambiando de cara");
+                    this.transform.Rotate(new Vector3(0, 0, 180));
+                    camaraScript.button();
+                    break;
+            }
+            this.transform.position += this.transform.TransformDirection(Vector3.up);
+            hecho = true;
+            Debug.Log("Mando inicializar a otro");
+            jugadores = FindObjectsOfType<CharacterController>();
+            CharacterController aux2 = null;
+
+            foreach(CharacterController controlador in jugadores)
+            {
+                if(controlador.photonView.ViewID == idMaster)
+                {
+                    aux2 = controlador;
+                    Debug.Log("Encontrado master, su id es " + idMaster);
+                }
+            }
+
+            aux2.avisarAlSiguiente();
 
 
+
+        }
+
+        /*
+        if (this.photonView.ViewID == id)
+        {
 
             camaraScript = FindObjectOfType<moverCamaraFija>();
             cubo = FindObjectOfType<Cube>();
@@ -1252,7 +1312,9 @@ public class CharacterController : MonoBehaviourPunCallbacks
             hecho = true;
             Debug.Log("Mando inicializar a otro");
             this.photonView.RPC("siguienteJugador", RpcTarget.All);
+            
         }
+        */
 
 
     }
@@ -1262,16 +1324,12 @@ public class CharacterController : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.IsMasterClient)
         {
+
             indiceJugador++;
             Debug.Log(indiceJugador + "indice jugador");
             if (indiceJugador < jugadores.Length)
             {
-                object[] parametros = new object[2];
-                parametros[0] = jugadores[indiceJugador].photonView.ViewID;
-                Debug.Log("ID a mandar: " + (int)parametros[indiceJugador]);
-                parametros[1] = obtenerVector(controladorNivel.getCasillaVacia());
-                Debug.Log("Casilla: " + (Vector3)parametros[1]);
-                this.photonView.RPC("Colocarme", RpcTarget.All, parametros);
+                jugadores[indiceJugador].inicializateTu(photonView.ViewID,obtenerVector(controladorNivel.getCasillaVacia()));
             }
 
         } else

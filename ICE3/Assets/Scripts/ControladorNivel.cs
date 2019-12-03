@@ -242,7 +242,7 @@ public class ControladorNivel : MonoBehaviourPunCallbacks
             return casilla;
             */
             TileScript casilla;
-            int indice = Random.Range(0, spawnBanderaCasillas.Count);
+            int indice = Random.Range(0, spawnPersonajeCasillas.Count);
             casilla = spawnPersonajeCasillas[indice];
             spawnPersonajeCasillas.Remove(casilla);
             return casilla;
@@ -321,7 +321,6 @@ public class ControladorNivel : MonoBehaviourPunCallbacks
     #region llenar casillas clave
     public void anadirCasillaPersonaje(TileScript casilla)
     {
-        spawnPersonajeCasillas.Add(casilla);
 
         if (PhotonNetwork.IsMasterClient)
         {

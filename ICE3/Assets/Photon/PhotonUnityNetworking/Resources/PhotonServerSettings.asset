@@ -40,5 +40,6 @@ MonoBehaviour:
   - AcabarPartida
   - Colocarme
   - siguienteJugador
+  - pruebaMandarCosas
   DisableAutoOpenWizard: 1
   ShowSettings: 1
