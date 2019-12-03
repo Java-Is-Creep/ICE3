@@ -76,8 +76,12 @@ public class CharacterController : MonoBehaviourPunCallbacks
     public int timeoutCollisionRock;
     public int maxTimeoutCollisionRock;
 
+    //Para interfaz
     public Text textoBalas;
     public Text textoPuntos;
+
+    //Para el audio durante el juego
+    public gameSoundsController soundController;
 
     // Start is called before the first frame update
     void Start()
@@ -103,6 +107,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
         MaxPuntuacionBolas = 5;
         cara = -1;
         Bazoka.SetActive(false);
+        soundController = GameObject.Find("AudioController").GetComponent<gameSoundsController>();
     }
 
     // Update is called once per frame
@@ -427,11 +432,12 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 Debug.Log("Disparando");
                 this.photonView.RPC("Shot", RpcTarget.All, this.transform.position);
                 timeWaitingShots = 0;
-
+                soundController.playDisparo();
             }
             else
             {
                 Debug.Log("Sin municion");
+                soundController.playSinBolas();
             }
 
         }
@@ -518,6 +524,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
             {
                 if (timeoutCollisionProyectil <= 0)
                 {
+                    soundController.playRecibirBolazoOof();
                     if (other.GetComponent<Proyectil>().dueño != this.gameObject)
                     {
                         timeoutCollisionProyectil = maxTimeoutCollisionProyectil;
@@ -565,6 +572,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
             {
                 if (timeoutCollision <= 0)
                 {
+                    soundController.playChoque();
                     //Debug.Log("Colision con personaje");
                     timeoutCollision = maxTimeoutCollision;
                     hayCambioCara = false;
@@ -721,6 +729,9 @@ public class CharacterController : MonoBehaviourPunCallbacks
              GameObject aux = Instantiate(bolaDeNieve, this.transform.position + (Vector3.forward * 0.2f), Quaternion.identity);
              aux.GetComponent<Proyectil>().initDireccion(this.gameObject.transform.TransformDirection(Vector3.forward), this.gameObject);
          }*/
+
+        soundController.playDisparo();
+
         Transform childTransform = this.gameObject.transform.GetChild(0);
         GameObject aux = Instantiate(bolaDeNieve, posicion + (childTransform.TransformDirection(Vector3.back * 0.2f)), Quaternion.identity);
 
@@ -1278,6 +1289,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                         } while (true);
                         target = new Vector3(this.transform.position.x - iteracion, this.transform.position.y, this.transform.position.z);
 
+                        soundController.playDeslizar();
 
                     }
                     else
@@ -1419,6 +1431,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                         target = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z - iteracion);
                         //Debug.Log("Target es:" + target);
 
+                        soundController.playDeslizar();
                     }
                     else
                     {
@@ -1538,6 +1551,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                         } while (true);
                         target = new Vector3(this.transform.position.x + iteracion, this.transform.position.y, this.transform.position.z);
 
+                        soundController.playDeslizar();
 
                     }
                     else
@@ -1660,6 +1674,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                         } while (true);
                         target = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z + iteracion);
 
+                        soundController.playDeslizar();
                     }
                     else
                     {
@@ -1739,6 +1754,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     int iteracion = 0;
                     if (indexX < cubo.heigth - 1)
                     {
+                        soundController.playDeslizar();
                         TileScript tile;
 
                         do
@@ -1877,6 +1893,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     int iteracion = 0;
                     if (indexX > 0)
                     {
+                        soundController.playDeslizar();
                         TileScript tile;
 
                         do
@@ -2003,6 +2020,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
                     if (indexY < cubo.heigth - 1)
                     {
+                        soundController.playDeslizar();
                         TileScript tile;
                         int iteracion = 0;
                         do
@@ -2125,6 +2143,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
                     if (indexY > 0)
                     {
+                        soundController.playDeslizar();
                         TileScript tile;
                         int iteracion = 0;
                         do
