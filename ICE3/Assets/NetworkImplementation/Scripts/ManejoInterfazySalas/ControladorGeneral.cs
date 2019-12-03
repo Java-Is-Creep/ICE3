@@ -148,7 +148,15 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
             Debug.Log("Estamos conectados");
             //if(int.Parse(numPlayers.text) != int)
 
-            PhotonNetwork.JoinRoom(roomNameJoin.text);
+            if (Application.isMobilePlatform)
+            {
+                PhotonNetwork.JoinRoom(roomNameMobileJoin.text);
+            } else
+            {
+                PhotonNetwork.JoinRoom(roomNameJoin.text);
+            }
+
+
             //PhotonNetwork.JoinRoom(roomName.text);
 
         }
