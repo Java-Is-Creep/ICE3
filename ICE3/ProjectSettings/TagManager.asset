@@ -9,6 +9,7 @@ TagManager:
   - CharacterCollider
   - Bandera
   - Proyectil
+  - ColisionBorde
   layers:
   - Default
   - TransparentFX
