@@ -531,9 +531,6 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
         if (photonView.IsMine)
         {
-
-
-
             if (other.tag == "Bandera")
             {
                 if (timeoutCollisionBanderas <= 0)
@@ -708,6 +705,149 @@ public class CharacterController : MonoBehaviourPunCallbacks
                         Debug.Log("ahora: " + indexX + ", " + indexY + this.transform.position);
                         lastMovement = 3;
                         moving = false;
+                    }
+                }
+            }
+
+            if (other.tag == "ColisionBorde")
+            {
+                //Cara top
+                if (cara == 0)
+                {
+                    //a
+                    if (lastMovement == 1)
+                    {
+
+                    }
+                    //s
+                    else if (lastMovement == 2)
+                    {
+
+                    }
+                    //d
+                    else if (lastMovement == 3)
+                    {
+
+                    }
+                    //w
+                    else if (lastMovement == 4)
+                    {
+
+                    }
+                }
+                else if (cara == 1)
+                {
+                    //a
+                    if (lastMovement == 1)
+                    {
+
+                    }
+                    //s
+                    else if (lastMovement == 2)
+                    {
+
+                    }
+                    //d
+                    else if (lastMovement == 3)
+                    {
+
+                    }
+                    //w
+                    else if (lastMovement == 4)
+                    {
+
+                    }
+                }
+                else if (cara == 2)
+                {
+                    //a
+                    if (lastMovement == 1)
+                    {
+
+                    }
+                    //s
+                    else if (lastMovement == 2)
+                    {
+
+                    }
+                    //d
+                    else if (lastMovement == 3)
+                    {
+
+                    }
+                    //w
+                    else if (lastMovement == 4)
+                    {
+
+                    }
+                }
+                else if (cara == 3)
+                {
+                    //a
+                    if (lastMovement == 1)
+                    {
+
+                    }
+                    //s
+                    else if (lastMovement == 2)
+                    {
+
+                    }
+                    //d
+                    else if (lastMovement == 3)
+                    {
+
+                    }
+                    //w
+                    else if (lastMovement == 4)
+                    {
+
+                    }
+                }
+                else if (cara == 4)
+                {
+                    //a
+                    if (lastMovement == 1)
+                    {
+
+                    }
+                    //s
+                    else if (lastMovement == 2)
+                    {
+
+                    }
+                    //d
+                    else if (lastMovement == 3)
+                    {
+
+                    }
+                    //w
+                    else if (lastMovement == 4)
+                    {
+
+                    }
+                }
+                else if (cara == 5)
+                {
+                    //a
+                    if (lastMovement == 1)
+                    {
+
+                    }
+                    //s
+                    else if (lastMovement == 2)
+                    {
+
+                    }
+                    //d
+                    else if (lastMovement == 3)
+                    {
+
+                    }
+                    //w
+                    else if (lastMovement == 4)
+                    {
+
                     }
                 }
             }
