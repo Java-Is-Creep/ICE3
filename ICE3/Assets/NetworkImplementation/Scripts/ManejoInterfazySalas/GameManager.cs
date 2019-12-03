@@ -21,7 +21,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     public GameObject munecoPlayer;
     public GameObject cubePrefab;
 
-
+    [HideInInspector]
+    public GameObject musicMenu;
 
     void OnApplicationQuit()
     {
@@ -32,6 +33,12 @@ public class GameManager : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
+        musicMenu = GameObject.Find("MusicaFondoMenu");
+        if (musicMenu != null)
+        {
+            Destroy(musicMenu);
+        }
+
         instance = this;
 
         // si eres el master, creas el cubo
