@@ -42,6 +42,11 @@ public class Carrousel : MonoBehaviour
         {
             images[i].anchoredPosition = new Vector2(((image_width + image_gap) * i), 0);
         }
+
+        if (PlayerPrefs.HasKey("IndiceEscenario"))
+        {
+            this.GoToIndexSmooth(PlayerPrefs.GetInt("IndiceEscenario"));
+        }
     }
 
     // Update is called once per frame
@@ -67,7 +72,7 @@ public class Carrousel : MonoBehaviour
                 titel.text = "Rodolfo The Reindeer";
                 break;
             case 5:
-                titel.text = "Glovillo The Walrus";
+                titel.text = "Globillo The Walrus";
                 break;
             case 6:
                 titel.text = "Teapot Ft. TeapotStudio";
@@ -234,12 +239,20 @@ public class Carrousel : MonoBehaviour
     public void rightArrow()
     {
         if (current_index + 1 < images.Length)
+        {
             GoToIndexSmooth(current_index + 1);
+            audio.Play();
+        }
+            
     }
 
     public void leftArrow()
     {
         if (current_index - 1 >= 0)
+        {
             GoToIndexSmooth(current_index - 1);
+            audio.Play();
+        }
+            
     }
 }

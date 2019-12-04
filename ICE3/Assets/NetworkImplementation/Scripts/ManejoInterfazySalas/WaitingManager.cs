@@ -20,7 +20,7 @@ public class WaitingManager : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
-        textoInformativo.text = "Players in room: " + PhotonNetwork.CurrentRoom.PlayerCount + "/" + PhotonNetwork.CurrentRoom.MaxPlayers;
+        textoInformativo.text = PhotonNetwork.CurrentRoom.PlayerCount + "/" + PhotonNetwork.CurrentRoom.MaxPlayers;
         if (startDirectly)
         {
             goToGameScene();
