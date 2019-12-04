@@ -151,6 +151,8 @@ MonoBehaviour:
   maxTimeoutCollisionRock: 0
   textoBalas: {fileID: 0}
   textoPuntos: {fileID: 0}
+  soundController: {fileID: 0}
+  sonidoEmpezado: 0
 --- !u!114 &7013383074723312388
 MonoBehaviour:
   m_ObjectHideFlags: 0

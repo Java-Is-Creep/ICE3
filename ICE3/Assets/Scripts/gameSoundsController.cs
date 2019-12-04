@@ -10,12 +10,14 @@ public class gameSoundsController : MonoBehaviour
     public AudioSource sinBolas;
     public AudioSource choque;
     public AudioSource recibirBolazoOof;
+    public AudioSource accion;
+    public AudioSource musica;
 
     
     // Update is called once per frame
-    void Update()
+    void Start()
     {
-        
+        musica.Play();
     }
 
     public void playDeslizar()
@@ -42,5 +44,10 @@ public class gameSoundsController : MonoBehaviour
     {
         recibirBolazoOof.Play();
     }
+    public void playAccion()
+    {
+        accion.Play();
+    }
+
 
 }
