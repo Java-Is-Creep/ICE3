@@ -14,6 +14,15 @@ public class MainMenuController : MonoBehaviour
     {
         miCarrousel = FindObjectOfType<Carrousel>();
         preIndex = 0;
+        if (!PlayerPrefs.HasKey("Modo"))
+        {
+            PlayerPrefs.SetInt("Modo", 1);
+        }
+        if (!PlayerPrefs.HasKey("IndiceEscenario"))
+        {
+            miCarrousel.GoToIndex(PlayerPrefs.GetInt("IndiceEscenario"));
+        }
+
     }
 
     // Update is called once per frame
@@ -31,6 +40,16 @@ public class MainMenuController : MonoBehaviour
     {
         PlayerPrefs.SetInt("IndiceEscenario", miCarrousel.current_index);
         SceneManager.LoadScene("Launcher");
+    }
+
+    public void seleccionarModo1()
+    {
+        PlayerPrefs.SetInt("Modo", 1);
+    }
+
+    public void seleccionarModo2()
+    {
+        PlayerPrefs.SetInt("Modo", 2);
     }
 
 }
