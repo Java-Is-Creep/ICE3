@@ -149,6 +149,8 @@ MonoBehaviour:
   maxTimeoutCollisionBazoka: 0
   timeoutCollisionRock: 0
   maxTimeoutCollisionRock: 0
+  maxTimeoutCollisionBorders: 0
+  timeoutCollisionBorders: 0
   textoBalas: {fileID: 0}
   textoPuntos: {fileID: 0}
   jugadores: []
