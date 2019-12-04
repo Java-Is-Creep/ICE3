@@ -26,7 +26,7 @@ public class MainMenuController : MonoBehaviour
 
         if (PlayerPrefs.HasKey("Modo"))
         {
-            if (PlayerPrefs.GetInt("Modo") == 0)
+            if (PlayerPrefs.GetInt("Modo") == 1)
             {
                 textModo.text = "Modo 1";
                 tituloDescr1.gameObject.SetActive(true);
@@ -45,6 +45,11 @@ public class MainMenuController : MonoBehaviour
         }
 
         preIndex = 0;
+        if (!PlayerPrefs.HasKey("Modo"))
+        {
+            PlayerPrefs.SetInt("Modo", 1);
+        }
+
     }
 
     // Update is called once per frame
@@ -66,7 +71,7 @@ public class MainMenuController : MonoBehaviour
 
     public void modo1()
     {
-        PlayerPrefs.SetInt("Modo", 0);
+        PlayerPrefs.SetInt("Modo", 1);
         textModo.text = "Modo 1";
         tituloDescr1.gameObject.SetActive(true);
         contentDescr1.gameObject.SetActive(true);
@@ -77,7 +82,7 @@ public class MainMenuController : MonoBehaviour
 
     public void modo2()
     {
-        PlayerPrefs.SetInt("Modo", 1);
+        PlayerPrefs.SetInt("Modo", 2);
         textModo.text = "Modo 2";
         tituloDescr1.gameObject.SetActive(false);
         contentDescr1.gameObject.SetActive(false);

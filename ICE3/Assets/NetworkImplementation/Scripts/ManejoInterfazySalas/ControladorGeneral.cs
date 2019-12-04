@@ -27,6 +27,7 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
 
 
 
+
     /// <summary>
     /// MonoBehaviour method called on GameObject by Unity during early initialization phase.
     /// </summary>
@@ -77,7 +78,6 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
         // si estoy conectdo pero no al lobby, me conecto y espero la llamada on joined lobby
         if (!PhotonNetwork.InLobby)
         {
-            Debug.Log("No estoy en el lobby");
             PhotonNetwork.JoinLobby();
             createRoomButton.SetActive(false);
             joinRoomButton.SetActive(false);
@@ -118,15 +118,43 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
 
         if (PhotonNetwork.IsConnected)
         {
-            Debug.Log("Estamos conectados");
+            RoomOptions roomOptions = new RoomOptions();
+            roomOptions.IsOpen = true;
+            roomOptions.IsVisible = true;
+            roomOptions.CustomRoomPropertiesForLobby = new string[] { "modo" };
             //if(int.Parse(numPlayers.text) != int)
             if (Application.isMobilePlatform)
             {
-                PhotonNetwork.CreateRoom(roomNameMobileCreate.text, new RoomOptions { MaxPlayers = byte.Parse(numPlayersMobile.text) });
+              
+                roomOptions.MaxPlayers = byte.Parse(numPlayersMobile.text);
+                if (PlayerPrefs.GetInt("Modo") == 1)
+                {
+
+                    roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "modo", 1 } };
+                    PhotonNetwork.CreateRoom(roomNameMobileCreate.text, roomOptions);
+                }
+                else
+                {
+                    roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "modo", 2 } };
+                    PhotonNetwork.CreateRoom(roomNameMobileCreate.text, roomOptions);
+                }
+                
             }
             else
             {
-                PhotonNetwork.CreateRoom(roomNameCreate.text, new RoomOptions { MaxPlayers = byte.Parse(numPlayers.text) });
+                roomOptions.MaxPlayers = byte.Parse(numPlayers.text);
+
+                if (PlayerPrefs.GetInt("Modo") == 1)
+                {
+                    roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "modo", 1 } };
+                    PhotonNetwork.CreateRoom(roomNameCreate.text, roomOptions);
+                }
+                else
+                {
+                    roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "modo", 2 } };
+                    PhotonNetwork.CreateRoom(roomNameCreate.text, roomOptions);
+                }
+
             }
             //PhotonNetwork.JoinRoom(roomName.text);
 
@@ -137,6 +165,25 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
         }
 
     }
+
+    public void joinRandomRoomMethod()
+    {
+        if (PhotonNetwork.IsConnected)
+        {
+            if(PlayerPrefs.GetInt("Modo") == 1)
+            {
+                ExitGames.Client.Photon.Hashtable expectedCustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "modo", 1 } };
+                PhotonNetwork.JoinRandomRoom(expectedCustomRoomProperties,0);
+            } else
+            {
+                ExitGames.Client.Photon.Hashtable expectedCustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "modo", 2 } };
+                PhotonNetwork.JoinRandomRoom(expectedCustomRoomProperties, 0);
+            }
+
+        }
+
+    }
+
 
     /// <summary>
     /// Nos unimos a la sala con el nombre especificado
@@ -150,7 +197,10 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
 
             if (Application.isMobilePlatform)
             {
-                PhotonNetwork.JoinRoom(roomNameMobileJoin.text);
+               PhotonNetwork.JoinRoom(roomNameMobileJoin.text);
+                
+                
+
             } else
             {
                 PhotonNetwork.JoinRoom(roomNameJoin.text);
@@ -197,7 +247,6 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
     /// </summary>
     public override void OnJoinedLobby()
     {
-        Debug.Log("Unido al lobby");
         createRoomButton.SetActive(true);
         joinRoomButton.SetActive(true);
     }
