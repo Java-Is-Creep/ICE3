@@ -445,7 +445,6 @@ public class CharacterController : MonoBehaviourPunCallbacks
     {
 
        PhotonNetwork.LeaveRoom();
-       PhotonNetwork.LeaveLobby();
         
 
     }
@@ -1749,8 +1748,12 @@ public class CharacterController : MonoBehaviourPunCallbacks
     [PunRPC]
     void AcabarPartida()
     {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.LoadLevel("GameOver");
+        }
         //Debug.Log("Veces que se llama");
-        salirmePartida();
+        //salirmePartida();
     }
 
 
@@ -1866,7 +1869,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
     public override void OnLeftRoom()
     {
-        SceneManager.LoadScene("Main Menu");
+        //SceneManager.LoadScene("Main Menu");
     }
 
     #region Movimientos

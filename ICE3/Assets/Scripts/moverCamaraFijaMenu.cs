@@ -75,7 +75,7 @@ public class moverCamaraFijaMenu : MonoBehaviour
 
     public void front()
     {
-        Debug.Log("Front");
+        //Debug.Log("Front");
         activedCanvas.gameObject.SetActive(false);
         cvFront.gameObject.SetActive(true);
         activedCanvas= cvFront;
