@@ -80,13 +80,18 @@ public class CharacterController : MonoBehaviourPunCallbacks
     public int maxTimeoutCollisionBorders;
     public int timeoutCollisionBorders;
 
-    public Text textoBalas;
-    public Text textoPuntos;
-
+    
     //spawns
     int indiceJugador;
     public CharacterController[] jugadores;
     ControladorNivel controladorNivel;
+    //Para interfaz
+    public Text textoBalas;
+    public Text textoPuntos;
+
+    //Para el audio durante el juego
+    public gameSoundsController soundController;
+    public bool sonidoEmpezado;
 
     // Start is called before the first frame update
     void Start()
@@ -119,6 +124,8 @@ public class CharacterController : MonoBehaviourPunCallbacks
         //incializacion spawn
         controladorNivel = FindObjectOfType<ControladorNivel>();
 
+        soundController = GameObject.Find("AudioController").GetComponent<gameSoundsController>();
+        sonidoEmpezado = false;
     }
 
     // Update is called once per frame
@@ -387,11 +394,12 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 Debug.Log("Disparando");
                 this.photonView.RPC("Shot", RpcTarget.All, this.transform.position);
                 timeWaitingShots = 0;
-
+                soundController.playDisparo();
             }
             else
             {
                 Debug.Log("Sin municion");
+                soundController.playSinBolas();
             }
 
         }
@@ -488,11 +496,11 @@ public class CharacterController : MonoBehaviourPunCallbacks
             if(timeoutCollisionBazoka <= 0)
             {
                 //Debug.Log("Balas Cogidas");
+                soundController.playAccion();
                 añadirBalas();
                 timeoutCollisionBazoka = maxTimeoutCollisionBazoka;
                 //other.gameObject.GetComponent<KitBalas>().crash();
             }
-
         }
 
         if (photonView.IsMine)
@@ -515,6 +523,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 {
                     if (other.GetComponent<Proyectil>().dueño != this.gameObject)
                     {
+                        soundController.playRecibirBolazoOof();
                         timeoutCollisionProyectil = maxTimeoutCollisionProyectil;
                     }
                 }
@@ -560,6 +569,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
             {
                 if (timeoutCollision <= 0)
                 {
+                    soundController.playChoque();
                     //Debug.Log("Colision con personaje");
                     timeoutCollision = maxTimeoutCollision;
                     hayCambioCara = false;
@@ -1306,7 +1316,14 @@ public class CharacterController : MonoBehaviourPunCallbacks
     [PunRPC]
     void Shot(Vector3 posicion)
     {
-        
+        /* if(targetID == photonView.GetInstanceID())
+         {
+             GameObject aux = Instantiate(bolaDeNieve, this.transform.position + (Vector3.forward * 0.2f), Quaternion.identity);
+             aux.GetComponent<Proyectil>().initDireccion(this.gameObject.transform.TransformDirection(Vector3.forward), this.gameObject);
+         }*/
+
+        soundController.playDisparo();
+
         Transform childTransform = this.gameObject.transform.GetChild(0);
         GameObject aux = Instantiate(bolaDeNieve, posicion + (childTransform.TransformDirection(Vector3.back * 0.2f)), Quaternion.identity);
 
@@ -1881,9 +1898,15 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 if (moving) //mas eficiente, mirar todas las casillas y ver hasta cualpuedes ir
                 {
                     this.transform.position = new Vector3(transform.position.x - incrementAux, transform.position.y, transform.position.z);
+
+                    if (!sonidoEmpezado)
+                    {
+                        soundController.playDeslizar();
+                        sonidoEmpezado = true;
+                    }
                     if (Mathf.Abs(this.transform.position.x - target.x) < 0.1f)
                     {
-
+                        sonidoEmpezado = false;
                         this.transform.position = target;
                         target = this.transform.position;
                         //Debug.Log("Acaba Casilla Izq");
@@ -1903,6 +1926,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             //indexX = indexY;
                             indexX = 7;
                             hayCambioCara = false;
+                            sonidoEmpezado = true;
                             /*
                             for (int i = 0; i < cubo.width; i++)
                             {
@@ -1953,6 +1977,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                                         // Debug.Log("iteracion menor o igual que 0");
                                         moving = false;
                                         lastMovement = 0;
+                                        sonidoEmpezado = false;
                                     }
                                     else
                                     {
@@ -2020,8 +2045,15 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 if (moving) //mas eficiente, mirar todas las casillas y ver hasta cualpuedes ir
                 {
                     this.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - incrementAux);
+
+                    if (!sonidoEmpezado)
+                    {
+                        soundController.playDeslizar();
+                        sonidoEmpezado = true;
+                    }
                     if (Mathf.Abs(this.transform.position.z - target.z) < 0.1f)
                     {
+                        sonidoEmpezado = false;
                         //Debug.Log("He llegado a la casilla");
                         this.transform.position = target;
                         target = this.transform.position;
@@ -2040,6 +2072,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             this.gameObject.transform.rotation = Quaternion.Euler(-90, 0, 0);
                             indexY = 7;
                             hayCambioCara = false;
+                            sonidoEmpezado = true;
                             /*
                             for (int i = 0; i < cubo.width; i++)
                             {
@@ -2088,14 +2121,15 @@ public class CharacterController : MonoBehaviourPunCallbacks
                                     //Debug.Log("Iteraciones: " + iteracion);
                                     if (iteracion <= 0)
                                     {
-                                        Debug.Log(tile.AbsolutePos);
+                                        //Debug.Log(tile.AbsolutePos);
                                         // Debug.Log("iteracion menor o igual que 0");
                                         moving = false;
                                         lastMovement = 0;
+                                        sonidoEmpezado = false;
                                     }
                                     else
                                     {
-                                        Debug.Log(tile.AbsolutePos);
+                                        //Debug.Log(tile.AbsolutePos);
                                         moving = true;
                                     }
                                     //lastMovement = 0;
@@ -2120,7 +2154,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                         } while (true);
                         target = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z - iteracion);
                         //Debug.Log("Target es:" + target);
-
+                        
                     }
                     else
                     {
@@ -2154,9 +2188,15 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 if (moving) //mas eficiente, mirar todas las casillas y ver hasta cualpuedes ir
                 {
                     this.transform.position = new Vector3(transform.position.x + incrementAux, transform.position.y, transform.position.z);
+
+                    if (!sonidoEmpezado)
+                    {
+                        soundController.playDeslizar();
+                        sonidoEmpezado = true;
+                    }
                     if (Mathf.Abs(this.transform.position.x - target.x) < 0.1f)
                     {
-
+                        sonidoEmpezado = false;
                         this.transform.position = target;
                         //Debug.Log("Acaba Casilla Izq");
                         moving = false;
@@ -2172,6 +2212,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             //lastMovement = 0;
                             indexX = 0;
                             hayCambioCara = false;
+                            sonidoEmpezado = true;
                         }
                     }
                 }
@@ -2213,6 +2254,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                                         //Debug.Log("iteracion menor o igual que 0");
                                         moving = false;
                                         lastMovement = 0;
+                                        sonidoEmpezado = false;
                                     }
                                     else
                                     {
@@ -2239,7 +2281,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
                         } while (true);
                         target = new Vector3(this.transform.position.x + iteracion, this.transform.position.y, this.transform.position.z);
-
+                        
 
                     }
                     else
@@ -2272,9 +2314,14 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 if (moving) //mas eficiente, mirar todas las casillas y ver hasta cualpuedes ir
                 {
                     this.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + incrementAux);
+                    if (!sonidoEmpezado)
+                    {
+                        soundController.playDeslizar();
+                        sonidoEmpezado = true;
+                    }
                     if (Mathf.Abs(this.transform.position.z - target.z) < 0.1f)
                     {
-
+                        sonidoEmpezado = false;
                         this.transform.position = target;
                         //Debug.Log("Acaba Casilla Aba");
                         moving = false;
@@ -2294,6 +2341,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             moving = false;
                             lastMovement = 2;
                             hayCambioCara = false;
+                            sonidoEmpezado = true;
                         }
                     }
                 }
@@ -2335,6 +2383,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                                         // Debug.Log("iteracion menor o igual que 0");
                                         moving = false;
                                         lastMovement = 0;
+                                        sonidoEmpezado = false;
                                     }
                                     else
                                     {
@@ -2361,7 +2410,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
                         } while (true);
                         target = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z + iteracion);
-
+                        
                     }
                     else
                     {
@@ -2402,8 +2451,14 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     //Debug.Log("Pos: " + this.transform.position);
                     //Debug.Log("Pos target: " + target);
                     this.transform.position = new Vector3(transform.position.x + incrementAux, transform.position.y, transform.position.z);
+                    if (!sonidoEmpezado)
+                    {
+                        soundController.playDeslizar();
+                        sonidoEmpezado = true;
+                    }
                     if (Mathf.Abs(this.transform.position.x - target.x) <= 0.1f)
                     {
+                        sonidoEmpezado = false;
                         this.transform.position = target;
                         target = this.transform.position;
                         //Debug.Log("Acaba Casilla Izq");
@@ -2429,6 +2484,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             moving = false;
                             lastMovement = 1;
                             hayCambioCara = false;
+                            sonidoEmpezado = true;
                         }
                     }
                     else
@@ -2473,6 +2529,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                                         //Debug.Log("iteracion menor o igual que 0");
                                         moving = false;
                                         lastMovement = 0;
+                                        sonidoEmpezado = false;
                                     }
                                     else
                                     {
@@ -2542,8 +2599,14 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     //Debug.Log("Pos: " + this.transform.position);
                     //Debug.Log("Pos target: " + target);
                     this.transform.position = new Vector3(transform.position.x - incrementAux, transform.position.y, transform.position.z);
+                    if (!sonidoEmpezado)
+                    {
+                        soundController.playDeslizar();
+                        sonidoEmpezado = true;
+                    }
                     if (Mathf.Abs(this.transform.position.x - target.x) <= 0.1f)
                     {
+                        sonidoEmpezado = false;
                         this.transform.position = target;
                         target = this.transform.position;
                         // Debug.Log("Acaba Casilla Izq");
@@ -2567,6 +2630,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             moving = false;
                             lastMovement = 3;
                             hayCambioCara = false;
+                            sonidoEmpezado = true;
                         }
                     }
                     else
@@ -2611,6 +2675,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                                         //Debug.Log("iteracion menor o igual que 0");
                                         moving = false;
                                         lastMovement = 0;
+                                        sonidoEmpezado = false;
                                     }
                                     else
                                     {
@@ -2679,8 +2744,14 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     //Debug.Log("Pos: " + this.transform.position);
                     //Debug.Log("Pos target: " + target);
                     this.transform.position = new Vector3(transform.position.x, transform.position.y - incrementAux, transform.position.z);
+                    if (!sonidoEmpezado)
+                    {
+                        soundController.playDeslizar();
+                        sonidoEmpezado = true;
+                    }
                     if (Mathf.Abs(this.transform.position.y - target.y) < 0.1f)
                     {
+                        sonidoEmpezado = false;
                         this.transform.position = target;
                         //Debug.Log("Acaba Casilla Izq");
                         moving = false;
@@ -2697,6 +2768,8 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             lastMovement = 4;
                             indexY = 0;
                             hayCambioCara = false;
+                            sonidoEmpezado = true;
+
                         }
                     }
                 }
@@ -2737,6 +2810,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                                         //Debug.Log("iteracion menor o igual que 0");
                                         moving = false;
                                         lastMovement = 0;
+                                        sonidoEmpezado = false;
                                     }
                                     else
                                     {
@@ -2797,8 +2871,14 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     //Debug.Log("Pos: " + this.transform.position);
                     //Debug.Log("Pos target: " + target);
                     this.transform.position = new Vector3(transform.position.x, transform.position.y + incrementAux, transform.position.z);
+                    if (!sonidoEmpezado)
+                    {
+                        soundController.playDeslizar();
+                        sonidoEmpezado = true;
+                    }
                     if (Mathf.Abs(this.transform.position.y - target.y) < 0.1f)
                     {
+                        sonidoEmpezado = false;
                         this.transform.position = target;
                         //Debug.Log("Acaba Casilla Izq");
                         moving = false;
@@ -2819,6 +2899,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             moving = false;
                             lastMovement = 1;
                             hayCambioCara = false;
+                            sonidoEmpezado = true;
                         }
                     }
                 }
@@ -2861,6 +2942,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                                         // Debug.Log("iteracion menor o igual que 0");
                                         moving = false;
                                         lastMovement = 0;
+                                        sonidoEmpezado = false;
                                     }
                                     else
                                     {
@@ -2924,8 +3006,14 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 if (moving) //mas eficiente, mirar todas las casillas y ver hasta cualpuedes ir
                 {
                     this.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + incrementAux);
+                    if (!sonidoEmpezado)
+                    {
+                        soundController.playDeslizar();
+                        sonidoEmpezado = true;
+                    }
                     if (Mathf.Abs(this.transform.position.z - target.z) < 0.1f)
                     {
+                        sonidoEmpezado = false;
                         this.transform.position = target;
                         target = this.transform.position;
                         //Debug.Log("Acaba Casilla Aba");
@@ -2949,6 +3037,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             moving = false;
                             lastMovement = 3;
                             hayCambioCara = false;
+                            sonidoEmpezado = true;
                         }
                     }
                 }
@@ -2988,6 +3077,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                                         //Debug.Log("iteracion menor o igual que 0");
                                         moving = false;
                                         lastMovement = 0;
+                                        sonidoEmpezado = false;
                                     }
                                     else
                                     {
@@ -3052,8 +3142,14 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 if (moving) //mas eficiente, mirar todas las casillas y ver hasta cualpuedes ir
                 {
                     this.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - incrementAux);
+                    if (!sonidoEmpezado)
+                    {
+                        soundController.playDeslizar();
+                        sonidoEmpezado = true;
+                    }
                     if (Mathf.Abs(this.transform.position.z - target.z) < 0.1f)
                     {
+                        sonidoEmpezado = false;
                         this.transform.position = target;
                         target = this.transform.position;
                         //Debug.Log("Acaba Casilla Aba");
@@ -3080,6 +3176,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             moving = false;
                             lastMovement = 1;
                             hayCambioCara = false;
+                            sonidoEmpezado = true;
                         }
                     }
                 }
@@ -3120,6 +3217,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                                         //Debug.Log("iteracion menor o igual que 0");
                                         moving = false;
                                         lastMovement = 0;
+                                        sonidoEmpezado = false;
                                     }
                                     else
                                     {
@@ -3185,8 +3283,14 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 if (moving) //mas eficiente, mirar todas las casillas y ver hasta cualpuedes ir
                 {
                     this.transform.position = new Vector3(transform.position.x, transform.position.y - incrementAux, transform.position.z);
+                    if (!sonidoEmpezado)
+                    {
+                        soundController.playDeslizar();
+                        sonidoEmpezado = true;
+                    }
                     if (Mathf.Abs(this.transform.position.y - target.y) < 0.1f)
                     {
+                        sonidoEmpezado = false;
                         this.transform.position = target;
                         target = this.transform.position;
                         //Debug.Log("Acaba Casilla Aba");
@@ -3217,6 +3321,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
                             //model.transform.localRotation = Quaternion.Euler(0, 90, 0);
                             hayCambioCara = false;
+                            sonidoEmpezado = true;
                         }
                     }
                 }
@@ -3257,6 +3362,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                                         //Debug.Log("iteracion menor o igual que 0");
                                         moving = false;
                                         lastMovement = 0;
+                                        sonidoEmpezado = false;
                                     }
                                     else
                                     {
@@ -3327,8 +3433,14 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 if (moving) //mas eficiente, mirar todas las casillas y ver hasta cualpuedes ir
                 {
                     this.transform.position = new Vector3(transform.position.x, transform.position.y + incrementAux, transform.position.z);
+                    if (!sonidoEmpezado)
+                    {
+                        soundController.playDeslizar();
+                        sonidoEmpezado = true;
+                    }
                     if (Mathf.Abs(this.transform.position.y - target.y) < 0.1f)
                     {
+                        sonidoEmpezado = false;
                         this.transform.position = target;
                         target = this.transform.position;
                         //Debug.Log("Acaba Casilla Aba");
@@ -3349,6 +3461,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             moving = false;
                             lastMovement = 4;
                             hayCambioCara = false;
+                            sonidoEmpezado = true;
                         }
 
                     }
@@ -3390,6 +3503,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                                         // Debug.Log("iteracion menor o igual que 0");
                                         moving = false;
                                         lastMovement = 0;
+                                        sonidoEmpezado = false;
                                     }
                                     else
                                     {
@@ -3450,8 +3564,14 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     //Debug.Log("Pos: " + this.transform.position);
                     //Debug.Log("Pos target: " + target);
                     this.transform.position = new Vector3(transform.position.x - incrementAux, transform.position.y, transform.position.z);
+                    if (!sonidoEmpezado)
+                    {
+                        soundController.playDeslizar();
+                        sonidoEmpezado = true;
+                    }
                     if (Mathf.Abs(this.transform.position.x - target.x) <= 0.1f)
                     {
+                        sonidoEmpezado = false;
                         this.transform.position = target;
                         target = this.transform.position;
                         // Debug.Log("Acaba Casilla Izq");
@@ -3479,6 +3599,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             moving = false;
                             lastMovement = 1;
                             hayCambioCara = false;
+                            sonidoEmpezado = true;
                         }
                     }
                     else
@@ -3523,6 +3644,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                                         //Debug.Log("iteracion menor o igual que 0");
                                         moving = false;
                                         lastMovement = 0;
+                                        sonidoEmpezado = false;
                                     }
                                     else
                                     {
@@ -3592,8 +3714,14 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     //Debug.Log("Pos: " + this.transform.position);
                     //Debug.Log("Pos target: " + target);
                     this.transform.position = new Vector3(transform.position.x, transform.position.y - incrementAux, transform.position.z);
+                    if (!sonidoEmpezado)
+                    {
+                        soundController.playDeslizar();
+                        sonidoEmpezado = true;
+                    }
                     if (Mathf.Abs(this.transform.position.y - target.y) < 0.1f)
                     {
+                        sonidoEmpezado = false;
                         this.transform.position = target;
                         //Debug.Log("Acaba Casilla Izq");
                         moving = false;
@@ -3617,6 +3745,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             lastMovement = 2;
                             hayCambioCara = false;
 
+                            sonidoEmpezado = true;
                             /*
                             for (int i = 0; i < cubo.width; i++)
                             {
@@ -3667,6 +3796,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                                         // Debug.Log("iteracion menor o igual que 0");
                                         moving = false;
                                         lastMovement = 0;
+                                        sonidoEmpezado = false;
                                     }
                                     else
                                     {
@@ -3729,8 +3859,14 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     //Debug.Log("Pos: " + this.transform.position);
                     //Debug.Log("Pos target: " + target);
                     this.transform.position = new Vector3(transform.position.x + incrementAux, transform.position.y, transform.position.z);
+                    if (!sonidoEmpezado)
+                    {
+                        soundController.playDeslizar();
+                        sonidoEmpezado = true;
+                    }
                     if (Mathf.Abs(this.transform.position.x - target.x) <= 0.1f)
                     {
+                        sonidoEmpezado = false;
                         this.transform.position = target;
                         target = this.transform.position;
                         //Debug.Log("Acaba Casilla Izq");
@@ -3759,6 +3895,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             moving = false;
                             lastMovement = 3;
                             hayCambioCara = false;
+                            sonidoEmpezado = true;
                         }
                     }
                     else
@@ -3803,6 +3940,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                                         //Debug.Log("iteracion menor o igual que 0");
                                         moving = false;
                                         lastMovement = 0;
+                                        sonidoEmpezado = false;
                                     }
                                     else
                                     {
@@ -3889,8 +4027,14 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     //Debug.Log("Pos: " + this.transform.position);
                     //Debug.Log("Pos target: " + target);
                     this.transform.position = new Vector3(transform.position.x, transform.position.y + incrementAux, transform.position.z);
+                    if (!sonidoEmpezado)
+                    {
+                        soundController.playDeslizar();
+                        sonidoEmpezado = true;
+                    }
                     if (Mathf.Abs(this.transform.position.y - target.y) < 0.1f)
                     {
+                        sonidoEmpezado = false;
                         this.transform.position = target;
                         //Debug.Log("Acaba Casilla Izq");
                         moving = false;
@@ -3905,6 +4049,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             lastMovement = 3;
                             indexY = 0;
                             hayCambioCara = false;
+                            sonidoEmpezado = true;
                         }
                     }
                 }
@@ -3945,6 +4090,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                                         //Debug.Log("iteracion menor o igual que 0");
                                         moving = false;
                                         lastMovement = 0;
+                                        sonidoEmpezado = false;
                                     }
                                     else
                                     {
@@ -4006,8 +4152,14 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 if (moving) //mas eficiente, mirar todas las casillas y ver hasta cualpuedes ir
                 {
                     this.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + incrementAux);
+                    if (!sonidoEmpezado)
+                    {
+                        soundController.playDeslizar();
+                        sonidoEmpezado = true;
+                    }
                     if (Mathf.Abs(this.transform.position.z - target.z) < 0.1f)
                     {
+                        sonidoEmpezado = false;
                         this.transform.position = target;
                         target = this.transform.position;
                         //Debug.Log("Acaba Casilla Aba");
@@ -4034,6 +4186,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             moving = false;
                             lastMovement = 1;
                             hayCambioCara = false;
+                            sonidoEmpezado = true;
                         }
                     }
                 }
@@ -4074,6 +4227,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                                         //Debug.Log("iteracion menor o igual que 0");
                                         moving = false;
                                         lastMovement = 0;
+                                        sonidoEmpezado = false;
                                     }
                                     else
                                     {
@@ -4140,8 +4294,14 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 if (moving) //mas eficiente, mirar todas las casillas y ver hasta cualpuedes ir
                 {
                     this.transform.position = new Vector3(transform.position.x, transform.position.y - incrementAux, transform.position.z);
+                    if (!sonidoEmpezado)
+                    {
+                        soundController.playDeslizar();
+                        sonidoEmpezado = true;
+                    }
                     if (Mathf.Abs(this.transform.position.y - target.y) < 0.1f)
                     {
+                        sonidoEmpezado = false;
                         this.transform.position = target;
                         target = this.transform.position;
                         //Debug.Log("Acaba Casilla Aba");
@@ -4170,6 +4330,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             }
                             //model.transform.localRotation = Quaternion.Euler(0, -90, 0);
                             hayCambioCara = false;
+                            sonidoEmpezado = true;
                         }
                     }
                 }
@@ -4210,6 +4371,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                                         //Debug.Log("iteracion menor o igual que 0");
                                         moving = false;
                                         lastMovement = 0;
+                                        sonidoEmpezado = false;
                                     }
                                     else
                                     {
@@ -4278,8 +4440,14 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 if (moving) //mas eficiente, mirar todas las casillas y ver hasta cualpuedes ir
                 {
                     this.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - incrementAux);
+                    if (!sonidoEmpezado)
+                    {
+                        soundController.playDeslizar();
+                        sonidoEmpezado = true;
+                    }
                     if (Mathf.Abs(this.transform.position.z - target.z) < 0.1f)
                     {
+                        sonidoEmpezado = false;
                         this.transform.position = target;
                         target = this.transform.position;
                         //Debug.Log("Acaba Casilla Aba");
@@ -4306,6 +4474,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             moving = false;
                             lastMovement = 3;
                             hayCambioCara = false;
+                            sonidoEmpezado = true;
                         }
                     }
                 }
@@ -4346,6 +4515,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                                         //Debug.Log("iteracion menor o igual que 0");
                                         moving = false;
                                         lastMovement = 0;
+                                        sonidoEmpezado = false;
                                     }
                                     else
                                     {
@@ -4411,8 +4581,14 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 if (moving) //mas eficiente, mirar todas las casillas y ver hasta cualpuedes ir
                 {
                     this.transform.position = new Vector3(transform.position.x, transform.position.y + incrementAux, transform.position.z);
+                    if (!sonidoEmpezado)
+                    {
+                        soundController.playDeslizar();
+                        sonidoEmpezado = true;
+                    }
                     if (Mathf.Abs(this.transform.position.y - target.y) < 0.1f)
                     {
+                        sonidoEmpezado = false;
                         this.transform.position = target;
                         target = this.transform.position;
                         //Debug.Log("Acaba Casilla Aba");
@@ -4430,6 +4606,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             //indexX = indexY;
                             indexX = 0;
                             hayCambioCara = false;
+                            sonidoEmpezado = true;
                             /*
                             camaraScript.right();
                             this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.up, -90);
@@ -4486,6 +4663,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                                         //Debug.Log("iteracion menor o igual que 0");
                                         moving = false;
                                         lastMovement = 0;
+                                        sonidoEmpezado = false;
                                     }
                                     else
                                     {
@@ -4547,8 +4725,14 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     //Debug.Log("Pos: " + this.transform.position);
                     //Debug.Log("Pos target: " + target);
                     this.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + incrementAux);
+                    if (!sonidoEmpezado)
+                    {
+                        soundController.playDeslizar();
+                        sonidoEmpezado = true;
+                    }
                     if (Mathf.Abs(this.transform.position.z - target.z) < 0.1f)
                     {
+                        sonidoEmpezado = false;
                         this.transform.position = target;
                         //Debug.Log("Acaba Casilla Izq");
                         moving = false;
@@ -4566,6 +4750,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             lastMovement = 4;
                             indexY = 7;
                             hayCambioCara = false;
+                            sonidoEmpezado = true;
                         }
                     }
                 }
@@ -4608,6 +4793,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                                         // Debug.Log("iteracion menor o igual que 0");
                                         moving = false;
                                         lastMovement = 0;
+                                        sonidoEmpezado = false;
                                     }
                                     else
                                     {
@@ -4665,8 +4851,14 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     //Debug.Log("Pos: " + this.transform.position);
                     //Debug.Log("Pos target: " + target);
                     this.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - incrementAux);
+                    if (!sonidoEmpezado)
+                    {
+                        soundController.playDeslizar();
+                        sonidoEmpezado = true;
+                    }
                     if (Mathf.Abs(this.transform.position.z - target.z) < 0.1f)
                     {
+                        sonidoEmpezado = false;
                         this.transform.position = target;
                         //Debug.Log("Acaba Casilla Izq");
                         moving = false;
@@ -4683,6 +4875,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             lastMovement = 4;
                             indexY = 0;
                             hayCambioCara = false;
+                            sonidoEmpezado = true;
                         }
                     }
                 }
@@ -4723,6 +4916,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                                         //Debug.Log("iteracion menor o igual que 0");
                                         moving = false;
                                         lastMovement = 0;
+                                        sonidoEmpezado = false;
                                     }
                                     else
                                     {
@@ -4781,8 +4975,14 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     //Debug.Log("Pos: " + this.transform.position);
                     //Debug.Log("Pos target: " + target);
                     this.transform.position = new Vector3(transform.position.x + incrementAux, transform.position.y, transform.position.z);
+                    if (!sonidoEmpezado)
+                    {
+                        soundController.playDeslizar();
+                        sonidoEmpezado = true;
+                    }
                     if (Mathf.Abs(this.transform.position.x - target.x) <= 0.1f)
                     {
+                        sonidoEmpezado = false;
                         this.transform.position = target;
                         target = this.transform.position;
                         //Debug.Log("Acaba Casilla Izq");
@@ -4813,6 +5013,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             }
                             //model.transform.localRotation = Quaternion.Euler(0, 90, 0);
                             hayCambioCara = false;
+                            sonidoEmpezado = true;
                         }
                     }
                     else
@@ -4857,6 +5058,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                                         //Debug.Log("iteracion menor o igual que 0");
                                         moving = false;
                                         lastMovement = 0;
+                                        sonidoEmpezado = false;
                                     }
                                     else
                                     {
@@ -4916,8 +5118,14 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     //Debug.Log("Pos: " + this.transform.position);
                     //Debug.Log("Pos target: " + target);
                     this.transform.position = new Vector3(transform.position.x - incrementAux, transform.position.y, transform.position.z);
+                    if (!sonidoEmpezado)
+                    {
+                        soundController.playDeslizar();
+                        sonidoEmpezado = true;
+                    }
                     if (Mathf.Abs(this.transform.position.x - target.x) <= 0.1f)
                     {
+                        sonidoEmpezado = false;
                         this.transform.position = target;
                         target = this.transform.position;
                         // Debug.Log("Acaba Casilla Izq");
@@ -4947,6 +5155,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             }
                             //model.transform.localRotation = Quaternion.Euler(0, -90, 0);
                             hayCambioCara = false;
+                            sonidoEmpezado = true;
                         }
                     }
                     else
@@ -4991,6 +5200,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                                         //Debug.Log("iteracion menor o igual que 0");
                                         moving = false;
                                         lastMovement = 0;
+                                        sonidoEmpezado = false;
                                     }
                                     else
                                     {
