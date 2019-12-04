@@ -61,6 +61,7 @@ public class GameOverManejador : MonoBehaviourPunCallbacks
         {
             if (photonView.IsMine)
             {
+                Debug.Log("La vista es mia");
                 PhotonNetwork.LeaveRoom();
                 SceneManager.LoadScene("MainMenu");
             }
@@ -68,6 +69,7 @@ public class GameOverManejador : MonoBehaviourPunCallbacks
 
         if (PhotonNetwork.IsMasterClient)
         {
+            Debug.Log("Soy el server y la rcp es mia");
             if (actualNumPlayers == numPlayers)
             {
                 if(numPlayersRepeat == numPlayers)
