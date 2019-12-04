@@ -32,6 +32,8 @@ public class GameOverManejador : MonoBehaviourPunCallbacks
             {
                 Debug.Log("Mando RPC por tiempo");
                 this.photonView.RPC("MandarDecision", RpcTarget.All, false);
+                PhotonNetwork.LeaveRoom();
+                SceneManager.LoadScene("MainMenu");
             }
 
         }
@@ -45,6 +47,8 @@ public class GameOverManejador : MonoBehaviourPunCallbacks
     public void salirse()
     {
         this.photonView.RPC("MandarDecision", RpcTarget.All, false);
+        PhotonNetwork.LeaveRoom();
+        SceneManager.LoadScene("MainMenu");
     }
 
     [PunRPC]
@@ -59,12 +63,7 @@ public class GameOverManejador : MonoBehaviourPunCallbacks
             repetir = true;
         } else
         {
-            if (photonView.IsMine)
-            {
-                Debug.Log("La vista es mia");
-                PhotonNetwork.LeaveRoom();
-                SceneManager.LoadScene("MainMenu");
-            }
+
         }
 
         if (PhotonNetwork.IsMasterClient)
