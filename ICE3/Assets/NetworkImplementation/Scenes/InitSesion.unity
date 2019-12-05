@@ -288,6 +288,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerName: {fileID: 2088130953}
   playerNameMobile: {fileID: 1295679332}
+  placeholderNombre: {fileID: 1856610543}
 --- !u!4 &539324500
 Transform:
   m_ObjectHideFlags: 0
@@ -748,7 +749,7 @@ MonoBehaviour:
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
-  m_DialogTitle: Input Text
+  m_DialogTitle: Introduzca el nombre del jugador
   m_DialogOkBtn: OK
   m_DialogCancelBtn: Cancel
   m_DialogType: 1

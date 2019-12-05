@@ -28,7 +28,9 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
     private GameObject joinRandomRoonButton;
 
 
-
+    public Text createRoomPlaceholder;
+    public Text numPlayersPlaceholder;
+    public Text joinRoomPlaceholder;
 
     /// <summary>
     /// MonoBehaviour method called on GameObject by Unity during early initialization phase.
@@ -54,6 +56,7 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
             // Unirse
             roomNameMobileJoin.gameObject.SetActive(true);
             roomNameJoin.gameObject.SetActive(false);
+            
         }
         else
         {
@@ -112,6 +115,12 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
             createRoomButton.SetActive(true);
             joinRoomButton.SetActive(true);
             joinRandomRoonButton.SetActive(true);
+        }
+        if (Application.isMobilePlatform)
+        {
+            createRoomPlaceholder.text = roomNameMobileCreate.text;
+            joinRoomPlaceholder.text = roomNameMobileJoin.text;
+            numPlayersPlaceholder.text = numPlayersMobile.text;
         }
     }
 
