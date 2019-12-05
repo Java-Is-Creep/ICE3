@@ -46,15 +46,22 @@ public class ControladorNivel : MonoBehaviourPunCallbacks
             Cubo = FindObjectOfType<Cube>();
         }
 
-        for(int i = 0; i< bazokasIniciales; i++)
+        if (hayBalas)
         {
-            createBazoka();
+            for (int i = 0; i < bazokasIniciales; i++)
+            {
+                createBazoka();
+            }
         }
 
-        for(int i = 0; i < banderasiniciales; i++)
+        if (hayBanderas)
         {
-            createBandera();
+            for (int i = 0; i < banderasiniciales; i++)
+            {
+                createBandera();
+            }
         }
+
 
     }
 

@@ -26,6 +26,8 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
     private GameObject joinRoomButton;
     [SerializeField]
     private GameObject joinRandomRoonButton;
+    [SerializeField]
+    private GameObject salir;
 
 
 
@@ -41,6 +43,7 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
+        salir.SetActive(false);
         Debug.Log("Haciendo init");
         if (Application.isMobilePlatform)
         {
@@ -77,21 +80,29 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
             joinRoomButton.SetActive(false);
             joinRandomRoonButton.SetActive(false);
             return;
+        } else
+        {
+            Debug.Log("estoy conectado");
         }
 
         // si estoy conectdo pero no al lobby, me conecto y espero la llamada on joined lobby
         if (!PhotonNetwork.InLobby)
         {
+            Debug.Log("No estoy en lobby");
             PhotonNetwork.JoinLobby();
             createRoomButton.SetActive(false);
             joinRoomButton.SetActive(false);
             joinRandomRoonButton.SetActive(false);
             return;
+        } else
+        {
+            Debug.Log("Estoy en lobby");
         }
 
         // si todo esta hecho pues activo botones
         if (PhotonNetwork.IsConnected && PhotonNetwork.InLobby)
         {
+            salir.SetActive(true);
             Debug.Log("Estamos conectados y lobby ");
             createRoomButton.SetActive(true);
             joinRoomButton.SetActive(true);
@@ -108,6 +119,7 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
         //Debug.Log("Estoy en el lobby?" + PhotonNetwork.InLobby);
         if (PhotonNetwork.IsConnected && PhotonNetwork.InLobby)
         {
+            Debug.Log("Conectado y en lobby update");
             //Debug.Log("Estamos conectados ");
             createRoomButton.SetActive(true);
             joinRoomButton.SetActive(true);
@@ -255,9 +267,11 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
     /// </summary>
     public override void OnJoinedLobby()
     {
+        Debug.Log("Unido al lobby");
         createRoomButton.SetActive(true);
         joinRoomButton.SetActive(true);
         joinRandomRoonButton.SetActive(true);
+        salir.SetActive(true);
     }
 
     /// <summary>

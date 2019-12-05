@@ -5384,6 +5384,7 @@ MonoBehaviour:
   roomNameMobileJoin: {fileID: 763842035}
   joinRoomButton: {fileID: 1355274742}
   joinRandomRoonButton: {fileID: 457450885}
+  salir: {fileID: 1736043692}
 --- !u!4 &673095655
 Transform:
   m_ObjectHideFlags: 0
