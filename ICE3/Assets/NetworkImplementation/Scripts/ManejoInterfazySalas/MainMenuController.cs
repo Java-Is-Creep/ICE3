@@ -13,6 +13,10 @@ public class MainMenuController : MonoBehaviour
     public Text contentDescr1;
     public Text tituloDescr2;
     public Text contentDescr2;
+    public Button botonModo1;
+    public Button botonModo2;
+    public Sprite sinPulsar;
+    public Sprite pulsar;
     int preIndex = 0;
 
     // Start is called before the first frame update
@@ -33,6 +37,7 @@ public class MainMenuController : MonoBehaviour
                 contentDescr1.gameObject.SetActive(true);
                 tituloDescr2.gameObject.SetActive(false);
                 contentDescr2.gameObject.SetActive(false);
+                //botonModo1.gameObject.GetComponent<SpriteRenderer>().sprite = 
             }
             else
             {
