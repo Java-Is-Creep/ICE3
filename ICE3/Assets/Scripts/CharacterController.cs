@@ -431,6 +431,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
         puntos++;
         if (photonView.IsMine)
         {
+            
             this.photonView.RPC("sumarPuntos", RpcTarget.All, PhotonNetwork.LocalPlayer.NickName);
         }
         Debug.Log("Puntos: " + puntos);
@@ -449,6 +450,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
             puntosBolas++;
             if (photonView.IsMine)
             {
+                Debug.Log("Cosas que yo mando");
                 Debug.Log(PhotonNetwork.NickName);
                 Debug.Log(PhotonNetwork.LocalPlayer.NickName);
                 this.photonView.RPC("sumarPuntos", RpcTarget.All, PhotonNetwork.LocalPlayer.NickName);

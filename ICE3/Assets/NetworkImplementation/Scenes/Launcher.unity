@@ -14396,7 +14396,7 @@ GameObject:
   - component: {fileID: 1736043695}
   - component: {fileID: 1736043694}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: Salir
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
