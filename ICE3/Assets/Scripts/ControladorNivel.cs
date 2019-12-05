@@ -6,10 +6,10 @@ using Photon.Realtime;
 
 public class ControladorNivel : MonoBehaviourPunCallbacks
 {
-    int TimeToCreateAmmunition = 10;
-    int TimeToCreateBandera = 15;
-    float actualTimeAmmunation = 0;
-    float actualTimeBandera = 0;
+    int TimeToCreateAmmunition;
+    int TimeToCreateBandera;
+    float actualTimeAmmunation;
+    float actualTimeBandera;
     Cube Cubo;
 
     public bool hayBalas;
@@ -23,13 +23,19 @@ public class ControladorNivel : MonoBehaviourPunCallbacks
 
     public int intentos;
     public int bazokasIniciales;
+    public int banderasiniciales;
 
     private void Awake()
     {
         spawnPersonajeCasillas = new List<TileScript>();
         spawnBazokaCasillas = new List<TileScript>();
         spawnBanderaCasillas = new List<TileScript>();
-        bazokasIniciales = 6;
+        bazokasIniciales = 5;
+        banderasiniciales = 3;
+        actualTimeBandera = 0;
+        actualTimeAmmunation = 0;
+        TimeToCreateBandera = 15;
+        TimeToCreateAmmunition = 10;
     }
 
     // Start is called before the first frame update
@@ -43,6 +49,11 @@ public class ControladorNivel : MonoBehaviourPunCallbacks
         for(int i = 0; i< bazokasIniciales; i++)
         {
             createBazoka();
+        }
+
+        for(int i = 0; i < banderasiniciales; i++)
+        {
+            createBandera();
         }
 
     }
@@ -62,7 +73,7 @@ public class ControladorNivel : MonoBehaviourPunCallbacks
                 {
                     //createObject(ObjetosCreables.balas);
                     createBazoka();
-                    TimeToCreateAmmunition = Random.Range(7, 15);
+                    TimeToCreateAmmunition = Random.Range(7, 12);
                     actualTimeAmmunation = 0;
                 }
             }
@@ -78,7 +89,7 @@ public class ControladorNivel : MonoBehaviourPunCallbacks
                 {
                     createBandera();
                     //createObject(ObjetosCreables.bandera);
-                    TimeToCreateBandera = Random.Range(20, 30);
+                    TimeToCreateBandera = Random.Range(10, 15);
                     actualTimeBandera = 0;
                 }
 

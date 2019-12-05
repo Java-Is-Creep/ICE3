@@ -232,7 +232,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
         //1
         if (Input.GetKeyDown("a") || ab)
         {
-            Debug.Log("He pulsado la A en boton movil: " + ab);
+            //Debug.Log("He pulsado la A en boton movil: " + ab);
             if (cara == 0 || cara == 2)
             {
                model.transform.localRotation = Quaternion.Euler(0, 0, 0);
@@ -265,7 +265,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
         //2
         else if (Input.GetKeyDown("s") || sb)
         {
-            Debug.Log("He pulsado la S en boton movil: " + sb);
+            //Debug.Log("He pulsado la S en boton movil: " + sb);
             if (cara == 0 || cara == 2)
             {
                 model.transform.localRotation = Quaternion.Euler(0, -90, 0);
@@ -297,7 +297,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
         //3
         else if (Input.GetKeyDown("d") || db)
         {
-            Debug.Log("He pulsado la D en boton movil: " + db);
+            //Debug.Log("He pulsado la D en boton movil: " + db);
             if (cara == 0 || cara == 2)
             {
                 model.transform.localRotation = Quaternion.Euler(0, 180, 0);
@@ -329,7 +329,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
         //4
         else if (Input.GetKeyDown("w") || wb)
         {
-            Debug.Log("He pulsado la W en boton movil: " + wb);
+            //Debug.Log("He pulsado la W en boton movil: " + wb);
             if (cara == 0 || cara == 2)
             {
                 model.transform.localRotation = Quaternion.Euler(0, 90, 0);

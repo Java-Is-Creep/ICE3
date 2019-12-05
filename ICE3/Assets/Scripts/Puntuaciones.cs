@@ -22,7 +22,7 @@ public class Puntuaciones : MonoBehaviour
 
     public void anadirPunto(string nombre)
     {
-        Debug.Log("Puntuaciones añadiendo punto");
+        //Debug.Log("Puntuaciones añadiendo punto");
         int aux = 0;
         if (puntuaciones.ContainsKey(nombre))
         {
@@ -30,9 +30,9 @@ public class Puntuaciones : MonoBehaviour
             puntuaciones.TryGetValue(nombre, out aux);
             puntuaciones.Remove(nombre);
         }
-        Debug.Log("La puntuacion de :" + nombre + " era: " + aux);
+        //Debug.Log("La puntuacion de :" + nombre + " era: " + aux);
         aux++;
-        Debug.Log(" lA PUNTUACION DE: " + nombre + " ahora es: " + aux);
+        //Debug.Log(" lA PUNTUACION DE: " + nombre + " ahora es: " + aux);
         puntuaciones.Add(nombre, aux);
     }
 
