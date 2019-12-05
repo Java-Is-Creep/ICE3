@@ -1780,6 +1780,8 @@ public class CharacterController : MonoBehaviourPunCallbacks
     }
 
 
+
+
     [PunRPC]
     void Colocarme(object[] parametros)
     {
@@ -1841,6 +1843,14 @@ public class CharacterController : MonoBehaviourPunCallbacks
             {
                 if(controlador.photonView.ViewID == idMaster)
                 {
+                    /*
+                    Dictionary<int,Player> aux3 =   PhotonNetwork.CurrentRoom.Players;
+                    foreach(Player play in aux3.Values)
+                    {
+                        Debug.Log(play.NickName);
+                        play.SetCustomProperties()
+                    }
+                    */
                     aux2 = controlador;
                     Debug.Log("Encontrado master, su id es " + idMaster);
                 }

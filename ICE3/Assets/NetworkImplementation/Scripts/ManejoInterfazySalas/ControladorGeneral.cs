@@ -72,6 +72,7 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
         {
             Debug.Log("No estoy conectado");
             PhotonNetwork.ConnectUsingSettings();
+            PhotonNetwork.NickName = PlayerPrefs.GetString("Name");
             createRoomButton.SetActive(false);
             joinRoomButton.SetActive(false);
             joinRandomRoonButton.SetActive(false);

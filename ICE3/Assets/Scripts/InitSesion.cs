@@ -31,6 +31,14 @@ public class InitSesion : MonoBehaviour
 
     public void onClick()
     {
+        if (Application.isMobilePlatform)
+        {
+            PlayerPrefs.SetString("Name", playerNameMobile.text);
+        } else
+        {
+            PlayerPrefs.SetString("Name", playerName.text);
+        }
+
         SceneManager.LoadScene("MainMenu");
     }
 }
