@@ -10,6 +10,8 @@ public class InitSesion : MonoBehaviour
     private InputField playerName;
     [SerializeField]
     private InputField playerNameMobile;
+
+    public Text placeholderNombre;
     
 
     // Start is called before the first frame update
@@ -26,6 +28,16 @@ public class InitSesion : MonoBehaviour
             Debug.Log("no movil");
             // crear
             playerName.gameObject.SetActive(true);
+        }
+    }
+
+    public void Update()
+    {
+        if (Application.isMobilePlatform)
+        {
+            // Crear
+            placeholderNombre.text = playerNameMobile.text;
+
         }
     }
 

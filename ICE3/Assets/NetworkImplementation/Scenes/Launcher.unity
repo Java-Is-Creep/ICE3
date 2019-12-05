@@ -5384,6 +5384,9 @@ MonoBehaviour:
   roomNameMobileJoin: {fileID: 763842035}
   joinRoomButton: {fileID: 1355274742}
   joinRandomRoonButton: {fileID: 457450885}
+  createRoomPlaceholder: {fileID: 1823298444}
+  numPlayersPlaceholder: {fileID: 956186396}
+  joinRoomPlaceholder: {fileID: 934862659}
 --- !u!4 &673095655
 Transform:
   m_ObjectHideFlags: 0
@@ -6253,7 +6256,7 @@ MonoBehaviour:
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
-  m_DialogTitle: Input Text
+  m_DialogTitle: Introduce el nombre de la sala
   m_DialogOkBtn: OK
   m_DialogCancelBtn: Cancel
   m_DialogType: 1
@@ -16447,7 +16450,7 @@ MonoBehaviour:
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
-  m_DialogTitle: Input Text
+  m_DialogTitle: Introduzca el nombre de la sala
   m_DialogOkBtn: OK
   m_DialogCancelBtn: Cancel
   m_DialogType: 1
@@ -16927,7 +16930,7 @@ MonoBehaviour:
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
-  m_DialogTitle: Input Text
+  m_DialogTitle: Introduzca el numero de jugadores
   m_DialogOkBtn: OK
   m_DialogCancelBtn: Cancel
   m_DialogType: 1
