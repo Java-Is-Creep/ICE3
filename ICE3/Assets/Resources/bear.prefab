@@ -200,9 +200,12 @@ MonoBehaviour:
   maxTimeoutCollisionBazoka: 0
   timeoutCollisionRock: 0
   maxTimeoutCollisionRock: 0
+  maxTimeoutCollisionBorders: 0
+  timeoutCollisionBorders: 0
   textoBalas: {fileID: 0}
   textoPuntos: {fileID: 0}
   jugadores: []
+  inicializado: 0
 --- !u!114 &1992317699554841752
 MonoBehaviour:
   m_ObjectHideFlags: 0

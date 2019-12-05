@@ -87,12 +87,14 @@ public class CharacterController : MonoBehaviourPunCallbacks
     int indiceJugador;
     public CharacterController[] jugadores;
     ControladorNivel controladorNivel;
+    public bool inicializado;
 
     // Start is called before the first frame update
     void Start()
     {
         textoBalas = GameObject.Find("Balas").GetComponent<Text>();
         textoPuntos = GameObject.Find("PuntuacionTexto").GetComponent<Text>();
+        inicializado = false;
         Debug.Log("Cuantas veces he hecho el start" + " " + photonView.ViewID);
         model = this.transform.GetChild(0).gameObject;
         camaraScript = FindObjectOfType<moverCamaraFija>();
@@ -163,12 +165,6 @@ public class CharacterController : MonoBehaviourPunCallbacks
         timeWaitingShots += Time.deltaTime;
         isFiring = false;
 
-        if (photonView.IsMine)
-        {
-            textoBalas.text = ammunition+"";
-            textoPuntos.text = puntosBolas + "";
-        }
-
         if (!hecho)
         {
             if (PhotonNetwork.IsMasterClient)
@@ -207,6 +203,19 @@ public class CharacterController : MonoBehaviourPunCallbacks
         {
             return;
         }
+        if (!inicializado)
+        {
+            return;
+        }
+
+
+
+        if (photonView.IsMine)
+        {
+            textoBalas.text = ammunition + "";
+            textoPuntos.text = puntosBolas + "";
+        }
+
 
         float incrementAux = increment * Time.deltaTime;
 
@@ -462,6 +471,8 @@ public class CharacterController : MonoBehaviourPunCallbacks
     public void inicializateTu( int masterId, Vector3 casilla)
     {
         object[] parametros = new object[2];
+        textoBalas = GameObject.Find("Balas").GetComponent<Text>();
+        textoPuntos = GameObject.Find("PuntuacionTexto").GetComponent<Text>();
         Debug.Log("Holiwis");
         parametros[0] = masterId;
         Debug.Log("ID a mandar: " + (int)parametros[0]);
@@ -1748,10 +1759,29 @@ public class CharacterController : MonoBehaviourPunCallbacks
     [PunRPC]
     void AcabarPartida()
     {
+
         if (PhotonNetwork.IsMasterClient)
         {
+            Cube cubo = FindObjectOfType<Cube>();
+            PhotonNetwork.Destroy(cubo.gameObject);
+            KitBalas[] balas = FindObjectsOfType<KitBalas>();
+            foreach (KitBalas bala in balas)
+            {
+                PhotonNetwork.Destroy(bala.gameObject);
+            }
+            Banderas[] banderas = FindObjectsOfType<Banderas>();
+            foreach (Banderas banderita in banderas)
+            {
+                PhotonNetwork.Destroy(banderita.gameObject);
+            }
             PhotonNetwork.LoadLevel("GameOver");
         }
+        if (photonView.IsMine)
+        {
+            PhotonNetwork.Destroy(this.gameObject);
+        }
+        //if(PhotonNetwork.
+        //PhotonNetwork.Destroy(this.gameObject);
         //Debug.Log("Veces que se llama");
         //salirmePartida();
     }
@@ -1810,6 +1840,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
             }
             this.transform.position += this.transform.TransformDirection(Vector3.up);
             hecho = true;
+            inicializado = true;
             Debug.Log("Mando inicializar a otro");
             jugadores = FindObjectsOfType<CharacterController>();
             CharacterController aux2 = null;

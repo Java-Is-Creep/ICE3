@@ -7,36 +7,20 @@ using UnityEngine.SceneManagement;
 
 public class GameOverManejador : MonoBehaviourPunCallbacks
 {
-    private int timeToChoose;
-    public float actualTime;
     private int numPlayers;
     private int numPlayersRepeat;
     private int actualNumPlayers;
-    private bool repetir;
     // Start is called before the first frame update
     void Start()
     {
         numPlayers = PhotonNetwork.CurrentRoom.PlayerCount;
-        actualTime = 0;
-        timeToChoose = 15;
-        repetir = false;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        actualTime += Time.deltaTime;
-        if(actualTime >= timeToChoose)
-        {
-            if (!repetir)
-            {
-                Debug.Log("Mando RPC por tiempo");
-                this.photonView.RPC("MandarDecision", RpcTarget.All, false);
-                PhotonNetwork.LeaveRoom();
-                SceneManager.LoadScene("MainMenu");
-            }
 
-        }
     }
 
     public void volverAjugar()
@@ -47,8 +31,7 @@ public class GameOverManejador : MonoBehaviourPunCallbacks
     public void salirse()
     {
         this.photonView.RPC("MandarDecision", RpcTarget.All, false);
-        PhotonNetwork.LeaveRoom();
-        SceneManager.LoadScene("MainMenu");
+
     }
 
     [PunRPC]
@@ -60,7 +43,6 @@ public class GameOverManejador : MonoBehaviourPunCallbacks
         if (decision)
         {
             numPlayersRepeat++;
-            repetir = true;
         } else
         {
 
@@ -71,7 +53,7 @@ public class GameOverManejador : MonoBehaviourPunCallbacks
             Debug.Log("Soy el server y la rcp es mia");
             if (actualNumPlayers == numPlayers)
             {
-                if(numPlayersRepeat == numPlayers)
+                if (numPlayersRepeat == numPlayers)
                 {
                     if (PlayerPrefs.GetInt("Modo") == 1)
                     {
@@ -83,6 +65,8 @@ public class GameOverManejador : MonoBehaviourPunCallbacks
                     }
                 } else
                 {
+                    PhotonNetwork.CurrentRoom.IsVisible = true;
+                    PhotonNetwork.CurrentRoom.IsOpen = true;
                     PhotonNetwork.LoadLevel("WaitingRoom");
                 }
             }

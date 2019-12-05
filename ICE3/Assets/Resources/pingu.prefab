@@ -154,6 +154,7 @@ MonoBehaviour:
   textoBalas: {fileID: 0}
   textoPuntos: {fileID: 0}
   jugadores: []
+  inicializado: 0
 --- !u!114 &7013383074723312388
 MonoBehaviour:
   m_ObjectHideFlags: 0
