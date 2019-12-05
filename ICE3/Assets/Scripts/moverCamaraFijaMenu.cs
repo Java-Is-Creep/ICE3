@@ -38,8 +38,8 @@ public class moverCamaraFijaMenu : MonoBehaviour
         anim = this.gameObject.GetComponent<Animator>();
         cara = 0;
         activedCanvas = cvFront;
-        nieveBot.gameObject.SetActive(false);
-        nieveTop.gameObject.SetActive(false);
+        //nieveBot.gameObject.SetActive(false);
+        //nieveTop.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -82,8 +82,8 @@ public class moverCamaraFijaMenu : MonoBehaviour
     {
         Debug.Log("Front");
         activedCanvas.gameObject.SetActive(false);
-        nieveBot.gameObject.SetActive(false);
-        nieveTop.gameObject.SetActive(false);
+        //nieveBot.gameObject.SetActive(false);
+        //nieveTop.gameObject.SetActive(false);
         cvFront.gameObject.SetActive(true);
         activedCanvas= cvFront;
         cara = 4;
@@ -94,8 +94,8 @@ public class moverCamaraFijaMenu : MonoBehaviour
     public void back()
     {
         activedCanvas.gameObject.SetActive(false);
-        nieveBot.gameObject.SetActive(false);
-        nieveTop.gameObject.SetActive(false);
+        //nieveBot.gameObject.SetActive(false);
+        //nieveTop.gameObject.SetActive(false);
         cvBack.gameObject.SetActive(true);
         activedCanvas = cvBack;
         cara = 5;
@@ -107,8 +107,8 @@ public class moverCamaraFijaMenu : MonoBehaviour
     {
         Debug.Log("Top");
         activedCanvas.gameObject.SetActive(false);
-        nieveBot.gameObject.SetActive(false);
-        nieveTop.gameObject.SetActive(true);
+        //nieveBot.gameObject.SetActive(false);
+        //nieveTop.gameObject.SetActive(true);
         cvTop.gameObject.SetActive(true);
         activedCanvas = cvTop;
         cara = 0;
@@ -119,8 +119,8 @@ public class moverCamaraFijaMenu : MonoBehaviour
     public void button()
     {
         activedCanvas.gameObject.SetActive(false);
-        nieveBot.gameObject.SetActive(true);
-        nieveTop.gameObject.SetActive(false);
+        //nieveBot.gameObject.SetActive(true);
+        //nieveTop.gameObject.SetActive(false);
         cvBottom.gameObject.SetActive(true);
         activedCanvas = cvBottom;
         cara = 2;
@@ -131,8 +131,8 @@ public class moverCamaraFijaMenu : MonoBehaviour
     public void left()
     {
         activedCanvas.gameObject.SetActive(false);
-        nieveBot.gameObject.SetActive(false);
-        nieveTop.gameObject.SetActive(false);
+        //nieveBot.gameObject.SetActive(false);
+        //nieveTop.gameObject.SetActive(false);
         cvLeft.gameObject.SetActive(true);
         activedCanvas = cvLeft;
         cara = 1;
@@ -143,8 +143,8 @@ public class moverCamaraFijaMenu : MonoBehaviour
     public void right()
     {
         activedCanvas.gameObject.SetActive(false);
-        nieveBot.gameObject.SetActive(false);
-        nieveTop.gameObject.SetActive(false);
+        //nieveBot.gameObject.SetActive(false);
+        //nieveTop.gameObject.SetActive(false);
         cvRight.gameObject.SetActive(true);
         activedCanvas = cvRight;
         cara = 3;

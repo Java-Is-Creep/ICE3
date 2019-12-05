@@ -7,6 +7,14 @@ public class Carrousel : MonoBehaviour
 {
 
     public AudioSource audio;
+    public AudioSource rodolfo;
+    public AudioSource pingu;
+    public AudioSource azeri;
+    public AudioSource frifri;
+    public AudioSource globi;
+    public AudioSource bebesito;
+    public AudioSource teapot;
+    public bool sonado;
     public RectTransform[] images;
     public RectTransform view_window;
 
@@ -53,7 +61,7 @@ public class Carrousel : MonoBehaviour
     void Update()
     {
         //titel.text = current_index.ToString();
-
+        string  a= titel.text;
         switch (current_index)
         {
             case 0:
@@ -77,6 +85,43 @@ public class Carrousel : MonoBehaviour
             case 6:
                 titel.text = "Teapot Ft. TeapotStudio";
                 break;
+        }
+
+        if (a.CompareTo(titel.text) != 0)
+        {
+            if (titel.text == "Pingu II Frosty")
+            {
+                pingu.Play();
+            }
+            else if (titel.text == "Bad Bear BB")
+            {
+                bebesito.Play();
+            }
+            else if (titel.text == "Azeri The Fox")
+            {
+                azeri.Play();
+
+            }
+            else if (titel.text == "Frifri The Snowman")
+            {
+                frifri.Play();
+
+            }
+            else if (titel.text == "Rodolfo The Reindeer")
+            {
+                rodolfo.Play();
+
+            }
+            else if (titel.text == "Globillo The Walrus")
+            {
+                globi.Play();
+
+            }
+            else if (titel.text == "Teapot Ft. TeapotStudio")
+            {
+                teapot.Play();
+
+            }
         }
 
         lerpTimer = lerpTimer + Time.deltaTime;
