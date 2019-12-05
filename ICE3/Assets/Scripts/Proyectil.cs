@@ -37,7 +37,7 @@ public class Proyectil : MonoBehaviour
     {
         this.direccion = direccion.normalized;
         this.dueño = dueño;
-        Debug.Log("mi dueño es el master: " + dueño.gameObject.GetComponent<CharacterController>().soyMaster());
+        //Debug.Log("mi dueño es el master: " + dueño.gameObject.GetComponent<CharacterController>().soyMaster());
         this.height = height;
     }
 
@@ -45,7 +45,7 @@ public class Proyectil : MonoBehaviour
     {
         if (other.gameObject.tag.CompareTo("Rock") == 0)
         {
-            Debug.Log("Choque con roca");
+            //Debug.Log("Choque con roca");
             Destroy(this.gameObject);
         }
         else if (other.gameObject.tag.CompareTo("CharacterCollider") == 0)
@@ -53,12 +53,12 @@ public class Proyectil : MonoBehaviour
             if (other.gameObject.transform.parent.gameObject == dueño)
             {
 
-                Debug.Log("choque contigo mismo");
+                //Debug.Log("choque contigo mismo");
             }
             else
             {
                 dueño.GetComponent<CharacterController>().sumarPuntosBolas();
-                Debug.Log("Choque con enemigo");
+                //Debug.Log("Choque con enemigo");
                 Destroy(this.gameObject);
             }
         }

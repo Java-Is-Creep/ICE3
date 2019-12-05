@@ -43,5 +43,6 @@ MonoBehaviour:
   - pruebaMandarCosas
   - QuitarBazoka
   - SacarBazoka
+  - sumarPuntos
   DisableAutoOpenWizard: 1
   ShowSettings: 1

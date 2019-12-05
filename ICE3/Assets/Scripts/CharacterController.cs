@@ -93,9 +93,13 @@ public class CharacterController : MonoBehaviourPunCallbacks
     public gameSoundsController soundController;
     public bool sonidoEmpezado;
 
+    // puntuaciones
+    Puntuaciones punt;
+
     // Start is called before the first frame update
     void Start()
     {
+        punt = FindObjectOfType<Puntuaciones>();
         soundController = GameObject.Find("AudioController").GetComponent<gameSoundsController>();
         textoBalas = GameObject.Find("Balas").GetComponent<Text>();
         textoPuntos = GameObject.Find("PuntuacionTexto").GetComponent<Text>();
@@ -392,14 +396,14 @@ public class CharacterController : MonoBehaviourPunCallbacks
         {
             if (ammunition > 0)
             {
-                Debug.Log("Disparando");
+                //Debug.Log("Disparando");
                 this.photonView.RPC("Shot", RpcTarget.All, this.transform.position);
                 timeWaitingShots = 0;
                 soundController.playDisparo();
             }
             else
             {
-                Debug.Log("Sin municion");
+                //Debug.Log("Sin municion");
                 soundController.playSinBolas();
             }
 
@@ -425,12 +429,17 @@ public class CharacterController : MonoBehaviourPunCallbacks
     public void sumarPuntuacion()
     {
         puntos++;
+        if (photonView.IsMine)
+        {
+            this.photonView.RPC("sumarPuntos", RpcTarget.All, PhotonNetwork.LocalPlayer.NickName);
+        }
         Debug.Log("Puntos: " + puntos);
         if (puntos >= MAXPUNTUACION)
         {
             Debug.Log("Puntos  de verdad: " + puntos);
-            this.photonView.RPC("AcabarPartida", RpcTarget.All);
+            this.photonView.RPC("AcabarPartida", RpcTarget.All,PhotonNetwork.NickName);
         }
+
     }
 
     public void sumarPuntosBolas()
@@ -438,10 +447,16 @@ public class CharacterController : MonoBehaviourPunCallbacks
         if(PlayerPrefs.GetInt("Modo") == 1)
         {
             puntosBolas++;
+            if (photonView.IsMine)
+            {
+                Debug.Log(PhotonNetwork.NickName);
+                Debug.Log(PhotonNetwork.LocalPlayer.NickName);
+                this.photonView.RPC("sumarPuntos", RpcTarget.All, PhotonNetwork.LocalPlayer.NickName);
+            }
             Debug.Log("Puntos bolas: " + puntosBolas);
             if (puntosBolas >= MaxPuntuacionBolas)
             {
-                this.photonView.RPC("AcabarPartida", RpcTarget.All);
+                this.photonView.RPC("AcabarPartida", RpcTarget.All, PhotonNetwork.NickName);
             }
         }
 
@@ -1314,6 +1329,19 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
     #region RPCs
 
+
+    [PunRPC]
+    void sumarPuntos(string nick)
+    {
+        Debug.Log("El nick que me han pasado es: " + nick);
+        Debug.Log("me mandan la RPC de sumar puntos");
+        if(punt == null)
+        {
+            punt = FindObjectOfType<Puntuaciones>();
+        }
+        punt.anadirPunto(nick);
+    }
+
     /// <summary>
     /// 
     /// </summary>
@@ -1769,8 +1797,13 @@ public class CharacterController : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    void AcabarPartida()
+    void AcabarPartida(string ganador)
     {
+        if (photonView.IsMine)
+        {
+            PlayerPrefs.SetString("ganador", ganador);
+        }
+
         if (PhotonNetwork.IsMasterClient)
         {
             PhotonNetwork.LoadLevel("GameOver");
