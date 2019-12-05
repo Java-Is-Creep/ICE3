@@ -5387,6 +5387,7 @@ MonoBehaviour:
   createRoomPlaceholder: {fileID: 1823298444}
   numPlayersPlaceholder: {fileID: 956186396}
   joinRoomPlaceholder: {fileID: 934862659}
+  salir: {fileID: 1736043692}
 --- !u!4 &673095655
 Transform:
   m_ObjectHideFlags: 0
