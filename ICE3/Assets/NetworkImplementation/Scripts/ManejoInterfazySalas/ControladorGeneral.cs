@@ -24,6 +24,8 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
     private InputField roomNameMobileJoin;
     [SerializeField]
     private GameObject joinRoomButton;
+    [SerializeField]
+    private GameObject joinRandomRoonButton;
 
 
 
@@ -72,6 +74,7 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
             PhotonNetwork.ConnectUsingSettings();
             createRoomButton.SetActive(false);
             joinRoomButton.SetActive(false);
+            joinRandomRoonButton.SetActive(false);
             return;
         }
 
@@ -81,6 +84,7 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
             PhotonNetwork.JoinLobby();
             createRoomButton.SetActive(false);
             joinRoomButton.SetActive(false);
+            joinRandomRoonButton.SetActive(false);
             return;
         }
 
@@ -90,6 +94,7 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
             Debug.Log("Estamos conectados y lobby ");
             createRoomButton.SetActive(true);
             joinRoomButton.SetActive(true);
+            joinRandomRoonButton.SetActive(true);
         }
     }
 
@@ -105,6 +110,7 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
             //Debug.Log("Estamos conectados ");
             createRoomButton.SetActive(true);
             joinRoomButton.SetActive(true);
+            joinRandomRoonButton.SetActive(true);
         }
     }
 
@@ -238,6 +244,7 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
         {
             createRoomButton.SetActive(true);
             joinRoomButton.SetActive(true);
+            joinRandomRoonButton.SetActive(true);
 
         }
     }
@@ -249,6 +256,7 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
     {
         createRoomButton.SetActive(true);
         joinRoomButton.SetActive(true);
+        joinRandomRoonButton.SetActive(true);
     }
 
     /// <summary>

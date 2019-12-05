@@ -1771,8 +1771,12 @@ public class CharacterController : MonoBehaviourPunCallbacks
     [PunRPC]
     void AcabarPartida()
     {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.LoadLevel("GameOver");
+        }
         //Debug.Log("Veces que se llama");
-        salirmePartida();
+        //salirmePartida();
     }
 
 
