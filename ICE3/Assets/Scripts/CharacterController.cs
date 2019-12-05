@@ -96,6 +96,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
+        soundController = GameObject.Find("AudioController").GetComponent<gameSoundsController>();
         textoBalas = GameObject.Find("Balas").GetComponent<Text>();
         textoPuntos = GameObject.Find("PuntuacionTexto").GetComponent<Text>();
         Debug.Log("Cuantas veces he hecho el start" + " " + photonView.ViewID);
@@ -183,7 +184,6 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 if (controladorNivel != null)
                 {
                     jugadores = FindObjectsOfType<CharacterController>();
-                    soundController = GameObject.Find("AudioController").GetComponent<gameSoundsController>();
                     if (jugadores.Length != PhotonNetwork.CurrentRoom.MaxPlayers)
                     {
                         return;
@@ -492,6 +492,10 @@ public class CharacterController : MonoBehaviourPunCallbacks
     #region Colisiones
     private void OnTriggerEnter(Collider other)
     {
+        if (soundController == null)
+        {
+            soundController = GameObject.Find("AudioController").GetComponent<gameSoundsController>();
+        }
         if (other.tag == "KitBalas")
         {
             if(timeoutCollisionBazoka <= 0)

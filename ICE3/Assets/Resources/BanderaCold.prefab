@@ -110,6 +110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b523facca1a7d14881aea0d34b84718, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tile: {fileID: 0}
 --- !u!65 &4396151009266619214
 BoxCollider:
   m_ObjectHideFlags: 0
