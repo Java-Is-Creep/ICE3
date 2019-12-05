@@ -1818,8 +1818,8 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     camaraScript.left();
                     break;
                 case (5):
-                    Debug.Log("Cambiando de cara");
-                    this.transform.Rotate(new Vector3(0, 0, 180));
+                    //Debug.Log("Cambiando de cara");
+                    this.transform.Rotate(new Vector3(-180, 0, 0));
                     camaraScript.button();
                     break;
             }
