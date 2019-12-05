@@ -27,6 +27,47 @@ public class MainMenuController : MonoBehaviour
     public Sprite activadoCopo;
     public Sprite desactivadoCopo;
 
+    // Textos
+    [Header("FRONT")]
+    public Text creditosFront;
+    public Text personajeFront;
+    public Text modoJuegoFront;
+    public Text opcionesFront;
+    public Text modoTextFront;
+
+    [Header("TOP")]
+    public Text menuTop;
+    public Text titleTop;
+    public Text contentScrollTop;
+    public Text donarTextTop;
+
+    [Header("BOTTOM")]
+    public Text menuBot;
+    public Text titleBot;
+    public Text sonidoTextBot;
+    public Text idiomaTextBot;
+
+    [Header("LEFT")]
+    public Text infoLeft;
+    public Text menuLeft;
+    public Text titleLeft;
+    public Text modo1TextLeft;
+    public Text modo2TextLeft;
+
+    [Header("BACK")]
+    public Text personajeBack;
+    public Text modoJuegoBack;
+    public Text titleBack;
+    public Text titleGameMode1Back;
+    public Text contentGameMode1Back;
+    public Text titleGameMode2Back;
+    public Text contentGameMode2Back;
+
+    [Header("RIGHT")]
+    public Text infoRight;
+    public Text menuRight;
+    public Text titleRight;
+
     int preIndex = 0;
 
     // Start is called before the first frame update
@@ -37,7 +78,6 @@ public class MainMenuController : MonoBehaviour
         ///////// MODO
         // 1 --> Batalla bolas de nieve (por defecto)
         // 2 --> Hazte con los objetivos
-
 
         // Set del modo por defecto
         if (!PlayerPrefs.HasKey("Modo"))
@@ -69,7 +109,6 @@ public class MainMenuController : MonoBehaviour
             }
         }
 
-
         ///////// SONIDO
         // 0 --> Desactivado
         // 1 --> Activado (por defecto)
@@ -92,7 +131,6 @@ public class MainMenuController : MonoBehaviour
             }
         }
 
-
         ///////// IDIOMA
         // 0 --> Español (por defecto)
         // 1 --> Ingles
@@ -109,11 +147,13 @@ public class MainMenuController : MonoBehaviour
             {
                 botonEspanol.gameObject.GetComponent<Image>().sprite = activadoCopo;
                 botonIngles.gameObject.GetComponent<Image>().sprite = desactivadoCopo;
+                textSpanish();
             }
             else
             {
                 botonEspanol.gameObject.GetComponent<Image>().sprite = desactivadoCopo;
                 botonIngles.gameObject.GetComponent<Image>().sprite = activadoCopo;
+                textEnglish();
             }
         }
 
@@ -168,11 +208,13 @@ public class MainMenuController : MonoBehaviour
         {
             PlayerPrefs.SetInt("Sonido", 0);
             botonSonido.gameObject.GetComponent<Image>().sprite = desactivadoCopo;
+            AudioListener.volume = 0;
         }
         else
         {
             PlayerPrefs.SetInt("Sonido", 1);
             botonSonido.gameObject.GetComponent<Image>().sprite = activadoCopo;
+            AudioListener.volume = 1;
         }
     }
 
@@ -181,6 +223,7 @@ public class MainMenuController : MonoBehaviour
         PlayerPrefs.SetInt("Idioma", 0);
         botonEspanol.gameObject.GetComponent<Image>().sprite = activadoCopo;
         botonIngles.gameObject.GetComponent<Image>().sprite = desactivadoCopo;
+        textSpanish();
     }
 
     public void englishButton()
@@ -188,5 +231,128 @@ public class MainMenuController : MonoBehaviour
         PlayerPrefs.SetInt("Idioma", 1);
         botonEspanol.gameObject.GetComponent<Image>().sprite = desactivadoCopo;
         botonIngles.gameObject.GetComponent<Image>().sprite = activadoCopo;
+        textEnglish();
+    }
+
+    public void textSpanish()
+    {
+        // FRONT
+        creditosFront.text = "Créditos";
+        personajeFront.text = "Personaje";
+        modoJuegoFront.text = "Modo\nJuego";
+        opcionesFront.text = "Opciones";
+        if (PlayerPrefs.GetInt("Modo") == 0)
+        {
+            modoTextFront.text = "Modo 1";
+        }
+        else
+        {
+            modoTextFront.text = "Modo 2";
+        }
+        
+
+        // TOP
+        menuTop.text = "Menú";
+        titleTop.text = "Créditos";
+        donarTextTop.text = "Donar";
+        contentScrollTop.text = "PATATA\nPATATA VIVA ESPAÑA";
+
+        // BOT
+        menuBot.text = "Menú";
+        titleBot.text = "Opciones";
+        sonidoTextBot.text = "Sonido";
+        idiomaTextBot.text = "Idioma";
+
+        // LEFT
+        infoLeft.text = "Info";
+        menuLeft.text = "Menú";
+        titleLeft.text = "Modos De Juego";
+        modo1TextLeft.text = "Modo 1";
+        modo2TextLeft.text = "Modo 2";
+
+        // BACK
+        personajeBack.text = "Personaje";
+        modoJuegoBack.text = "Modo\nJuego";
+        titleBack.text = "Información Modo";
+        titleGameMode1Back.text = "Pelea bolas de nieve";
+        contentGameMode1Back.text = "En este modo, deberás hacer uso de tu puntería para acertar 5 bolazos antes que los demás";
+        titleGameMode2Back.text = "Congélate";
+        contentGameMode2Back.text = "Se el más rápido en el cubo, consigiuiendo coger las banderas";
+
+        // RIGHT
+        infoRight.text = "Info";
+        menuRight.text = "Menú";
+        titleRight.text = "Selector Personaje";
+    }
+
+    public void textEnglish()
+    {
+        // FRONT
+        creditosFront.text = "Credits";
+        personajeFront.text = "Character";
+        modoJuegoFront.text = "Game\nMode";
+        opcionesFront.text = "Options";
+        if (PlayerPrefs.GetInt("Modo") == 0)
+        {
+            modoTextFront.text = "Mode 1";
+        }
+        else
+        {
+            modoTextFront.text = "Mode 2";
+        }
+
+
+        // TOP
+        menuTop.text = "Menu";
+        titleTop.text = "Credits";
+        donarTextTop.text = "Donate";
+        contentScrollTop.text = "PATATA\nPATATA BEBO TE PORQUE SOY PIJO";
+
+        // BOT
+        menuBot.text = "Menu";
+        titleBot.text = "Options";
+        sonidoTextBot.text = "Sound";
+        idiomaTextBot.text = "Language";
+
+        // LEFT
+        infoLeft.text = "Info";
+        menuLeft.text = "Menu";
+        titleLeft.text = "Game Mode";
+        modo1TextLeft.text = "Mode 1";
+        modo2TextLeft.text = "Mode 2";
+
+        // BACK
+        personajeBack.text = "Character";
+        modoJuegoBack.text = "Modo\nJuego";
+        titleBack.text = "Mode Information";
+        titleGameMode1Back.text = "Fight snowballs";
+        contentGameMode1Back.text = "In this mode, you must use your aim to hit 5 balls before the others";
+        titleGameMode2Back.text = "Freeze";
+        contentGameMode2Back.text = "Be the fastest in the cube, getting the flags";
+
+        // RIGHT
+        infoRight.text = "Info";
+        menuRight.text = "Menu";
+        titleRight.text = "Choose Character";
+    }
+
+    public void instaButton()
+    {
+        Application.OpenURL("https://www.instagram.com/java_is_creep/");
+    }
+
+    public void twitterButton()
+    {
+        Application.OpenURL("https://twitter.com/Java_Is_Creep");
+    }
+    
+    public void youtubeButton()
+    {
+        Application.OpenURL("https://www.youtube.com/channel/UCPiuFVLDn7vtVCGowXJ7CVw");
+    }
+
+    public void javaIsCreepButton()
+    {
+        Application.OpenURL("https://java-is-creep.github.io/Portfolio/index.html");
     }
 }

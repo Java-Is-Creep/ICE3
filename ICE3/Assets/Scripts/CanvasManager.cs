@@ -12,6 +12,10 @@ public class CanvasManager : MonoBehaviour
 
     public Button fire;
 
+    public GameObject panel1;
+    public GameObject panel2;
+
+
     public bool bindeado;
     public CharacterController personaje = null; /*= FindObjectOfType<CharacterController>();*/
     // Start is called before the first frame update
@@ -26,10 +30,10 @@ public class CanvasManager : MonoBehaviour
             right.gameObject.SetActive(true);
             left.gameObject.SetActive(true);
             fire.gameObject.SetActive(true);
-            
-            
-
-        } else
+            panel1.gameObject.SetActive(true);
+            panel2.gameObject.SetActive(true);
+        }
+        else
         {
             bindeado = true;
         }

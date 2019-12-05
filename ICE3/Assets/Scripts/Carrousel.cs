@@ -18,6 +18,8 @@ public class Carrousel : MonoBehaviour
     public RectTransform[] images;
     public RectTransform view_window;
 
+    public Canvas right;
+
     private bool canSwipe;
     private float image_width;
     private float lerpTimer;
@@ -60,127 +62,130 @@ public class Carrousel : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //titel.text = current_index.ToString();
-        string  a= titel.text;
-        switch (current_index)
+        if (right.gameObject.activeSelf)
         {
-            case 0:
-                titel.text = "Pingu II Frosty";
-                break;
-            case 1:
-                titel.text = "Bad Bear BB";
-                break;
-            case 2:
-                titel.text = "Azeri The Fox";
-                break;
-            case 3:
-                titel.text = "Frifri The Snowman";
-                break;
-            case 4:
-                titel.text = "Rodolfo The Reindeer";
-                break;
-            case 5:
-                titel.text = "Globillo The Walrus";
-                break;
-            case 6:
-                titel.text = "Teapot Ft. TeapotStudio";
-                break;
-        }
-
-        if (a.CompareTo(titel.text) != 0)
-        {
-            if (titel.text == "Pingu II Frosty")
+            //titel.text = current_index.ToString();
+            string a = titel.text;
+            switch (current_index)
             {
-                pingu.Play();
+                case 0:
+                    titel.text = "Pingu II Frosty";
+                    break;
+                case 1:
+                    titel.text = "Bad Bear BB";
+                    break;
+                case 2:
+                    titel.text = "Azeri The Fox";
+                    break;
+                case 3:
+                    titel.text = "Frifri The Snowman";
+                    break;
+                case 4:
+                    titel.text = "Rodolfo The Reindeer";
+                    break;
+                case 5:
+                    titel.text = "Globillo The Walrus";
+                    break;
+                case 6:
+                    titel.text = "Teapot Ft. TeapotStudio";
+                    break;
             }
-            else if (titel.text == "Bad Bear BB")
+
+            if (a.CompareTo(titel.text) != 0)
             {
-                bebesito.Play();
+                if (titel.text == "Pingu II Frosty")
+                {
+                    pingu.Play();
+                }
+                else if (titel.text == "Bad Bear BB")
+                {
+                    bebesito.Play();
+                }
+                else if (titel.text == "Azeri The Fox")
+                {
+                    azeri.Play();
+
+                }
+                else if (titel.text == "Frifri The Snowman")
+                {
+                    frifri.Play();
+
+                }
+                else if (titel.text == "Rodolfo The Reindeer")
+                {
+                    rodolfo.Play();
+
+                }
+                else if (titel.text == "Globillo The Walrus")
+                {
+                    globi.Play();
+
+                }
+                else if (titel.text == "Teapot Ft. TeapotStudio")
+                {
+                    teapot.Play();
+
+                }
             }
-            else if (titel.text == "Azeri The Fox")
-            {
-                azeri.Play();
 
+            lerpTimer = lerpTimer + Time.deltaTime;
+
+            if (lerpTimer < 0.333f)
+            {
+                screenPosition = Mathf.Lerp(lastScreenPosition, lerpPosition * -1, lerpTimer * 3);
+                lastScreenPosition = screenPosition;
             }
-            else if (titel.text == "Frifri The Snowman")
-            {
-                frifri.Play();
 
+            if (Input.GetMouseButtonDown(0))
+            {
+                canSwipe = true;
+                mousePositionStartX = Input.mousePosition.x;
             }
-            else if (titel.text == "Rodolfo The Reindeer")
-            {
-                rodolfo.Play();
 
+
+            if (Input.GetMouseButton(0))
+            {
+                if (canSwipe)
+                {
+                    mousePositionEndX = Input.mousePosition.x;
+                    dragAmount = mousePositionEndX - mousePositionStartX;
+                    screenPosition = lastScreenPosition + dragAmount;
+                }
             }
-            else if (titel.text == "Globillo The Walrus")
-            {
-                globi.Play();
 
+            if (Mathf.Abs(dragAmount) > swipeThrustHold && canSwipe)
+            {
+                canSwipe = false;
+                lastScreenPosition = screenPosition;
+                if (current_index < images.Length)
+                    OnSwipeComplete();
+                else if (current_index == images.Length && dragAmount < 0)
+                    lerpTimer = 0;
+                else if (current_index == images.Length && dragAmount > 0)
+                    OnSwipeComplete();
             }
-            else if (titel.text == "Teapot Ft. TeapotStudio")
+
+            /*for (int i = 0; i < images.Length; i++)
             {
-                teapot.Play();
-
-            }
-        }
-
-        lerpTimer = lerpTimer + Time.deltaTime;
-
-        if (lerpTimer < 0.333f)
-        {
-            screenPosition = Mathf.Lerp(lastScreenPosition, lerpPosition * -1, lerpTimer * 3);
-            lastScreenPosition = screenPosition;
-        }
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            canSwipe = true;
-            mousePositionStartX = Input.mousePosition.x;
-        }
-
-
-        if (Input.GetMouseButton(0))
-        {
-            if (canSwipe)
+                images[i].anchoredPosition = new Vector2(screenPosition + ((image_width + image_gap) * i), 0);
+            }*/
+            for (int i = 0; i < images.Length; i++)
             {
-                mousePositionEndX = Input.mousePosition.x;
-                dragAmount = mousePositionEndX - mousePositionStartX;
-                screenPosition = lastScreenPosition + dragAmount;
-            }
-        }
 
-        if (Mathf.Abs(dragAmount) > swipeThrustHold && canSwipe)
-        {
-            canSwipe = false;
-            lastScreenPosition = screenPosition;
-            if (current_index < images.Length)
-                OnSwipeComplete();
-            else if (current_index == images.Length && dragAmount < 0)
-                lerpTimer = 0;
-            else if (current_index == images.Length && dragAmount > 0)
-                OnSwipeComplete();
-        }
+                images[i].anchoredPosition = new Vector2(screenPosition + ((image_width + image_gap) * i), 0);
 
-        /*for (int i = 0; i < images.Length; i++)
-        {
-            images[i].anchoredPosition = new Vector2(screenPosition + ((image_width + image_gap) * i), 0);
-        }*/
-        for (int i = 0; i < images.Length; i++)
-        {
-
-            images[i].anchoredPosition = new Vector2(screenPosition + ((image_width + image_gap) * i), 0);
-
-            if (i == current_index)
-            {
-                images[i].localScale = Vector3.Lerp(images[i].localScale, new Vector3(1.2f, 1.2f, 1.2f), Time.deltaTime * 5);
-                Color temp = images[i].GetComponent<Image>().color;
-                images[i].GetComponent<Image>().color = new Color(temp.r, temp.g, temp.b, 1);
-            }
-            else
-            {
-                images[i].localScale = Vector3.Lerp(images[i].localScale, new Vector3(0.7f, 0.7f, 0.7f), Time.deltaTime * 5);
-                Color temp = images[i].GetComponent<Image>().color;
-                images[i].GetComponent<Image>().color = new Color(temp.r, temp.g, temp.b, 0.5f);
+                if (i == current_index)
+                {
+                    images[i].localScale = Vector3.Lerp(images[i].localScale, new Vector3(1.2f, 1.2f, 1.2f), Time.deltaTime * 5);
+                    Color temp = images[i].GetComponent<Image>().color;
+                    images[i].GetComponent<Image>().color = new Color(temp.r, temp.g, temp.b, 1);
+                }
+                else
+                {
+                    images[i].localScale = Vector3.Lerp(images[i].localScale, new Vector3(0.7f, 0.7f, 0.7f), Time.deltaTime * 5);
+                    Color temp = images[i].GetComponent<Image>().color;
+                    images[i].GetComponent<Image>().color = new Color(temp.r, temp.g, temp.b, 0.5f);
+                }
             }
         }
     }
