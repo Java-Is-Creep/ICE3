@@ -124,7 +124,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
         //incializacion spawn
         controladorNivel = FindObjectOfType<ControladorNivel>();
 
-        soundController = GameObject.Find("AudioController").GetComponent<gameSoundsController>();
+        
         sonidoEmpezado = false;
     }
 
@@ -183,6 +183,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 if (controladorNivel != null)
                 {
                     jugadores = FindObjectsOfType<CharacterController>();
+                    soundController = GameObject.Find("AudioController").GetComponent<gameSoundsController>();
                     if (jugadores.Length != PhotonNetwork.CurrentRoom.MaxPlayers)
                     {
                         return;

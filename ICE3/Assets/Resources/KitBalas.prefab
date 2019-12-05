@@ -132,6 +132,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tile: {fileID: 0}
+  velocityRot: 0
+  velocityPos: 0
+  counter: 0
 --- !u!54 &2375916138909713795
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -159,5 +162,5 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 40, y: 28, z: 32}
+  m_Size: {x: 25, y: 28, z: 25}
   m_Center: {x: 0, y: 0, z: 0}
