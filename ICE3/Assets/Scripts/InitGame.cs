@@ -18,9 +18,12 @@ public class InitGame : MonoBehaviour
 
     public void Start()
     {
+        // Instanciamos el idioma 1 (ingles)
+        // Instanciamos el sonido 1 (activado)
+
         if (!PlayerPrefs.HasKey("Idioma"))
         {
-            PlayerPrefs.SetInt("Idioma", 0);
+            PlayerPrefs.SetInt("Idioma", 1);
         }
         // Pintado de los botones de idioma
         if (PlayerPrefs.HasKey("Idioma"))

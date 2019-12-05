@@ -34,7 +34,6 @@ public class InitSesion : MonoBehaviour
         }
         else
         {
-            Debug.Log("no movil");
             // crear
             playerName.gameObject.SetActive(true);
         }
@@ -61,11 +60,13 @@ public class InitSesion : MonoBehaviour
         {
             on.gameObject.GetComponent<Image>().sprite = desactivate;
             off.gameObject.GetComponent<Image>().sprite = activate;
+            AudioListener.volume = 0;
         }
         else
         {
             on.gameObject.GetComponent<Image>().sprite = activate;
             off.gameObject.GetComponent<Image>().sprite = desactivate;
+            AudioListener.volume = 1;
         }
         
     }

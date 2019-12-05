@@ -8,7 +8,6 @@ public class MainMenuController : MonoBehaviour
 {
     Carrousel miCarrousel;
     public Image imagePersonaje;
-    public Text textModo;
     public Text tituloDescr1;
     public Text contentDescr1;
     public Text tituloDescr2;
@@ -89,7 +88,6 @@ public class MainMenuController : MonoBehaviour
         {
             if (PlayerPrefs.GetInt("Modo") == 1)
             {
-                textModo.text = "Modo 1";
                 tituloDescr1.gameObject.SetActive(true);
                 contentDescr1.gameObject.SetActive(true);
                 tituloDescr2.gameObject.SetActive(false);
@@ -99,7 +97,6 @@ public class MainMenuController : MonoBehaviour
             }
             else
             {
-                textModo.text = "Modo 2";
                 tituloDescr1.gameObject.SetActive(false);
                 contentDescr1.gameObject.SetActive(false);
                 tituloDescr2.gameObject.SetActive(true);
@@ -180,7 +177,14 @@ public class MainMenuController : MonoBehaviour
     public void modo1()
     {
         PlayerPrefs.SetInt("Modo", 1);
-        textModo.text = "Modo 1";
+        if (PlayerPrefs.GetInt ("Idioma") == 0)
+        {
+            modoTextFront.text = "Modo 1";
+        }
+        else
+        {
+            modoTextFront.text = "Mode 1";
+        }
         tituloDescr1.gameObject.SetActive(true);
         contentDescr1.gameObject.SetActive(true);
         tituloDescr2.gameObject.SetActive(false);
@@ -193,7 +197,14 @@ public class MainMenuController : MonoBehaviour
     public void modo2()
     {
         PlayerPrefs.SetInt("Modo", 2);
-        textModo.text = "Modo 2";
+        if (PlayerPrefs.GetInt("Idioma") == 0)
+        {
+            modoTextFront.text = "Modo 2";
+        }
+        else
+        {
+            modoTextFront.text = "Mode 2";
+        }
         tituloDescr1.gameObject.SetActive(false);
         contentDescr1.gameObject.SetActive(false);
         tituloDescr2.gameObject.SetActive(true);
@@ -241,7 +252,7 @@ public class MainMenuController : MonoBehaviour
         personajeFront.text = "Personaje";
         modoJuegoFront.text = "Modo\nJuego";
         opcionesFront.text = "Opciones";
-        if (PlayerPrefs.GetInt("Modo") == 0)
+        if (PlayerPrefs.GetInt("Modo") == 1)
         {
             modoTextFront.text = "Modo 1";
         }
@@ -292,7 +303,7 @@ public class MainMenuController : MonoBehaviour
         personajeFront.text = "Character";
         modoJuegoFront.text = "Game\nMode";
         opcionesFront.text = "Options";
-        if (PlayerPrefs.GetInt("Modo") == 0)
+        if (PlayerPrefs.GetInt("Modo") == 1)
         {
             modoTextFront.text = "Mode 1";
         }
