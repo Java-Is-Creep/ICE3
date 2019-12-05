@@ -437,7 +437,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
         Debug.Log("Puntos: " + puntos);
         if (puntos >= MAXPUNTUACION)
         {
-            Debug.Log("Puntos  de verdad: " + puntos);
+            //Debug.Log("Puntos  de verdad: " + puntos);
             this.photonView.RPC("AcabarPartida", RpcTarget.All,PhotonNetwork.NickName);
         }
 
@@ -450,12 +450,14 @@ public class CharacterController : MonoBehaviourPunCallbacks
             puntosBolas++;
             if (photonView.IsMine)
             {
+                /*
                 Debug.Log("Cosas que yo mando");
                 Debug.Log(PhotonNetwork.NickName);
                 Debug.Log(PhotonNetwork.LocalPlayer.NickName);
+                */
                 this.photonView.RPC("sumarPuntos", RpcTarget.All, PhotonNetwork.LocalPlayer.NickName);
             }
-            Debug.Log("Puntos bolas: " + puntosBolas);
+            //Debug.Log("Puntos bolas: " + puntosBolas);
             if (puntosBolas >= MaxPuntuacionBolas)
             {
                 this.photonView.RPC("AcabarPartida", RpcTarget.All, PhotonNetwork.NickName);
@@ -489,9 +491,9 @@ public class CharacterController : MonoBehaviourPunCallbacks
     public void inicializateTu( int masterId, Vector3 casilla)
     {
         object[] parametros = new object[2];
-        Debug.Log("Holiwis");
+        //Debug.Log("Holiwis");
         parametros[0] = masterId;
-        Debug.Log("ID a mandar: " + (int)parametros[0]);
+        //Debug.Log("ID a mandar: " + (int)parametros[0]);
         parametros[1] = casilla;
         this.photonView.RPC("Colocarme", RpcTarget.All, parametros);
     }
@@ -499,7 +501,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
     // Manda RPC hasta que de con el master que llama al resto
     public void avisarAlSiguiente()
     {
-        Debug.Log("Manada siguiente orden");
+        //Debug.Log("Manada siguiente orden");
         this.photonView.RPC("siguienteJugador", RpcTarget.MasterClient);
        
     }
