@@ -187,7 +187,14 @@ public class CharacterController : MonoBehaviourPunCallbacks
         if (photonView.IsMine)
         {
             textoBalas.text = ammunition+"";
-            textoPuntos.text = puntosBolas + "";
+            if (PlayerPrefs.GetInt("Modo") == 1)
+            {
+                textoPuntos.text = puntosBolas + "";
+            }
+            else
+            {
+                textoPuntos.text = puntos + "";
+            }
         }
 
         if (!hecho)
