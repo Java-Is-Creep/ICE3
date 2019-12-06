@@ -41,6 +41,7 @@ public class Cube : MonoBehaviourPunCallbacks
 
     //Controlador de nivel
     ControladorNivel controlNivel;
+    ControladorTutorial controlTutorial;
 
     int numeroSpawnsPlayers = 0;
 
@@ -49,6 +50,7 @@ public class Cube : MonoBehaviourPunCallbacks
     {
 
          controlNivel= FindObjectOfType<ControladorNivel>();
+        controlTutorial = FindObjectOfType<ControladorTutorial>();
 
         readCSV();
         //this.transform.position = new Vector3(-this.width / 2, this.heigth / 2, -this.heigth / 2 + this.tamañoCara / 2);
@@ -165,6 +167,11 @@ public class Cube : MonoBehaviourPunCallbacks
                             controlNivel.anadirCasillaPersonaje(tile);
                             numeroSpawnsPlayers++;
                         }
+                        if (controlTutorial != null)
+                        {
+                            controlTutorial.anadirCasillaPersonaje(tile);
+                            numeroSpawnsPlayers++;
+                        }
                     }
                     if (spawnBandera)
                     {
@@ -172,12 +179,20 @@ public class Cube : MonoBehaviourPunCallbacks
                         {
                             controlNivel.anadirCasillaBandera(tile);
                         }
+                        if (controlTutorial != null)
+                        {
+                            controlTutorial.anadirCasillaBandera(tile);
+                        }
                     }
                     if (spawnBazoka)
                     {
                         if(controlNivel != null)
                         {
                             controlNivel.anadirCasillaBazoka(tile);
+                        }
+                        if (controlTutorial != null)
+                        {
+                            controlTutorial.anadirCasillaBazoka(tile);
                         }
                     }
 

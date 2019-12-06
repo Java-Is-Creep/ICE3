@@ -5,11 +5,12 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviourPunCallbacks
+
+public class GameManagerTutorialOK : MonoBehaviourPunCallbacks
 {
 
-    public static GameManager instance;
-    public ControladorNivel controlador;
+    public static GameManagerTutorialOK instance;
+    public ControladorTutorial controlador;
 
     [Tooltip("The prefab to use for representing the player")]
     public GameObject renoPlayer;
@@ -20,6 +21,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     public GameObject zorraPlayer;
     public GameObject munecoPlayer;
     public GameObject cubePrefab;
+    public Vector3 posIniTutorial;
 
     [HideInInspector]
     public GameObject musicMenu;
@@ -33,6 +35,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("Haciendo el start");
         musicMenu = GameObject.Find("MusicaFondoMenu");
         if (musicMenu != null)
         {
@@ -41,16 +44,9 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         instance = this;
 
-        // si eres el master, creas el cubo
-        if (PhotonNetwork.IsMasterClient)
-        {
-            GameObject a = PhotonNetwork.InstantiateSceneObject(this.cubePrefab.name, new Vector3(0f, 0f, 0f), Quaternion.identity, 0);
-            //a.transform.position = new Vector3(-4, 4, -3.5f);
-        } else
-        {
-            Debug.Log("GirandoCaras");
 
-        }
+        GameObject a = PhotonNetwork.InstantiateSceneObject(this.cubePrefab.name, new Vector3(0f, 0f, 0f), Quaternion.identity, 0);
+
 
         GameObject aux;
         switch (PlayerPrefs.GetInt("IndiceEscenario"))
@@ -61,7 +57,7 @@ public class GameManager : MonoBehaviourPunCallbacks
                 break;
             // oso
             case 1:
-                 aux = PhotonNetwork.Instantiate(this.osoPlayer.name, Vector3.zero, Quaternion.identity, 0);
+                aux = PhotonNetwork.Instantiate(this.osoPlayer.name, Vector3.zero, Quaternion.identity, 0);
                 break;
 
             //zorro
@@ -89,14 +85,15 @@ public class GameManager : MonoBehaviourPunCallbacks
                 break;
         }
 
-        
+        aux.GetComponent<CharacterController>().activarTutorial(posIniTutorial);
+
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public override void OnLeftRoom()
@@ -110,7 +107,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
 
     #region RPCs
- 
+
     #endregion
 
     #region Private methods
@@ -169,7 +166,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             Debug.LogFormat("OnPlayerLeftRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient); // called before OnPlayerLeftRoom
 
 
-            if(PhotonNetwork.CurrentRoom.PlayerCount < 2)
+            if (PhotonNetwork.CurrentRoom.PlayerCount < 2)
             {
                 Debug.Log("Nos hemos quedado sin jugadores suficientes");
                 goToFinishScene();
