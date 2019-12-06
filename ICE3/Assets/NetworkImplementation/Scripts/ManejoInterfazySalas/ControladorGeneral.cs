@@ -28,6 +28,8 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
     private GameObject joinRandomRoonButton;
     [SerializeField]
     private GameObject salir;
+    [SerializeField]
+    private GameObject botonTutorial;
 
     public Text createRoomPlaceholder;
     public Text joinRoomPlaceholder;
@@ -74,6 +76,8 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
     public Text insertarNombreSalaHolderMobileRight;
     public Text botonUnirseRight;
 
+    //tutorial
+    bool tutorial;
 
     /// <summary>
     /// MonoBehaviour method called on GameObject by Unity during early initialization phase.
@@ -187,6 +191,7 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
                 break;
         }
 
+        tutorial = false;
         salir.SetActive(false);
         if (Application.isMobilePlatform)
         {
@@ -227,6 +232,7 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
             createRoomButton.SetActive(false);
             joinRoomButton.SetActive(false);
             joinRandomRoonButton.SetActive(false);
+            botonTutorial.SetActive(false);
             return;
         }
         else
@@ -242,6 +248,7 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
             createRoomButton.SetActive(false);
             joinRoomButton.SetActive(false);
             joinRandomRoonButton.SetActive(false);
+            botonTutorial.SetActive(false);
             return;
         }
         else
@@ -257,6 +264,7 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
             createRoomButton.SetActive(true);
             joinRoomButton.SetActive(true);
             joinRandomRoonButton.SetActive(true);
+            botonTutorial.SetActive(true);
         }
     }
 
@@ -281,6 +289,16 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
             joinRoomPlaceholder.text = roomNameMobileJoin.text;
         }
     }
+
+    #region tutorial
+
+    public void irAlTutorial()
+    {
+        PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = 1 });
+        tutorial = true;
+    }
+
+    #endregion
 
     #region Llamadas Utiles
     /// <summary>
@@ -413,6 +431,7 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
             createRoomButton.SetActive(true);
             joinRoomButton.SetActive(true);
             joinRandomRoonButton.SetActive(true);
+            botonTutorial.SetActive(true);
 
         }
     }
@@ -427,6 +446,7 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
         joinRoomButton.SetActive(true);
         joinRandomRoonButton.SetActive(true);
         salir.SetActive(true);
+        botonTutorial.SetActive(true);
     }
 
     /// <summary>
@@ -456,6 +476,10 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
     {
         base.OnCreatedRoom();
         Debug.Log("Sala creada");
+        if (tutorial)
+        {
+            PhotonNetwork.LoadLevel("Tutorial");
+        }
     }
 
 
@@ -476,6 +500,10 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
     /// </summary>
     public override void OnJoinedRoom()
     {
+        if (tutorial)
+        {
+            return;
+        }
         Debug.Log("PUN Basics Tutorial/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.");
         // #Critical: We only load if we are the first player, else we rely on `PhotonNetwork.AutomaticallySyncScene` to sync our instance scene.
         // Cambiamos de escena cuando halla 2 players

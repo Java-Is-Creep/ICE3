@@ -96,9 +96,14 @@ public class CharacterController : MonoBehaviourPunCallbacks
     // puntuaciones
     Puntuaciones punt;
 
+    // tutorial
+    bool tutorial = false;
+    Vector3 CasillaTutorial = Vector3.zero;
+
     // Start is called before the first frame update
     void Start()
     {
+        
         punt = FindObjectOfType<Puntuaciones>();
         soundController = GameObject.Find("AudioController").GetComponent<gameSoundsController>();
         textoBalas = GameObject.Find("Balas").GetComponent<Text>();
@@ -131,6 +136,10 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
         
         sonidoEmpezado = false;
+        if (tutorial)
+        {
+            ColocarmeTutorial(CasillaTutorial);
+        }
     }
 
     // Update is called once per frame
@@ -1815,7 +1824,58 @@ public class CharacterController : MonoBehaviourPunCallbacks
         //Debug.Log("Veces que se llama");
         //salirmePartida();
     }
-    
+
+    public void activarTutorial(Vector3 datosCasilla)
+    {
+        tutorial = true;
+        this.CasillaTutorial = datosCasilla;
+    }
+
+    public void ColocarmeTutorial(Vector3 datosCasilla)
+    {
+        Debug.Log("Tutorial");
+        camaraScript = FindObjectOfType<moverCamaraFija>();
+        cubo = FindObjectOfType<Cube>();
+
+        TileScript ts = cubo.faces[(int)datosCasilla.z].tiles[(int)datosCasilla.x, (int)datosCasilla.y].GetComponent<TileScript>();
+
+        indexX = ts.indexX;
+        indexY = ts.indexY;
+        cara = ts.cubeId;
+
+
+        this.transform.position = ts.AbsolutePos;
+        switch (cara)
+        {
+            case (0):
+
+                break;
+            case (1):
+                this.transform.Rotate(new Vector3(0, 0, 90));
+                camaraScript.back();
+                break;
+            case (2):
+                this.transform.Rotate(new Vector3(0, 0, -90));
+                camaraScript.front();
+                break;
+            case (3):
+                this.transform.Rotate(new Vector3(90, 0, 0));
+                camaraScript.right();
+                break;
+            case (4):
+                this.transform.Rotate(new Vector3(-90, 0, 0));
+                camaraScript.left();
+                break;
+            case (5):
+                //Debug.Log("Cambiando de cara");
+                this.transform.Rotate(new Vector3(-180, 0, 0));
+                camaraScript.button();
+                break;
+        }
+        this.transform.position += this.transform.TransformDirection(Vector3.up);
+        hecho = true;
+    }
+
     [PunRPC]
     void Colocarme(object[] parametros)
     {
