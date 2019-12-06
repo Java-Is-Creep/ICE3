@@ -266,7 +266,12 @@ public class MainMenuController : MonoBehaviour
         menuTop.text = "Menú";
         titleTop.text = "Créditos";
         donarTextTop.text = "Donar";
-        contentScrollTop.text = "PATATA\nPATATA VIVA ESPAÑA";
+        contentScrollTop.text = "Desarrolladores ICE3: Java Is Creep" +
+            "\nDavid Fontela Moñino" +
+            "\nAlejandro Garcia Rodriguez" +
+            "\nDaniel Jimenez Pacheco" +
+            "\nSergio Plaza Larrosa" +
+            "\nLeo Vázquez ¿?";
 
         // BOT
         menuBot.text = "Menú";
@@ -317,7 +322,12 @@ public class MainMenuController : MonoBehaviour
         menuTop.text = "Menu";
         titleTop.text = "Credits";
         donarTextTop.text = "Donate";
-        contentScrollTop.text = "PATATA\nPATATA BEBO TE PORQUE SOY PIJO";
+        contentScrollTop.text = "Developers ICE3: Java Is Creep" +
+        "\nDavid Fontela Moñino" +
+        "\nAlejandro Garcia Rodriguez" +
+        "\nDaniel Jimenez Pacheco" +
+        "\nSergio Plaza Larrosa" +
+        "\nLeo Vázquez ¿?";
 
         // BOT
         menuBot.text = "Menu";
@@ -365,5 +375,10 @@ public class MainMenuController : MonoBehaviour
     public void javaIsCreepButton()
     {
         Application.OpenURL("https://java-is-creep.github.io/Portfolio/index.html");
+    }
+
+    public void donateButton()
+    {
+        Application.OpenURL("https://paypal.me/JavaIsCreep");
     }
 }
