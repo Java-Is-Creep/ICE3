@@ -11,11 +11,11 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
     [SerializeField]
     private InputField roomNameCreate;
     [SerializeField]
-    private InputField numPlayers;
+    private Text numPlayers;
     [SerializeField]
     private InputField roomNameMobileCreate;
     [SerializeField]
-    private InputField numPlayersMobile;
+    private Text numPlayersMobile;
     [SerializeField]
     private GameObject createRoomButton;
     [SerializeField]
@@ -29,10 +29,23 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
     [SerializeField]
     private GameObject salir;
 
-
     public Text createRoomPlaceholder;
-    public Text numPlayersPlaceholder;
     public Text joinRoomPlaceholder;
+
+    [Header ("Front")]
+    public Text buscarFront;
+    public Text salirFront;
+    public Text unirseFront;
+    public Text crearFront;
+    
+
+    [Header ("Bot")]
+    public Text titleBot;
+    public Text insertarNombreSalaHolderBot;
+    public Text insertarNombreSalaHolderMobileBot;
+    public Text numJugadoresBot;
+    public Text botonCrearBot;
+
 
     /// <summary>
     /// MonoBehaviour method called on GameObject by Unity during early initialization phase.
@@ -45,8 +58,27 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
+        // Idioma 0 espanol
+        if (PlayerPrefs.GetInt("Idioma") == 0)
+        {
+            // Bot
+            titleBot.text = "Crear Sala";
+            insertarNombreSalaHolderBot.text = "Inserta Nombre Sala";
+            insertarNombreSalaHolderMobileBot.text = "Inserta Nombre Sala";
+            numJugadoresBot.text = "Número De Jugadores";
+            botonCrearBot.text = "Crear";
+        }
+        else
+        {
+            // Bot
+            titleBot.text = "Create Room";
+            insertarNombreSalaHolderBot.text = "Insert Room Name";
+            insertarNombreSalaHolderMobileBot.text = "Insert Room Name";
+            numJugadoresBot.text = "Number of Players";
+            botonCrearBot.text = "Create";
+        }
+
         salir.SetActive(false);
-        Debug.Log("Haciendo init");
         if (Application.isMobilePlatform)
         {
             Debug.Log("Movil");
@@ -83,7 +115,8 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
             joinRoomButton.SetActive(false);
             joinRandomRoonButton.SetActive(false);
             return;
-        } else
+        }
+        else
         {
             Debug.Log("estoy conectado");
         }
@@ -97,7 +130,8 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
             joinRoomButton.SetActive(false);
             joinRandomRoonButton.SetActive(false);
             return;
-        } else
+        }
+        else
         {
             Debug.Log("Estoy en lobby");
         }
@@ -132,7 +166,6 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
         {
             createRoomPlaceholder.text = roomNameMobileCreate.text;
             joinRoomPlaceholder.text = roomNameMobileJoin.text;
-            numPlayersPlaceholder.text = numPlayersMobile.text;
         }
     }
 
@@ -353,5 +386,23 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
 
     #endregion
 
+    public void aumentarNum()
+    {
+        int num = int.Parse(numPlayersMobile.text) + 1;
+        if (num != 7)
+        {
+            numPlayersMobile.text = "" + num;
+            numPlayers.text = "" + num;
+        }
+    }
 
+    public void disminuirNum()
+    {
+        int num = int.Parse(numPlayersMobile.text) - 1;
+        if (num != 1)
+        {
+            numPlayersMobile.text = "" + num;
+            numPlayers.text = "" + num;
+        }
+    }
 }
