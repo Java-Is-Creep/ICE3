@@ -9,7 +9,6 @@ public class ControladorWaitingRoomPersonajes : MonoBehaviourPunCallbacks
 {
     Player[] jugadores;
     [SerializeField]
-    private Text texto;
     private bool refrescar;
     public float tiempoParaRecargar;
     public float actualTime;
