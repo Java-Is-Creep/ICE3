@@ -469,7 +469,8 @@ public class CharacterController : MonoBehaviourPunCallbacks
         {
             if(puntos == MAXIMAPUNTUACIONTUTORIAL)
             {
-                this.photonView.RPC("AcabarPartida", RpcTarget.All);
+                PhotonNetwork.LeaveRoom();
+                SceneManager.LoadScene("MainMenu");
             }
         }
         if (puntos >= MAXPUNTUACION)
