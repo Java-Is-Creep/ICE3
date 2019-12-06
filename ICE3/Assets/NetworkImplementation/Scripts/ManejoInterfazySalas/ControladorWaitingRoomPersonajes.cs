@@ -20,7 +20,7 @@ public class ControladorWaitingRoomPersonajes : MonoBehaviourPunCallbacks
         ExitGames.Client.Photon.Hashtable character = new ExitGames.Client.Photon.Hashtable();
         character.Add("skin", PlayerPrefs.GetInt("IndiceEscenario"));
         PhotonNetwork.LocalPlayer.SetCustomProperties(character);
-        refrescar = false;
+        refrescar = true;
         tiempoParaRecargar = 0.5f;
         actualTime = 0;
     }
@@ -53,7 +53,7 @@ public class ControladorWaitingRoomPersonajes : MonoBehaviourPunCallbacks
             {
                 int index = (int)indice;
                 Debug.Log("Jugador: " + play.NickName + " lleva la skin de: " + index);
-                nombres.Insert(nombres.Length, "Jugador: " + play.NickName + " lleva la skin de: " + index + "\n");
+                nombres += "Jugador: " + play.NickName + " lleva la skin de: " + index + "\n";
             }
 
         }
