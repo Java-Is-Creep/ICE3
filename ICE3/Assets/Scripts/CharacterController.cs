@@ -1815,10 +1815,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
         //Debug.Log("Veces que se llama");
         //salirmePartida();
     }
-
-
-
-
+    
     [PunRPC]
     void Colocarme(object[] parametros)
     {
