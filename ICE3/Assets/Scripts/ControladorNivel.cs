@@ -24,6 +24,7 @@ public class ControladorNivel : MonoBehaviourPunCallbacks
     public int intentos;
     public int bazokasIniciales;
     public int banderasiniciales;
+    public bool hecho;
 
     private void Awake()
     {
@@ -36,6 +37,7 @@ public class ControladorNivel : MonoBehaviourPunCallbacks
         actualTimeAmmunation = 0;
         TimeToCreateBandera = 15;
         TimeToCreateAmmunition = 10;
+        hecho = false;
     }
 
     // Start is called before the first frame update
@@ -44,23 +46,10 @@ public class ControladorNivel : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient)
         {
             Cubo = FindObjectOfType<Cube>();
+
+            
         }
 
-        if (hayBalas)
-        {
-            for (int i = 0; i < bazokasIniciales; i++)
-            {
-                createBazoka();
-            }
-        }
-
-        if (hayBanderas)
-        {
-            for (int i = 0; i < banderasiniciales; i++)
-            {
-                createBandera();
-            }
-        }
 
 
     }
@@ -68,8 +57,29 @@ public class ControladorNivel : MonoBehaviourPunCallbacks
     // Update is called once per frame
     void Update()
     {
+
         if (PhotonNetwork.IsMasterClient)
         {
+            if (!hecho)
+            {
+                if (hayBalas)
+                {
+                    for (int i = 0; i < bazokasIniciales; i++)
+                    {
+                        createBazoka();
+                    }
+                }
+
+                if (hayBanderas)
+                {
+                    for (int i = 0; i < banderasiniciales; i++)
+                    {
+                        createBandera();
+                    }
+                }
+                hecho = true;
+            }
+
             if (hayBalas)
             {
                 if (actualTimeAmmunation < TimeToCreateAmmunition)
@@ -188,7 +198,7 @@ public class ControladorNivel : MonoBehaviourPunCallbacks
                     intentos = 0;
                     return;
                 }
-                int indice = Random.Range(0, spawnBanderaCasillas.Count);
+                int indice = Random.Range(0, spawnBazokaCasillas.Count);
                 casilla = spawnBazokaCasillas[indice];
                 intentos++;
             } while (casilla.myObjectType != TileScript.tileObject.NULL);
