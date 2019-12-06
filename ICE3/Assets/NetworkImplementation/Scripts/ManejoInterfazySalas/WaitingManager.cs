@@ -3,6 +3,7 @@ using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class WaitingManager : MonoBehaviourPunCallbacks
@@ -56,11 +57,19 @@ public class WaitingManager : MonoBehaviourPunCallbacks
    public  void disconect()
     {
         PhotonNetwork.LeaveRoom();
-        PhotonNetwork.LoadLevel("Launcher");
+
     }
 
 
+
+
     #region Photon Callbacks
+
+    public override void OnLeftRoom()
+    {
+        base.OnLeftRoom();
+        SceneManager.LoadScene("Launcher");
+    }
 
     public override void OnPlayerEnteredRoom(Player other)
     {
