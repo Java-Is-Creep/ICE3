@@ -37,7 +37,22 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
     public Text salirFront;
     public Text unirseFront;
     public Text crearFront;
-    
+    public Text modoSeleccionado;
+    public Image imagePersonaje;
+    public Image movimiento;
+    public Image disparo;
+    public Sprite p0;
+    public Sprite p1;
+    public Sprite p2;
+    public Sprite p3;
+    public Sprite p4;
+    public Sprite p5;
+    public Sprite p6;
+    public Sprite movimientoPC;
+    public Sprite disparoPC;
+    public Sprite movimientoMobile;
+    public Sprite disparoMobile;
+
 
     [Header ("Bot")]
     public Text titleBot;
@@ -45,6 +60,19 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
     public Text insertarNombreSalaHolderMobileBot;
     public Text numJugadoresBot;
     public Text botonCrearBot;
+    public Text botonInicioBot;
+
+    [Header("Left")]
+    public Text botonInicioLeft;
+    public Text botonUnirseLeft;
+    public Text titleLeft;
+
+    [Header("Right")]
+    public Text botonInicioRight;
+    public Text titleRight;
+    public Text insertarNombreSalaHolderRight;
+    public Text insertarNombreSalaHolderMobileRight;
+    public Text botonUnirseRight;
 
 
     /// <summary>
@@ -61,27 +89,107 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
         // Idioma 0 espanol
         if (PlayerPrefs.GetInt("Idioma") == 0)
         {
+            // Front
+            buscarFront.text = "Buscar";
+            crearFront.text = "Crear";
+            salirFront.text = "Salir";
+            unirseFront.text = "Unirse";
+            if (PlayerPrefs.GetInt ("Modo") == 1)
+            {
+                modoSeleccionado.text = "Modo 1";
+            }
+            else
+            {
+                modoSeleccionado.text = "Modo 2";
+            }
+            
+
             // Bot
             titleBot.text = "Crear Sala";
             insertarNombreSalaHolderBot.text = "Inserta Nombre Sala";
             insertarNombreSalaHolderMobileBot.text = "Inserta Nombre Sala";
             numJugadoresBot.text = "Número De Jugadores";
             botonCrearBot.text = "Crear";
+            botonInicioBot.text = "Lobby";
+
+            // Left
+            botonInicioLeft.text = "Lobby";
+            botonUnirseLeft.text = "Unirse";
+            titleLeft.text = "Buscar Sala";
+
+            // Right
+            botonInicioRight.text = "Lobby";
+            botonUnirseRight.text = "Unirse";
+            insertarNombreSalaHolderRight.text = "Inserta Nombre Sala";
+            insertarNombreSalaHolderMobileRight.text = "Inserta Nombre Sala";
+            titleRight.text = "Unirse a Sala";
         }
         else
         {
+            // Front
+            buscarFront.text = "Search";
+            crearFront.text = "Create";
+            salirFront.text = "Exit";
+            unirseFront.text = "Join";
+            if (PlayerPrefs.GetInt("Modo") == 1)
+            {
+                modoSeleccionado.text = "Mode 1";
+            }
+            else
+            {
+                modoSeleccionado.text = "Mode 2";
+            }
+
             // Bot
             titleBot.text = "Create Room";
             insertarNombreSalaHolderBot.text = "Insert Room Name";
             insertarNombreSalaHolderMobileBot.text = "Insert Room Name";
             numJugadoresBot.text = "Number of Players";
             botonCrearBot.text = "Create";
+            botonInicioBot.text = "Lobby";
+
+            // Left
+            botonInicioLeft.text = "Lobby";
+            botonUnirseLeft.text = "Search";
+            titleLeft.text = "Search Room";
+
+            // Right
+            botonInicioRight.text = "Lobby";
+            botonUnirseRight.text = "Join";
+            insertarNombreSalaHolderRight.text = "Insert Room Name";
+            insertarNombreSalaHolderMobileRight.text = "Insert Room Name";
+            titleRight.text = "Join Room";
+        }
+
+        // Pantalla Inicial personaje
+        switch (PlayerPrefs.GetInt("IndiceEscenario"))
+        {
+            case 0:
+                imagePersonaje.sprite = p0;
+                break;
+            case 1:
+                imagePersonaje.sprite = p1;
+                break;
+            case 2:
+                imagePersonaje.sprite = p2;
+                break;
+            case 3:
+                imagePersonaje.sprite = p3;
+                break;
+            case 4:
+                imagePersonaje.sprite = p4;
+                break;
+            case 5:
+                imagePersonaje.sprite = p5;
+                break;
+            case 6:
+                imagePersonaje.sprite = p6;
+                break;
         }
 
         salir.SetActive(false);
         if (Application.isMobilePlatform)
         {
-            Debug.Log("Movil");
             // Crear
             roomNameMobileCreate.gameObject.SetActive(true);
             numPlayersMobile.gameObject.SetActive(true);
@@ -91,11 +199,12 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
             // Unirse
             roomNameMobileJoin.gameObject.SetActive(true);
             roomNameJoin.gameObject.SetActive(false);
-            
+
+            movimiento.sprite = movimientoMobile;
+            disparo.sprite = disparoMobile;
         }
         else
         {
-            Debug.Log("no movil");
             // crear
             roomNameMobileCreate.gameObject.SetActive(false);
             numPlayersMobile.gameObject.SetActive(false);
@@ -104,7 +213,11 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
             // unirse
             roomNameMobileJoin.gameObject.SetActive(false);
             roomNameJoin.gameObject.SetActive(true);
+
+            movimiento.sprite = movimientoPC;
+            disparo.sprite = disparoPC;
         }
+
         // si no estoy conectado me conecto y espero ya la llamada de on coneccted to master
         if (!PhotonNetwork.IsConnected)
         {
