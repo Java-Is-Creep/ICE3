@@ -1881,7 +1881,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
         }
         this.transform.position += this.transform.TransformDirection(Vector3.up);
         // inicializamos la puntuacion de todos
-        this.photonView.RPC("sumarPuntos", RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber);
+
         hecho = true;
     }
 
@@ -1958,7 +1958,9 @@ public class CharacterController : MonoBehaviourPunCallbacks
                     Debug.Log("Encontrado master, su id es " + idMaster);
                 }
             }
-
+            // inicializar las puntuaciones
+            Debug.Log("Inicializando el personaje en puntuacion");
+            this.photonView.RPC("sumarPuntos", RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber);
             aux2.avisarAlSiguiente();
 
 
