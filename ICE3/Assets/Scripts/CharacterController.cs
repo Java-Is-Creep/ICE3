@@ -148,7 +148,6 @@ public class CharacterController : MonoBehaviourPunCallbacks
     // Update is called once per frame
     void Update()
     {
-
         if (timeoutCollision > 0)
         {
             timeoutCollision--;
@@ -245,6 +244,9 @@ public class CharacterController : MonoBehaviourPunCallbacks
         {
 
             ComprobarDisparo();
+        } else
+        {
+            anim.SetBool("disparar", false);
         }
 
 
@@ -1379,7 +1381,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
          }*/
 
         soundController.playDisparo();
-
+        anim.SetBool("disparar", true);
         Transform childTransform = this.gameObject.transform.GetChild(0);
         GameObject aux = Instantiate(bolaDeNieve, posicion + (childTransform.TransformDirection(Vector3.back * 0.2f)), Quaternion.identity);
 
@@ -2034,8 +2036,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                         target = this.transform.position;
                         //Debug.Log("Acaba Casilla Izq");
                         moving = false;
-
-                        anim.SetBool("moving", false);
+                        
 
                         if (hayCambioCara)
                         {
@@ -2093,7 +2094,6 @@ public class CharacterController : MonoBehaviourPunCallbacks
                                     moving = true;
                                     indexX--;
                                     iteracion++;
-                                    anim.SetBool("moving", true);
                                 }
                                 else
                                 {
@@ -2108,7 +2108,6 @@ public class CharacterController : MonoBehaviourPunCallbacks
                                     else
                                     {
                                         moving = true;
-                                        anim.SetBool("moving", true);
                                     }
                                     //lastMovement = 0;
                                     break;
