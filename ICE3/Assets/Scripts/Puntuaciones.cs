@@ -1,17 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
+using Photon.Realtime;
 
-public class Puntuaciones : MonoBehaviour
+public class Puntuaciones : MonoBehaviourPunCallbacks
 {
 
-    public Dictionary<string, int> puntuaciones;
+    public Dictionary<int, Puntuacion> puntuaciones;
 
     // Start is called before the first frame update
     void Start()
     {
         DontDestroyOnLoad(this.gameObject);
-        puntuaciones = new Dictionary<string, int>();
+        puntuaciones = new Dictionary<int, Puntuacion>();
     }
 
     // Update is called once per frame
@@ -20,20 +22,24 @@ public class Puntuaciones : MonoBehaviour
         
     }
 
-    public void anadirPunto(string nombre)
+    public void anadirPunto(int id)
     {
+        Debug.Log("El id que me mandan es: " + id);
         //Debug.Log("Puntuaciones añadiendo punto");
-        int aux = 0;
-        if (puntuaciones.ContainsKey(nombre))
+        Puntuacion aux;
+        if (puntuaciones.ContainsKey(id))
         {
 
-            puntuaciones.TryGetValue(nombre, out aux);
-            puntuaciones.Remove(nombre);
+            puntuaciones.TryGetValue(id, out aux);
+            aux.aumentarPuntuacion();
+        } else
+        {
+            
+            Player play = PhotonNetwork.CurrentRoom.GetPlayer(id);
+            Debug.Log(play.NickName + " nombre del player");
+            Puntuacion aux2 = new Puntuacion(play.NickName);
+            puntuaciones.Add(id,aux2);
         }
-        //Debug.Log("La puntuacion de :" + nombre + " era: " + aux);
-        aux++;
-        //Debug.Log(" lA PUNTUACION DE: " + nombre + " ahora es: " + aux);
-        puntuaciones.Add(nombre, aux);
     }
 
 }

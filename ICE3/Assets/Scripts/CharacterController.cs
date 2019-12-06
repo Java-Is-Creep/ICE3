@@ -124,7 +124,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
         timeoutCollisionRock = 0;
         timeoutCollisionBorders = 0;
         puntos = 0;
-        MAXPUNTUACION = 6;
+        MAXPUNTUACION = 5;
         puntosBolas = 0;
         MaxPuntuacionBolas = 5;
         cara = -1;
@@ -448,13 +448,13 @@ public class CharacterController : MonoBehaviourPunCallbacks
         if (photonView.IsMine)
         {
             
-            this.photonView.RPC("sumarPuntos", RpcTarget.All, PhotonNetwork.LocalPlayer.NickName);
+            this.photonView.RPC("sumarPuntos", RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber);
         }
         Debug.Log("Puntos: " + puntos);
         if (puntos >= MAXPUNTUACION)
         {
             //Debug.Log("Puntos  de verdad: " + puntos);
-            this.photonView.RPC("AcabarPartida", RpcTarget.All,PhotonNetwork.NickName);
+            this.photonView.RPC("AcabarPartida", RpcTarget.All);
         }
 
     }
@@ -471,12 +471,12 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 Debug.Log(PhotonNetwork.NickName);
                 Debug.Log(PhotonNetwork.LocalPlayer.NickName);
                 */
-                this.photonView.RPC("sumarPuntos", RpcTarget.All, PhotonNetwork.LocalPlayer.NickName);
+                this.photonView.RPC("sumarPuntos", RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber);
             }
             //Debug.Log("Puntos bolas: " + puntosBolas);
             if (puntosBolas >= MaxPuntuacionBolas)
             {
-                this.photonView.RPC("AcabarPartida", RpcTarget.All, PhotonNetwork.NickName);
+                this.photonView.RPC("AcabarPartida", RpcTarget.All);
             }
         }
 
@@ -566,7 +566,11 @@ public class CharacterController : MonoBehaviourPunCallbacks
                         soundController.playRecibirBolazoOof();
                         timeoutCollisionProyectil = maxTimeoutCollisionProyectil;
                     }
+                    Proyectil aux = other.GetComponent<Proyectil>();
+                    ///Seguir Aqui
+                   // if(PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue())
                 }
+
 
             }
 
@@ -1351,15 +1355,15 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
 
     [PunRPC]
-    void sumarPuntos(string nick)
+    void sumarPuntos(int id)
     {
-        Debug.Log("El nick que me han pasado es: " + nick);
+        Debug.Log("El nick que me han pasado es: " + id);
         Debug.Log("me mandan la RPC de sumar puntos");
         if(punt == null)
         {
             punt = FindObjectOfType<Puntuaciones>();
         }
-        punt.anadirPunto(nick);
+        punt.anadirPunto(id);
     }
 
     /// <summary>
@@ -1817,12 +1821,8 @@ public class CharacterController : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    void AcabarPartida(string ganador)
+    void AcabarPartida()
     {
-        if (photonView.IsMine)
-        {
-            PlayerPrefs.SetString("ganador", ganador);
-        }
 
         if (PhotonNetwork.IsMasterClient)
         {
@@ -1880,6 +1880,8 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 break;
         }
         this.transform.position += this.transform.TransformDirection(Vector3.up);
+        // inicializamos la puntuacion de todos
+        this.photonView.RPC("sumarPuntos", RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber);
         hecho = true;
     }
 

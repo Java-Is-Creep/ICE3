@@ -32,7 +32,7 @@ public class ControladorNivel : MonoBehaviourPunCallbacks
         spawnBazokaCasillas = new List<TileScript>();
         spawnBanderaCasillas = new List<TileScript>();
         bazokasIniciales = 5;
-        banderasiniciales = 3;
+        banderasiniciales = 6;
         actualTimeBandera = 0;
         actualTimeAmmunation = 0;
         TimeToCreateBandera = 15;
@@ -106,7 +106,7 @@ public class ControladorNivel : MonoBehaviourPunCallbacks
                 {
                     createBandera();
                     //createObject(ObjetosCreables.bandera);
-                    TimeToCreateBandera = Random.Range(10, 15);
+                    TimeToCreateBandera = Random.Range(2, 4);
                     actualTimeBandera = 0;
                 }
 
