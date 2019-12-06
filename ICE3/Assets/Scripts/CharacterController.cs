@@ -100,6 +100,9 @@ public class CharacterController : MonoBehaviourPunCallbacks
     bool tutorial = false;
     Vector3 CasillaTutorial = Vector3.zero;
 
+    //animaciones stretch and squash
+    public Animator anim;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -2032,6 +2035,8 @@ public class CharacterController : MonoBehaviourPunCallbacks
                         //Debug.Log("Acaba Casilla Izq");
                         moving = false;
 
+                        anim.SetBool("moving", false);
+
                         if (hayCambioCara)
                         {
                             camaraScript.back();
@@ -2088,6 +2093,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                                     moving = true;
                                     indexX--;
                                     iteracion++;
+                                    anim.SetBool("moving", true);
                                 }
                                 else
                                 {
@@ -2102,6 +2108,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
                                     else
                                     {
                                         moving = true;
+                                        anim.SetBool("moving", true);
                                     }
                                     //lastMovement = 0;
                                     break;
