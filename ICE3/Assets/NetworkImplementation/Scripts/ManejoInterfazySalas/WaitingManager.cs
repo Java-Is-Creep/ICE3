@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class WaitingManager : MonoBehaviourPunCallbacks
 {
@@ -53,11 +54,10 @@ public class WaitingManager : MonoBehaviourPunCallbacks
 
     }
 
-
    public  void disconect()
     {
         PhotonNetwork.LeaveRoom();
-
+        //PhotonNetwork.LoadLevel("Launcher");
     }
 
 
@@ -76,7 +76,7 @@ public class WaitingManager : MonoBehaviourPunCallbacks
 
         Debug.Log("Ha enntrado el cabron de: " + other.NickName);
 
-        textoInformativo.text =  PhotonNetwork.CurrentRoom.PlayerCount + "/" + PhotonNetwork.CurrentRoom.MaxPlayers;
+        textoInformativo.text = PhotonNetwork.CurrentRoom.PlayerCount + "/" + PhotonNetwork.CurrentRoom.MaxPlayers;
         Debug.LogFormat("OnPlayerEnteredRoom() {0}", other.NickName); // not seen if you're the player connecting
 
         Debug.Log(PhotonNetwork.CurrentRoom.Name);
@@ -99,7 +99,7 @@ public class WaitingManager : MonoBehaviourPunCallbacks
 
     public override void OnPlayerLeftRoom(Player other)
     {
-        textoInformativo.text =  PhotonNetwork.CurrentRoom.PlayerCount + "/" + PhotonNetwork.CurrentRoom.MaxPlayers;
+        textoInformativo.text = PhotonNetwork.CurrentRoom.PlayerCount + "/" + PhotonNetwork.CurrentRoom.MaxPlayers;
         Debug.LogFormat("OnPlayerLeftRoom() {0}", other.NickName); // seen when other disconnects
 
     }

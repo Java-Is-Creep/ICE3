@@ -251,14 +251,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5520234691915342319}
     m_Modifications:
-    - target: {fileID: 100000, guid: 957ef47ebb67f064abb0e4c94605834c, type: 3}
-      propertyPath: m_Name
-      value: teapotKawaiiDesune
-      objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: 957ef47ebb67f064abb0e4c94605834c, type: 3}
-      propertyPath: m_TagString
-      value: CharacterCollider
-      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 957ef47ebb67f064abb0e4c94605834c, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0
@@ -314,6 +306,14 @@ PrefabInstance:
     - target: {fileID: 400000, guid: 957ef47ebb67f064abb0e4c94605834c, type: 3}
       propertyPath: m_LocalScale.z
       value: 0.08
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 957ef47ebb67f064abb0e4c94605834c, type: 3}
+      propertyPath: m_Name
+      value: teapotKawaiiDesune
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 957ef47ebb67f064abb0e4c94605834c, type: 3}
+      propertyPath: m_TagString
+      value: CharacterCollider
       objectReference: {fileID: 0}
     - target: {fileID: 3300000, guid: 957ef47ebb67f064abb0e4c94605834c, type: 3}
       propertyPath: m_Mesh
