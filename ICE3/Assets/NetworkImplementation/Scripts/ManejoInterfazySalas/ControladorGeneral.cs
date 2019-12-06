@@ -15,8 +15,6 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
     [SerializeField]
     private InputField roomNameMobileCreate;
     [SerializeField]
-    private Text numPlayersMobile;
-    [SerializeField]
     private GameObject createRoomButton;
     [SerializeField]
     private InputField roomNameJoin;
@@ -39,6 +37,9 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
     public Text salirFront;
     public Text unirseFront;
     public Text crearFront;
+    public GameObject buscarFrontButton;
+    public GameObject unirseFrontButton;
+    public GameObject crearFrontButton;
     public Text modoSeleccionado;
     public Image imagePersonaje;
     public Image movimiento;
@@ -193,13 +194,15 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
 
         tutorial = false;
         salir.SetActive(false);
+        buscarFrontButton.SetActive(false);
+        crearFrontButton.SetActive(false);
+        unirseFrontButton.SetActive(false);
         if (Application.isMobilePlatform)
         {
             // Crear
             roomNameMobileCreate.gameObject.SetActive(true);
-            numPlayersMobile.gameObject.SetActive(true);
             roomNameCreate.gameObject.SetActive(false);
-            numPlayers.gameObject.SetActive(false);
+            //numPlayers.gameObject.SetActive(false);
 
             // Unirse
             roomNameMobileJoin.gameObject.SetActive(true);
@@ -212,9 +215,9 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
         {
             // crear
             roomNameMobileCreate.gameObject.SetActive(false);
-            numPlayersMobile.gameObject.SetActive(false);
+            //numPlayersMobile.gameObject.SetActive(false);
             roomNameCreate.gameObject.SetActive(true);
-            numPlayers.gameObject.SetActive(true);
+            //numPlayers.gameObject.SetActive(true);
             // unirse
             roomNameMobileJoin.gameObject.SetActive(false);
             roomNameJoin.gameObject.SetActive(true);
@@ -226,7 +229,6 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
         // si no estoy conectado me conecto y espero ya la llamada de on coneccted to master
         if (!PhotonNetwork.IsConnected)
         {
-            Debug.Log("No estoy conectado");
             PhotonNetwork.ConnectUsingSettings();
             PhotonNetwork.NickName = PlayerPrefs.GetString("Name");
             createRoomButton.SetActive(false);
@@ -243,7 +245,6 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
         // si estoy conectdo pero no al lobby, me conecto y espero la llamada on joined lobby
         if (!PhotonNetwork.InLobby)
         {
-            Debug.Log("No estoy en lobby");
             PhotonNetwork.JoinLobby();
             createRoomButton.SetActive(false);
             joinRoomButton.SetActive(false);
@@ -265,6 +266,9 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
             joinRoomButton.SetActive(true);
             joinRandomRoonButton.SetActive(true);
             botonTutorial.SetActive(true);
+            buscarFrontButton.SetActive(true);
+            crearFrontButton.SetActive(true);
+            unirseFrontButton.SetActive(true);
         }
     }
 
@@ -318,10 +322,9 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
             if (Application.isMobilePlatform)
             {
               
-                roomOptions.MaxPlayers = byte.Parse(numPlayersMobile.text);
+                roomOptions.MaxPlayers = byte.Parse(numPlayers.text);
                 if (PlayerPrefs.GetInt("Modo") == 1)
                 {
-
                     roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "modo", 1 } };
                     PhotonNetwork.CreateRoom(roomNameMobileCreate.text, roomOptions);
                 }
@@ -346,10 +349,7 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
                     roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "modo", 2 } };
                     PhotonNetwork.CreateRoom(roomNameCreate.text, roomOptions);
                 }
-
             }
-            //PhotonNetwork.JoinRoom(roomName.text);
-
         }
         else
         {
@@ -390,10 +390,8 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
             if (Application.isMobilePlatform)
             {
                PhotonNetwork.JoinRoom(roomNameMobileJoin.text);
-                
-                
-
-            } else
+            }
+            else
             {
                 PhotonNetwork.JoinRoom(roomNameJoin.text);
             }
@@ -446,6 +444,9 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
         joinRoomButton.SetActive(true);
         joinRandomRoonButton.SetActive(true);
         salir.SetActive(true);
+        buscarFrontButton.SetActive(true);
+        crearFrontButton.SetActive(true);
+        unirseFrontButton.SetActive(true);
         botonTutorial.SetActive(true);
     }
 
@@ -529,20 +530,20 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
 
     public void aumentarNum()
     {
-        int num = int.Parse(numPlayersMobile.text) + 1;
+        int num = int.Parse(numPlayers.text) + 1;
         if (num != 7)
         {
-            numPlayersMobile.text = "" + num;
+            //numPlayersMobile.text = "" + num;
             numPlayers.text = "" + num;
         }
     }
 
     public void disminuirNum()
     {
-        int num = int.Parse(numPlayersMobile.text) - 1;
+        int num = int.Parse(numPlayers.text) - 1;
         if (num != 1)
         {
-            numPlayersMobile.text = "" + num;
+            //numPlayersMobile.text = "" + num;
             numPlayers.text = "" + num;
         }
     }
