@@ -29,20 +29,23 @@ public class ControladorTutorial : MonoBehaviourPunCallbacks
     //booleans controladores
     public bool [] pasos;
     public int numPasos;
+    private bool hecho;
 
 
 
     private void Awake()
     {
+        hecho = false;
         spawnPersonajeCasillas = new List<TileScript>();
         spawnBazokaCasillas = new List<TileScript>();
         spawnBanderaCasillas = new List<TileScript>();
-        bazokasIniciales = 0;
-        banderasiniciales = 0;
+        bazokasIniciales = 2;
+        banderasiniciales = 3;
         actualTimeBandera = 0;
         actualTimeAmmunation = 0;
         TimeToCreateBandera = 3;
         TimeToCreateAmmunition = 3;
+        intentos = 0;
         pasos = new bool[numPasos];
     }
 
@@ -72,6 +75,37 @@ public class ControladorTutorial : MonoBehaviourPunCallbacks
 
         if (PhotonNetwork.IsMasterClient)
         {
+            if (!hecho)
+            {
+                if (spawnBazokaCasillas.Count != bazokasIniciales)
+                {
+                    return;
+                }
+                if (spawnBanderaCasillas.Count != banderasiniciales)
+                {
+                    return;
+                }
+                if (hayBalas)
+                {
+                    for (int i = 0; i < bazokasIniciales; i++)
+                    {
+                        createBazoka();
+                    }
+                }
+
+
+                if (hayBanderas)
+                {
+                    for (int i = 0; i < banderasiniciales; i++)
+                    {
+                        createBandera();
+                    }
+
+
+                }
+                hecho = true;
+            }
+
             if (hayBalas)
             {
                 if (actualTimeAmmunation < TimeToCreateAmmunition)
@@ -82,27 +116,11 @@ public class ControladorTutorial : MonoBehaviourPunCallbacks
                 {
                     //createObject(ObjetosCreables.balas);
                     createBazoka();
-                    TimeToCreateAmmunition = Random.Range(3,5);
+                    TimeToCreateAmmunition = Random.Range(7, 12);
                     actualTimeAmmunation = 0;
                 }
             }
 
-            if (hayBanderas)
-            {
-
-                if (actualTimeBandera < TimeToCreateBandera)
-                {
-                    actualTimeBandera += Time.deltaTime;
-                }
-                else
-                {
-                    createBandera();
-                    //createObject(ObjetosCreables.bandera);
-                    TimeToCreateBandera = Random.Range(10, 15);
-                    actualTimeBandera = 0;
-                }
-
-            }
         }
 
     }
@@ -121,6 +139,7 @@ public class ControladorTutorial : MonoBehaviourPunCallbacks
                 if (intentos == spawnBanderaCasillas.Count)
                 {
                     intentos = 0;
+                    Debug.LogError("ME HE PASADO DE INTENTAR");
                     return;
                 }
                 int indice = Random.Range(0, spawnBanderaCasillas.Count);
@@ -142,6 +161,7 @@ public class ControladorTutorial : MonoBehaviourPunCallbacks
         }
         else
         {
+            Debug.LogError("FALTA UNA Casilla");
             return;
         }
 
@@ -166,7 +186,7 @@ public class ControladorTutorial : MonoBehaviourPunCallbacks
                 aux.transform.Rotate(new Vector3(0, 0, 180));
                 break;
         }
-
+        spawnBanderaCasillas.Remove(miCasilla);
         aux.transform.position += aux.transform.TransformDirection(Vector3.up * 0.75f);
         miCasilla.myObjectType = TileScript.tileObject.BANDERA;
         aux.GetComponent<Banderas>().tile = miCasilla;
@@ -214,7 +234,7 @@ public class ControladorTutorial : MonoBehaviourPunCallbacks
                     intentos = 0;
                     return;
                 }
-                int indice = Random.Range(0, spawnBanderaCasillas.Count);
+                int indice = Random.Range(0, spawnBazokaCasillas.Count);
                 casilla = spawnBazokaCasillas[indice];
                 intentos++;
             } while (casilla.myObjectType != TileScript.tileObject.NULL);
@@ -259,6 +279,7 @@ public class ControladorTutorial : MonoBehaviourPunCallbacks
                 break;
         }
 
+        
         aux.transform.position += aux.transform.TransformDirection(Vector3.up);
         miCasilla.myObjectType = TileScript.tileObject.BAZOKA;
         aux.GetComponent<KitBalas>().tile = miCasilla;

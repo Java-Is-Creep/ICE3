@@ -35,8 +35,8 @@ public class ControladorNivel : MonoBehaviourPunCallbacks
         banderasiniciales = 6;
         actualTimeBandera = 0;
         actualTimeAmmunation = 0;
-        TimeToCreateBandera = 15;
-        TimeToCreateAmmunition = 10;
+        TimeToCreateBandera = 10;
+        TimeToCreateAmmunition = 6;
         hecho = false;
     }
 
@@ -106,7 +106,7 @@ public class ControladorNivel : MonoBehaviourPunCallbacks
                 {
                     createBandera();
                     //createObject(ObjetosCreables.bandera);
-                    TimeToCreateBandera = Random.Range(2, 4);
+                    TimeToCreateBandera = Random.Range(5, 8);
                     actualTimeBandera = 0;
                 }
 

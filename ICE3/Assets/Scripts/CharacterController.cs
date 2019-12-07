@@ -97,8 +97,8 @@ public class CharacterController : MonoBehaviourPunCallbacks
     Puntuaciones punt;
 
     // tutorial
-    bool tutorial = false;
-    Vector3 CasillaTutorial = Vector3.zero;
+    bool inicializado = false;
+    ControladorTutorial controladorTutorial;
 
     // Start is called before the first frame update
     void Start()
@@ -112,8 +112,8 @@ public class CharacterController : MonoBehaviourPunCallbacks
         model = this.transform.GetChild(0).gameObject;
         camaraScript = FindObjectOfType<moverCamaraFija>();
         maxTimeoutCollision = 3;
-        maxTimeoutCollisionBanderas = 3;
-        maxTimeoutCollisionProyectil = 3;
+        maxTimeoutCollisionBanderas = 10;
+        maxTimeoutCollisionProyectil = 10;
         maxTimeoutCollisionBazoka = 3;
         maxTimeoutCollisionRock = 3;
         maxTimeoutCollisionBorders = 3;
@@ -133,13 +133,10 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
         //incializacion spawn
         controladorNivel = FindObjectOfType<ControladorNivel>();
+        controladorTutorial = FindObjectOfType<ControladorTutorial>();
 
         
         sonidoEmpezado = false;
-        if (tutorial)
-        {
-            ColocarmeTutorial(CasillaTutorial);
-        }
     }
 
     // Update is called once per frame
@@ -223,6 +220,10 @@ public class CharacterController : MonoBehaviourPunCallbacks
                 }
                 else
                 {
+                    if(controladorTutorial != null)
+                    {
+                        inicializateTu(photonView.ViewID, obtenerVector(controladorTutorial.getCasillaVacia()));
+                    }
                     return;
                 }
 
@@ -444,13 +445,28 @@ public class CharacterController : MonoBehaviourPunCallbacks
 
     public void sumarPuntuacion()
     {
+        object tutorial;
+        PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("tutorial", out tutorial);
         puntos++;
         if (photonView.IsMine)
         {
-            
-            this.photonView.RPC("sumarPuntos", RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber);
+            if (tutorial == null)
+            {
+                this.photonView.RPC("sumarPuntos", RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber);
+            }
         }
         Debug.Log("Puntos: " + puntos);
+
+      
+        if(tutorial != null)
+        {
+            if(puntos == 3)
+            {
+                PhotonNetwork.LeaveRoom();
+                SceneManager.LoadScene("MainMenu");
+            }
+        }
+
         if (puntos >= MAXPUNTUACION)
         {
             //Debug.Log("Puntos  de verdad: " + puntos);
@@ -527,98 +543,58 @@ public class CharacterController : MonoBehaviourPunCallbacks
     #region Colisiones
     private void OnTriggerEnter(Collider other)
     {
-        if (soundController == null)
+        if (inicializado)
         {
-            soundController = GameObject.Find("AudioController").GetComponent<gameSoundsController>();
-        }
-        if (other.tag == "KitBalas")
-        {
-            if(timeoutCollisionBazoka <= 0)
+            if (soundController == null)
             {
-                //Debug.Log("Balas Cogidas");
-                soundController.playAccion();
-                añadirBalas();
-                timeoutCollisionBazoka = maxTimeoutCollisionBazoka;
-                //other.gameObject.GetComponent<KitBalas>().crash();
+                soundController = GameObject.Find("AudioController").GetComponent<gameSoundsController>();
             }
-        }
-
-        if (photonView.IsMine)
-        {
-            if (other.tag == "Bandera")
+            if (other.tag == "KitBalas")
             {
-                if (timeoutCollisionBanderas <= 0)
+                if (timeoutCollisionBazoka <= 0)
                 {
-                    //Debug.Log("Bandera Cogida");
-                    sumarPuntuacion();
-                    timeoutCollisionBanderas = maxTimeoutCollisionBanderas;
-                }
-
-
-            }
-
-            if (other.tag == "Proyectil")
-            {
-                if (timeoutCollisionProyectil <= 0)
-                {
-                    if (other.GetComponent<Proyectil>().dueño != this.gameObject)
-                    {
-                        soundController.playRecibirBolazoOof();
-                        timeoutCollisionProyectil = maxTimeoutCollisionProyectil;
-                    }
-                    Proyectil aux = other.GetComponent<Proyectil>();
-                    ///Seguir Aqui
-                   // if(PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue())
-                }
-
-
-            }
-
-            if(other.tag == "Rock")
-            {
-                if(timeoutCollisionRock <= 0)
-                {
-                    //Debug.Log("Yendo hacia arriba");
-                    Vector3 aux = comprobarCasillaMasCercana();
-                    //Debug.Log("antes: " + indexX + ", " + indexY + this.transform.position);
-                    indexX = (int)aux.x;
-                    indexY = (int)aux.y;
-                    Vector3 posTile = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
-                    //Caras top y bottom
-                    if (cara == 0 || cara == 5)
-                    {
-                        this.transform.position = new Vector3(posTile.x, this.transform.position.y, posTile.z);
-                    }
-                    //Caras right y left
-                    else if (cara == 3 || cara == 4)
-                    {
-                        this.transform.position = new Vector3(posTile.x, posTile.y, this.transform.position.z);
-                    }
-                    //Caras front y back
-                    else if (cara == 1 || cara == 2)
-                    {
-                        this.transform.position = new Vector3(this.transform.position.x, posTile.y, posTile.z);
-                    }
-                    //Debug.Log("ahora: " + indexX + ", " + indexY + this.transform.position);
-                    lastMovement = 0;
-                    moving = false;
-
-                    Debug.Log("Choque por roca");
-
-                    timeoutCollisionRock = maxTimeoutCollisionRock;
+                    //Debug.Log("Balas Cogidas");
+                    soundController.playAccion();
+                    añadirBalas();
+                    timeoutCollisionBazoka = maxTimeoutCollisionBazoka;
+                    //other.gameObject.GetComponent<KitBalas>().crash();
                 }
             }
 
-            if (other.tag == "CharacterCollider")
+            if (photonView.IsMine)
             {
-                if (timeoutCollision <= 0)
+                if (other.tag == "Bandera")
                 {
-                    soundController.playChoque();
-                    //Debug.Log("Colision con personaje");
-                    timeoutCollision = maxTimeoutCollision;
-                    hayCambioCara = false;
-                    //Si estamos en w, ponemos 2
-                    if (lastMovement == 4)
+                    if (timeoutCollisionBanderas <= 0)
+                    {
+                        //Debug.Log("Bandera Cogida");
+                        sumarPuntuacion();
+                        timeoutCollisionBanderas = maxTimeoutCollisionBanderas;
+                    }
+
+
+                }
+
+                if (other.tag == "Proyectil")
+                {
+                    if (timeoutCollisionProyectil <= 0)
+                    {
+                        if (other.GetComponent<Proyectil>().dueño != this.gameObject)
+                        {
+                            soundController.playRecibirBolazoOof();
+                            timeoutCollisionProyectil = maxTimeoutCollisionProyectil;
+                        }
+                        Proyectil aux = other.GetComponent<Proyectil>();
+                        ///Seguir Aqui
+                        // if(PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue())
+                    }
+
+
+                }
+
+                if (other.tag == "Rock")
+                {
+                    if (timeoutCollisionRock <= 0)
                     {
                         //Debug.Log("Yendo hacia arriba");
                         Vector3 aux = comprobarCasillaMasCercana();
@@ -642,687 +618,731 @@ public class CharacterController : MonoBehaviourPunCallbacks
                             this.transform.position = new Vector3(this.transform.position.x, posTile.y, posTile.z);
                         }
                         //Debug.Log("ahora: " + indexX + ", " + indexY + this.transform.position);
-                        lastMovement = 2;
+                        lastMovement = 0;
                         moving = false;
-                    }
-                    else if (lastMovement == 2)
-                    {
-                        Debug.Log("Yendo hacia abajo");
-                        Vector3 aux = comprobarCasillaMasCercana();
-                        Debug.Log("antes: " + indexX + ", " + indexY + this.transform.position);
-                        indexX = (int)aux.x;
-                        indexY = (int)aux.y;
-                        Vector3 posTile = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
-                        //Caras top y bottom
-                        if (cara == 0 || cara == 5)
-                        {
-                            this.transform.position = new Vector3(posTile.x, this.transform.position.y, posTile.z);
-                        }
-                        //Caras right y left
-                        else if (cara == 3 || cara == 4)
-                        {
-                            this.transform.position = new Vector3(posTile.x, posTile.y, this.transform.position.z);
-                        }
-                        //Caras front y back
-                        else if (cara == 1 || cara == 2)
-                        {
-                            this.transform.position = new Vector3(this.transform.position.x, posTile.y, posTile.z);
-                        }
-                        Debug.Log("ahora: " + indexX + ", " + indexY + this.transform.position);
-                        lastMovement = 4;
-                        moving = false;
-                    }
-                    else if (lastMovement == 3)
-                    {
-                        Debug.Log("Yendo hacia derecha");
-                        Vector3 aux = comprobarCasillaMasCercana();
-                        Debug.Log("antes: " + indexX + ", " + indexY + this.transform.position);
-                        indexX = (int)aux.x;
-                        indexY = (int)aux.y;
-                        Vector3 posTile = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
-                        //Caras top y bottom
-                        if (cara == 0 || cara == 5)
-                        {
-                            this.transform.position = new Vector3(posTile.x, this.transform.position.y, posTile.z);
-                        }
-                        //Caras right y left
-                        else if (cara == 3 || cara == 4)
-                        {
-                            this.transform.position = new Vector3(posTile.x, posTile.y, this.transform.position.z);
-                        }
-                        //Caras front y back
-                        else if (cara == 1 || cara == 2)
-                        {
-                            this.transform.position = new Vector3(this.transform.position.x, posTile.y, posTile.z);
-                        }
-                        Debug.Log("ahora: " + indexX + ", " + indexY + this.transform.position);
-                        lastMovement = 1;
-                        moving = false;
-                    }
-                    else if (lastMovement == 1)
-                    {
-                        //Debug.Log("Yendo hacia izquierda");
-                        Vector3 aux = comprobarCasillaMasCercana();
-                        //Debug.Log("antes: " + indexX + ", " + indexY + this.transform.position);
-                        indexX = (int)aux.x;
-                        indexY = (int)aux.y;
-                        Vector3 posTile = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
-                        //Caras top y bottom
-                        if (cara == 0 || cara == 5)
-                        {
-                            this.transform.position = new Vector3(posTile.x, this.transform.position.y, posTile.z);
-                        }
-                        //Caras right y left
-                        else if (cara == 3 || cara == 4)
-                        {
-                            this.transform.position = new Vector3(posTile.x, posTile.y, this.transform.position.z);
-                        }
-                        //Caras front y back
-                        else if (cara == 1 || cara == 2)
-                        {
-                            this.transform.position = new Vector3(this.transform.position.x, posTile.y, posTile.z);
-                        }
-                        Debug.Log("ahora: " + indexX + ", " + indexY + this.transform.position);
-                        lastMovement = 3;
-                        moving = false;
+
+                        Debug.Log("Choque por roca");
+
+                        timeoutCollisionRock = maxTimeoutCollisionRock;
                     }
                 }
-            }
 
-            if (other.tag == "ColisionBorde")
-            {
-                if (timeoutCollisionBorders <= 0)
+                if (other.tag == "CharacterCollider")
                 {
-                    Debug.Log("Colision con borde");
-                    //Cara top
-                    if (cara == 0)
+                    if (timeoutCollision <= 0)
                     {
-                        //a
-                        if (lastMovement == 1)
+                        soundController.playChoque();
+                        //Debug.Log("Colision con personaje");
+                        timeoutCollision = maxTimeoutCollision;
+                        hayCambioCara = false;
+                        //Si estamos en w, ponemos 2
+                        if (lastMovement == 4)
                         {
+                            //Debug.Log("Yendo hacia arriba");
                             Vector3 aux = comprobarCasillaMasCercana();
-                            TileScript tile = cubo.faces[cara].tiles[(int)aux.x, (int)aux.y].GetComponent<TileScript>();
-                            this.transform.position = new Vector3(tile.AbsolutePos.x, this.transform.position.y, tile.AbsolutePos.z);
-                            camaraScript.left();
-                            this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.right, -90);
-                            this.gameObject.transform.Translate(new Vector3(0, cubo.width - 1.5f, -0.5f), Space.World);
-                            //this.gameObject.transform.Translate(new Vector3(-0.5f, 0, 0), Space.World);
-                            cara = 4;
-                            moving = false;
+                            //Debug.Log("antes: " + indexX + ", " + indexY + this.transform.position);
+                            indexX = (int)aux.x;
+                            indexY = (int)aux.y;
+                            Vector3 posTile = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
+                            //Caras top y bottom
+                            if (cara == 0 || cara == 5)
+                            {
+                                this.transform.position = new Vector3(posTile.x, this.transform.position.y, posTile.z);
+                            }
+                            //Caras right y left
+                            else if (cara == 3 || cara == 4)
+                            {
+                                this.transform.position = new Vector3(posTile.x, posTile.y, this.transform.position.z);
+                            }
+                            //Caras front y back
+                            else if (cara == 1 || cara == 2)
+                            {
+                                this.transform.position = new Vector3(this.transform.position.x, posTile.y, posTile.z);
+                            }
+                            //Debug.Log("ahora: " + indexX + ", " + indexY + this.transform.position);
                             lastMovement = 2;
-                            this.gameObject.transform.rotation = Quaternion.Euler(-90, 0, 0);
-                            indexY = 7;
-                            hayCambioCara = false;
+                            moving = false;
                         }
-                        //s
                         else if (lastMovement == 2)
                         {
+                            Debug.Log("Yendo hacia abajo");
                             Vector3 aux = comprobarCasillaMasCercana();
-                            TileScript tile = cubo.faces[cara].tiles[(int)aux.x, (int)aux.y].GetComponent<TileScript>();
-                            this.transform.position = new Vector3(tile.AbsolutePos.x, this.transform.position.y, tile.AbsolutePos.z);
-                            camaraScript.front();
-                            this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.forward, -90);
-                            this.gameObject.transform.Translate(new Vector3(0.5f, cubo.width - 1.5f, 0), Space.World);
-                            //this.gameObject.transform.Translate(new Vector3(-0.5f, 0, 0), Space.World);
-                            this.gameObject.transform.rotation = Quaternion.Euler(0, 0, -90);
-                            cara = 2;
+                            Debug.Log("antes: " + indexX + ", " + indexY + this.transform.position);
+                            indexX = (int)aux.x;
+                            indexY = (int)aux.y;
+                            Vector3 posTile = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
+                            //Caras top y bottom
+                            if (cara == 0 || cara == 5)
+                            {
+                                this.transform.position = new Vector3(posTile.x, this.transform.position.y, posTile.z);
+                            }
+                            //Caras right y left
+                            else if (cara == 3 || cara == 4)
+                            {
+                                this.transform.position = new Vector3(posTile.x, posTile.y, this.transform.position.z);
+                            }
+                            //Caras front y back
+                            else if (cara == 1 || cara == 2)
+                            {
+                                this.transform.position = new Vector3(this.transform.position.x, posTile.y, posTile.z);
+                            }
+                            Debug.Log("ahora: " + indexX + ", " + indexY + this.transform.position);
+                            lastMovement = 4;
                             moving = false;
-                            //lastMovement = 0;
-                            indexX = 0;
-                            hayCambioCara = false;
                         }
-                        //d
                         else if (lastMovement == 3)
                         {
+                            Debug.Log("Yendo hacia derecha");
                             Vector3 aux = comprobarCasillaMasCercana();
-                            TileScript tile = cubo.faces[cara].tiles[(int)aux.x, (int)aux.y].GetComponent<TileScript>();
-                            this.transform.position = new Vector3(tile.AbsolutePos.x, this.transform.position.y, tile.AbsolutePos.z);
-                            camaraScript.right();
-                            this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.right, 90);
-                            this.gameObject.transform.Translate(new Vector3(0, cubo.width - 1.5f, 0.5f), Space.World);
-                            cara = 3;
-                            //indexX = 1;
-                            indexY = 0;
-                            //indexX = ((int)cubo.width) - 1 - indexX;       
-                            //indexX = 0;
-                            this.gameObject.transform.rotation = Quaternion.Euler(90, 0, 0);
-
-                            //Debug.LogWarning("Cambio de cara");
+                            Debug.Log("antes: " + indexX + ", " + indexY + this.transform.position);
+                            indexX = (int)aux.x;
+                            indexY = (int)aux.y;
+                            Vector3 posTile = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
+                            //Caras top y bottom
+                            if (cara == 0 || cara == 5)
+                            {
+                                this.transform.position = new Vector3(posTile.x, this.transform.position.y, posTile.z);
+                            }
+                            //Caras right y left
+                            else if (cara == 3 || cara == 4)
+                            {
+                                this.transform.position = new Vector3(posTile.x, posTile.y, this.transform.position.z);
+                            }
+                            //Caras front y back
+                            else if (cara == 1 || cara == 2)
+                            {
+                                this.transform.position = new Vector3(this.transform.position.x, posTile.y, posTile.z);
+                            }
+                            Debug.Log("ahora: " + indexX + ", " + indexY + this.transform.position);
+                            lastMovement = 1;
                             moving = false;
-                            lastMovement = 2;
-                            hayCambioCara = false;
                         }
-                        //w
-                        else if (lastMovement == 4)
+                        else if (lastMovement == 1)
                         {
+                            //Debug.Log("Yendo hacia izquierda");
                             Vector3 aux = comprobarCasillaMasCercana();
-                            TileScript tile = cubo.faces[cara].tiles[(int)aux.x, (int)aux.y].GetComponent<TileScript>();
-                            this.transform.position = new Vector3(tile.AbsolutePos.x, this.transform.position.y, tile.AbsolutePos.z);
-                            camaraScript.back();
-                            this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.forward, 90);
-                            this.gameObject.transform.Translate(new Vector3(-0.5f, cubo.width - 1.5f, 0), Space.World);
-                            //this.gameObject.transform.Translate(new Vector3(-0.5f, 0, 0), Space.World);
-                            this.gameObject.transform.rotation = Quaternion.Euler(0, 0, 90);
-                            cara = 1;
+                            //Debug.Log("antes: " + indexX + ", " + indexY + this.transform.position);
+                            indexX = (int)aux.x;
+                            indexY = (int)aux.y;
+                            Vector3 posTile = cubo.faces[cara].tiles[indexX, indexY].GetComponent<TileScript>().AbsolutePos;
+                            //Caras top y bottom
+                            if (cara == 0 || cara == 5)
+                            {
+                                this.transform.position = new Vector3(posTile.x, this.transform.position.y, posTile.z);
+                            }
+                            //Caras right y left
+                            else if (cara == 3 || cara == 4)
+                            {
+                                this.transform.position = new Vector3(posTile.x, posTile.y, this.transform.position.z);
+                            }
+                            //Caras front y back
+                            else if (cara == 1 || cara == 2)
+                            {
+                                this.transform.position = new Vector3(this.transform.position.x, posTile.y, posTile.z);
+                            }
+                            Debug.Log("ahora: " + indexX + ", " + indexY + this.transform.position);
+                            lastMovement = 3;
                             moving = false;
-                            //del 0,1 al 1,7
-                            lastMovement = 2;
-                            //indexX = indexY;
-                            indexX = 7;
-                            hayCambioCara = false;
                         }
                     }
-
-                    //back
-                    else if (cara == 1)
-                    {
-                        //a
-                        if (lastMovement == 1)
-                        {
-                            Vector3 aux = comprobarCasillaMasCercana();
-                            TileScript tile = cubo.faces[cara].tiles[(int)aux.x, (int)aux.y].GetComponent<TileScript>();
-                            this.transform.position = new Vector3(this.transform.position.x, tile.AbsolutePos.y, tile.AbsolutePos.z);
-                            camaraScript.right();
-                            this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.up, 90);
-                            this.gameObject.transform.Translate(new Vector3(-(cubo.width - 1f), 0, 0), Space.World);
-                            cara = 3;
-                            //indexX = 1;
-                            indexY = ((int)(cubo.width - 1)) - indexX;
-                            indexX = 0;
-                            //Vennimos del 7,4
-                            //Hay que ir al 4,0
-
-                            //indexX = ((int)cubo.width) - 1 - indexX;       
-                            //indexX = 0;
-
-                            this.gameObject.transform.rotation = Quaternion.Euler(90, 0, 0);
-                            model.transform.localRotation = Quaternion.Euler(0, model.transform.rotation.eulerAngles.y + 90, 0);
-                            //model.transform.localRotation = Quaternion.Euler(0, -90, 0);
-                            //Debug.LogWarning("Cambio de cara");
-                            moving = false;
-                            lastMovement = 1;
-                            hayCambioCara = false;
-                        }
-                        //s
-                        else if (lastMovement == 2)
-                        {
-                            Vector3 aux = comprobarCasillaMasCercana();
-                            TileScript tile = cubo.faces[cara].tiles[(int)aux.x, (int)aux.y].GetComponent<TileScript>();
-                            this.transform.position = new Vector3(this.transform.position.x, tile.AbsolutePos.y, tile.AbsolutePos.z);
-                            camaraScript.button();
-                            this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.forward, 90);
-                            this.gameObject.transform.Translate(new Vector3(-(cubo.width - 0.5f), -0.5f, 0), Space.World);
-                            cara = 5;
-                            lastMovement = 3;
-                            indexY = (Mathf.RoundToInt(cubo.width) - 1) - indexY;
-                            indexX = 0;
-                            this.gameObject.transform.rotation = Quaternion.Euler(-180, 0, 0);
-                            if (Mathf.Abs(model.transform.localEulerAngles.y - 180) <= 1)
-                            {
-                                model.transform.localRotation = Quaternion.Euler(0, 0, 0);
-                            }
-                            else if (Mathf.Abs(model.transform.localEulerAngles.y) <= 1)
-                            {
-                                model.transform.localRotation = Quaternion.Euler(0, 180, 0);
-                            }
-                            else
-                            {
-                                model.transform.localRotation = Quaternion.Euler(0, model.transform.rotation.eulerAngles.y + 180, 0);
-                            }
-                            //model.transform.localRotation = Quaternion.Euler(0, -90, 0);
-                            hayCambioCara = false;
-                        }
-                        //d
-                        else if (lastMovement == 3)
-                        {
-                            Vector3 aux = comprobarCasillaMasCercana();
-                            TileScript tile = cubo.faces[cara].tiles[(int)aux.x, (int)aux.y].GetComponent<TileScript>();
-                            this.transform.position = new Vector3(this.transform.position.x, tile.AbsolutePos.y, tile.AbsolutePos.z);
-                            camaraScript.left();
-                            this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.up, -90);
-                            this.gameObject.transform.Translate(new Vector3(-(cubo.width - 1f), 0, 0), Space.World);
-                            cara = 4;
-                            //indexX = 1;
-                            indexY = /*((int)(cubo.width - 1)) -*/ indexX;
-                            indexX = 0;
-                            //Vennimos del 7,4
-                            //Hay que ir al 4,0
-
-                            //indexX = ((int)cubo.width) - 1 - indexX;       
-                            //indexX = 0;
-
-                            this.gameObject.transform.rotation = Quaternion.Euler(-90, 0, 0);
-                            model.transform.localRotation = Quaternion.Euler(0, model.transform.rotation.eulerAngles.y - 90, 0);
-                            //model.transform.localRotation = Quaternion.Euler(0, -90, 0);
-                            //Debug.LogWarning("Cambio de cara");
-                            moving = false;
-                            lastMovement = 3;
-                            hayCambioCara = false;
-                        }
-                        //w
-                        else if (lastMovement == 4)
-                        {
-                            Vector3 aux = comprobarCasillaMasCercana();
-                            TileScript tile = cubo.faces[cara].tiles[(int)aux.x, (int)aux.y].GetComponent<TileScript>();
-                            this.transform.position = new Vector3(this.transform.position.x, tile.AbsolutePos.y, tile.AbsolutePos.z);
-                            camaraScript.top();
-                            this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.forward, -90);
-                            this.gameObject.transform.Translate(new Vector3(-(cubo.width - 1.5f), -0.5f, 0), Space.World);
-                            //this.gameObject.transform.Translate(new Vector3(-0.5f, 0, 0), Space.World);
-                            cara = 0;
-                            moving = false;
-                            //del 0,1 al 1,7
-                            lastMovement = 2;
-                            //indexX = indexY;
-                            indexX = 0;
-                            hayCambioCara = false;
-                        }
-                    }
-
-                    //Front
-                    else if (cara == 2)
-                    {
-                        //a
-                        if (lastMovement == 1)
-                        {
-                            Vector3 aux = comprobarCasillaMasCercana();
-                            TileScript tile = cubo.faces[cara].tiles[(int)aux.x, (int)aux.y].GetComponent<TileScript>();
-                            this.transform.position = new Vector3(this.transform.position.x, tile.AbsolutePos.y, tile.AbsolutePos.z);
-                            camaraScript.left();
-                            this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.up, 90);
-                            this.gameObject.transform.Translate(new Vector3((cubo.width - 1f), 0, 0), Space.World);
-                            cara = 4;
-                            //indexX = 1;
-                            indexY = ((int)(cubo.width - 1)) - indexX;
-                            indexX = 7;
-                            //Vennimos del 7,4
-                            //Hay que ir al 4,0
-
-                            //indexX = ((int)cubo.width) - 1 - indexX;       
-                            //indexX = 0;
-
-                            this.gameObject.transform.rotation = Quaternion.Euler(-90, 0, 0);
-                            model.transform.localRotation = Quaternion.Euler(0, model.transform.rotation.eulerAngles.y + 90, 0);
-                            //model.transform.localRotation = Quaternion.Euler(0, 90, 0);
-                            //Debug.LogWarning("Cambio de cara");
-                            moving = false;
-                            lastMovement = 1;
-                            hayCambioCara = false;
-                        }
-                        //s
-                        else if (lastMovement == 2)
-                        {
-                            Vector3 aux = comprobarCasillaMasCercana();
-                            TileScript tile = cubo.faces[cara].tiles[(int)aux.x, (int)aux.y].GetComponent<TileScript>();
-                            this.transform.position = new Vector3(this.transform.position.x, tile.AbsolutePos.y, tile.AbsolutePos.z);
-                            camaraScript.button();
-                            this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.forward, -90);
-                            this.gameObject.transform.Translate(new Vector3((cubo.width - 0.5f), -0.5f, 0), Space.World);
-                            cara = 5;
-                            lastMovement = 1;
-                            indexY = (Mathf.RoundToInt(cubo.width) - 1) - indexY;
-                            indexX = 7;
-                            this.gameObject.transform.rotation = Quaternion.Euler(-180, 0, 0);
-
-                            if (Mathf.Abs(model.transform.localEulerAngles.y - 180) <= 1)
-                            {
-                                model.transform.localRotation = Quaternion.Euler(0, 0, 0);
-                            }
-                            else if (Mathf.Abs(model.transform.localEulerAngles.y) <= 1)
-                            {
-                                model.transform.localRotation = Quaternion.Euler(0, 180, 0);
-                            }
-                            else
-                            {
-                                model.transform.localRotation = Quaternion.Euler(0, model.transform.rotation.eulerAngles.y + 180, 0);
-                            }
-
-                            //model.transform.localRotation = Quaternion.Euler(0, 90, 0);
-                            hayCambioCara = false;
-                        }
-                        //d
-                        else if (lastMovement == 3)
-                        {
-                            Vector3 aux2 = comprobarCasillaMasCercana();
-                            TileScript tile = cubo.faces[cara].tiles[(int)aux2.x, (int)aux2.y].GetComponent<TileScript>();
-                            this.transform.position = new Vector3(this.transform.position.x, tile.AbsolutePos.y, tile.AbsolutePos.z);
-                            camaraScript.right();
-                            this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.up, -90);
-                            this.gameObject.transform.Translate(new Vector3(cubo.width - 1f, 0, 0), Space.World);
-                            cara = 3;
-                            //indexX = 1;
-                            int aux = indexX;
-                            indexX = indexY;
-                            indexY = aux;
-                            //indexX = ((int)cubo.width) - 1 - indexX;       
-                            //indexX = 0;
-                            this.gameObject.transform.rotation = Quaternion.Euler(90, 0, 0);
-
-                            model.transform.localRotation = Quaternion.Euler(0, model.transform.rotation.eulerAngles.y - 90, 0);
-                            //Debug.LogWarning("Cambio de cara");
-                            moving = false;
-                            lastMovement = 3;
-                            hayCambioCara = false;
-                        }
-                        //w
-                        else if (lastMovement == 4)
-                        {
-                            Vector3 aux = comprobarCasillaMasCercana();
-                            TileScript tile = cubo.faces[cara].tiles[(int)aux.x, (int)aux.y].GetComponent<TileScript>();
-                            this.transform.position = new Vector3(this.transform.position.x, tile.AbsolutePos.y, tile.AbsolutePos.z);
-                            camaraScript.top();
-                            this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.forward, 90);
-                            this.gameObject.transform.Translate(new Vector3((cubo.width - 1.5f), -0.5f, 0), Space.World);
-                            cara = 0;
-                            //indexX = 1;
-                            indexX = 7;
-                            //indexX = ((int)cubo.width) - 1 - indexX;       
-                            //indexX = 0;
-
-
-                            //Debug.LogWarning("Cambio de cara");
-                            moving = false;
-                            lastMovement = 4;
-                            hayCambioCara = false;
-                        }
-                    }
-
-                    //Right
-                    else if (cara == 3)
-                    {
-                        //a
-                        if (lastMovement == 1)
-                        {
-                            Vector3 aux2 = comprobarCasillaMasCercana();
-                            TileScript tile = cubo.faces[cara].tiles[(int)aux2.x, (int)aux2.y].GetComponent<TileScript>();
-                            this.transform.position = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y, this.transform.position.z);
-                            camaraScript.front();
-                            this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.up, 90);
-                            this.gameObject.transform.Translate(new Vector3(0, 0, cubo.width - 1f), Space.World);
-                            cara = 2;
-                            //indexX = 1;
-                            int aux = indexX;
-                            indexX = indexY;
-                            indexY = aux;
-                            //indexX = ((int)cubo.width) - 1 - indexX;       
-                            //indexX = 0;
-
-                            this.gameObject.transform.rotation = Quaternion.Euler(0, 0, -90);
-                            model.transform.localRotation = Quaternion.Euler(0, model.transform.rotation.eulerAngles.y + 90, 0);
-                            //model.transform.localRotation = Quaternion.Euler(0, 0, 0);
-                            //Debug.LogWarning("Cambio de cara");
-                            moving = false;
-                            lastMovement = 1;
-                            hayCambioCara = false;
-                        }
-
-                        //s
-                        else if (lastMovement == 2)
-                        {
-                            Vector3 aux2 = comprobarCasillaMasCercana();
-                            TileScript tile = cubo.faces[cara].tiles[(int)aux2.x, (int)aux2.y].GetComponent<TileScript>();
-                            this.transform.position = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y, this.transform.position.z);
-                            camaraScript.button();
-                            this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.right, 90);
-                            this.gameObject.transform.Translate(new Vector3(0, -0.5f, +(cubo.width - 0.5f)), Space.World);
-                            //this.gameObject.transform.Translate(new Vector3(-0.5f, 0, 0), Space.World);
-                            this.gameObject.transform.rotation = Quaternion.Euler(-180, 0, 0);
-                            //model.transform.localRotation = Quaternion.Euler(0, 180, 0);
-                            cara = 5;
-                            moving = false;
-                            lastMovement = 4;
-                            indexY = 0;
-                            hayCambioCara = false;
-                        }
-
-                        //d
-                        else if (lastMovement == 3)
-                        {
-                            Vector3 aux2 = comprobarCasillaMasCercana();
-                            TileScript tile = cubo.faces[cara].tiles[(int)aux2.x, (int)aux2.y].GetComponent<TileScript>();
-                            this.transform.position = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y, this.transform.position.z);
-                            camaraScript.back();
-                            this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.up, -90);
-                            this.gameObject.transform.Translate(new Vector3(0, 0, (cubo.width - 1f)), Space.World);
-                            cara = 1;
-                            //indexX = 1;
-                            indexX = ((int)(cubo.width - 1)) - indexY;
-                            indexY = 7;
-
-
-                            this.gameObject.transform.rotation = Quaternion.Euler(0, 0, 90);
-                            model.transform.localRotation = Quaternion.Euler(0, model.transform.rotation.eulerAngles.y - 90, 0);
-                            //model.transform.localRotation = Quaternion.Euler(0, 0, 0);
-                            //Debug.LogWarning("Cambio de cara");
-                            moving = false;
-                            lastMovement = 3;
-                            hayCambioCara = false;
-                        }
-
-                        //w
-                        else if (lastMovement == 4)
-                        {
-                            Vector3 aux2 = comprobarCasillaMasCercana();
-                            TileScript tile = cubo.faces[cara].tiles[(int)aux2.x, (int)aux2.y].GetComponent<TileScript>();
-                            this.transform.position = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y, this.transform.position.z);
-                            camaraScript.top();
-                            this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.right, -90);
-                            this.gameObject.transform.Translate(new Vector3(0, -0.5f, cubo.width - 1.5f), Space.World);
-                            cara = 0;
-                            //indexX = 1;
-                            indexY = 7;
-                            //indexX = ((int)cubo.width) - 1 - indexX;       
-                            //indexX = 0;
-
-
-                            //Debug.LogWarning("Cambio de cara");
-                            moving = false;
-                            lastMovement = 1;
-                            hayCambioCara = false;
-                        }
-                    }
-
-                    //Left
-                    else if (cara == 4)
-                    {
-                        //a
-                        if (lastMovement == 1)
-                        {
-                            Vector3 aux2 = comprobarCasillaMasCercana();
-                            TileScript tile = cubo.faces[cara].tiles[(int)aux2.x, (int)aux2.y].GetComponent<TileScript>();
-                            this.transform.position = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y, this.transform.position.z);
-                            camaraScript.back();
-                            this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.up, 90);
-                            this.gameObject.transform.Translate(new Vector3(0, 0, -(cubo.width - 1f)), Space.World);
-                            cara = 1;
-                            //indexX = 1;
-                            indexX = /*((int)(cubo.width - 1)) -*/ indexY;
-                            indexY = 0;
-                            //Vennimos del 7,4
-                            //Hay que ir al 4,0
-
-                            //indexX = ((int)cubo.width) - 1 - indexX;       
-                            //indexX = 0;
-
-                            this.gameObject.transform.rotation = Quaternion.Euler(0, 0, 90);
-                            model.transform.localRotation = Quaternion.Euler(0, model.transform.rotation.eulerAngles.y + 90, 0);
-                            //model.transform.localRotation = Quaternion.Euler(0, 180, 0);
-                            //Debug.LogWarning("Cambio de cara");
-                            moving = false;
-                            lastMovement = 1;
-                            hayCambioCara = false;
-                        }
-                        //s
-                        else if (lastMovement == 2)
-                        {
-                            Vector3 aux2 = comprobarCasillaMasCercana();
-                            TileScript tile = cubo.faces[cara].tiles[(int)aux2.x, (int)aux2.y].GetComponent<TileScript>();
-                            this.transform.position = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y, this.transform.position.z);
-                            camaraScript.button();
-                            this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.right, -90);
-                            this.gameObject.transform.Translate(new Vector3(0, -0.5f, -(cubo.width - 0.5f)), Space.World);
-                            cara = 5;
-                            //indexX = 1;
-                            indexY = 7;
-                            //indexX = ((int)cubo.width) - 1 - indexX;       
-                            //indexX = 0;
-                            this.gameObject.transform.rotation = Quaternion.Euler(-180, 0, 0);
-                            //model.transform.localRotation = Quaternion.Euler(0, 0, 0);
-
-                            //Debug.LogWarning("Cambio de cara");
-                            moving = false;
-                            lastMovement = 2;
-                            hayCambioCara = false;
-                        }
-                        //d
-                        else if (lastMovement == 3)
-                        {
-                            Vector3 aux2 = comprobarCasillaMasCercana();
-                            TileScript tile = cubo.faces[cara].tiles[(int)aux2.x, (int)aux2.y].GetComponent<TileScript>();
-                            this.transform.position = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y, this.transform.position.z);
-                            camaraScript.front();
-                            this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.up, -90);
-                            this.gameObject.transform.Translate(new Vector3(0, 0, -(cubo.width - 1f)), Space.World);
-                            cara = 2;
-                            //indexX = 1;
-                            indexX = ((int)(cubo.width - 1)) - indexY;
-                            indexY = 0;
-                            //Vennimos del 7,4
-                            //Hay que ir al 4,0
-
-                            //indexX = ((int)cubo.width) - 1 - indexX;       
-                            //indexX = 0;
-
-                            this.gameObject.transform.rotation = Quaternion.Euler(0, 0, -90);
-                            model.transform.localRotation = Quaternion.Euler(0, model.transform.rotation.eulerAngles.y - 90, 0);
-                            //model.transform.localRotation = Quaternion.Euler(0, 180, 0);
-                            //Debug.LogWarning("Cambio de cara");
-                            moving = false;
-                            lastMovement = 3;
-                            hayCambioCara = false;
-                        }
-                        //w
-                        else if (lastMovement == 4)
-                        {
-                            Vector3 aux2 = comprobarCasillaMasCercana();
-                            TileScript tile = cubo.faces[cara].tiles[(int)aux2.x, (int)aux2.y].GetComponent<TileScript>();
-                            this.transform.position = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y, this.transform.position.z);
-                            camaraScript.top();
-                            this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.right, 90);
-                            this.gameObject.transform.Translate(new Vector3(0, -0.5f, -(cubo.width - 1.5f)), Space.World);
-                            //this.gameObject.transform.Translate(new Vector3(-0.5f, 0, 0), Space.World);
-                            cara = 0;
-                            moving = false;
-                            lastMovement = 3;
-                            indexY = 0;
-                            hayCambioCara = false;
-                        }
-                    }
-
-                    //Bottom
-                    else if (cara == 5)
-                    {
-                        //a
-                        if (lastMovement == 1)
-                        {
-                            Vector3 aux = comprobarCasillaMasCercana();
-                            TileScript tile = cubo.faces[cara].tiles[(int)aux.x, (int)aux.y].GetComponent<TileScript>();
-                            this.transform.position = new Vector3(tile.AbsolutePos.x, this.transform.position.y, tile.AbsolutePos.z);
-                            camaraScript.back();
-                            this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.forward, -90);
-                            this.gameObject.transform.Translate(new Vector3(+0.5f, -(cubo.width - 0.5f), 0), Space.World);
-                            cara = 1;
-                            lastMovement = 4;
-                            indexY = (Mathf.RoundToInt(cubo.width) - 1) - indexY;
-                            indexX = 0;
-                            this.gameObject.transform.rotation = Quaternion.Euler(0, 0, 90);
-                            if (Mathf.Abs(model.transform.localEulerAngles.y - 180) <= 1)
-                            {
-                                model.transform.localRotation = Quaternion.Euler(0, 0, 0);
-                            }
-                            else if (Mathf.Abs(model.transform.localEulerAngles.y) <= 1)
-                            {
-                                model.transform.localRotation = Quaternion.Euler(0, 180, 0);
-                            }
-                            else
-                            {
-                                model.transform.localRotation = Quaternion.Euler(0, model.transform.rotation.eulerAngles.y + 180, 0);
-                            }
-                            //model.transform.localRotation = Quaternion.Euler(0, -90, 0);
-                            hayCambioCara = false;
-                        }
-                        //s
-                        else if (lastMovement == 2)
-                        {
-                            Vector3 aux = comprobarCasillaMasCercana();
-                            TileScript tile = cubo.faces[cara].tiles[(int)aux.x, (int)aux.y].GetComponent<TileScript>();
-                            this.transform.position = new Vector3(tile.AbsolutePos.x, this.transform.position.y, tile.AbsolutePos.z);
-                            camaraScript.right();
-                            this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.right, -90);
-                            this.gameObject.transform.Translate(new Vector3(0, -(cubo.width - 0.5f), -0.5f), Space.World);
-                            //this.gameObject.transform.Translate(new Vector3(-0.5f, 0, 0), Space.World);
-                            cara = 3;
-                            moving = false;
-                            this.gameObject.transform.rotation = Quaternion.Euler(90, 0, 0);
-                            //model.transform.localRotation = Quaternion.Euler(0, 0, 0);
-                            lastMovement = 4;
-                            indexY = 7;
-                            hayCambioCara = false;
-                        }
-                        //d
-                        else if (lastMovement == 3)
-                        {
-                            Vector3 aux = comprobarCasillaMasCercana();
-                            TileScript tile = cubo.faces[cara].tiles[(int)aux.x, (int)aux.y].GetComponent<TileScript>();
-                            this.transform.position = new Vector3(tile.AbsolutePos.x, this.transform.position.y, tile.AbsolutePos.z);
-                            camaraScript.front();
-                            this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.forward, 90);
-                            this.gameObject.transform.Translate(new Vector3(-0.5f, -(cubo.width - 0.5f), 0), Space.World);
-                            cara = 2;
-                            lastMovement = 4;
-                            indexY = (Mathf.RoundToInt(cubo.width) - 1) - indexY;
-                            indexX = 7;
-                            this.gameObject.transform.rotation = Quaternion.Euler(0, 0, -90);
-
-                            if (Mathf.Abs(model.transform.localEulerAngles.y - 180) <= 1)
-                            {
-                                model.transform.localRotation = Quaternion.Euler(0, 0, 0);
-                            }
-                            else if (Mathf.Abs(model.transform.localEulerAngles.y) <= 1)
-                            {
-                                model.transform.localRotation = Quaternion.Euler(0, 180, 0);
-                            }
-                            else
-                            {
-                                model.transform.localRotation = Quaternion.Euler(0, model.transform.rotation.eulerAngles.y + 180, 0);
-                            }
-                            //model.transform.localRotation = Quaternion.Euler(0, 90, 0);
-                            hayCambioCara = false;
-                        }
-                        //w
-                        else if (lastMovement == 4)
-                        {
-                            Vector3 aux = comprobarCasillaMasCercana();
-                            TileScript tile = cubo.faces[cara].tiles[(int)aux.x, (int)aux.y].GetComponent<TileScript>();
-                            this.transform.position = new Vector3(tile.AbsolutePos.x, this.transform.position.y, tile.AbsolutePos.z);
-                            camaraScript.left();
-                            this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.right, 90);
-                            this.gameObject.transform.Translate(new Vector3(0, -(cubo.width - 0.5f), 0.5f), Space.World);
-                            //this.gameObject.transform.Translate(new Vector3(-0.5f, 0, 0), Space.World);
-                            cara = 4;
-                            moving = false;
-                            this.gameObject.transform.rotation = Quaternion.Euler(-90, 0, 0);
-                            //model.transform.localRotation = Quaternion.Euler(0, 180, 0);
-                            lastMovement = 4;
-                            indexY = 0;
-                            hayCambioCara = false;
-                        }
-                    }
-
-                    timeoutCollisionBorders = maxTimeoutCollisionBorders;
                 }
 
+                if (other.tag == "ColisionBorde")
+                {
+                    if (timeoutCollisionBorders <= 0)
+                    {
+                        Debug.Log("Colision con borde");
+                        //Cara top
+                        if (cara == 0)
+                        {
+                            //a
+                            if (lastMovement == 1)
+                            {
+                                Vector3 aux = comprobarCasillaMasCercana();
+                                TileScript tile = cubo.faces[cara].tiles[(int)aux.x, (int)aux.y].GetComponent<TileScript>();
+                                this.transform.position = new Vector3(tile.AbsolutePos.x, this.transform.position.y, tile.AbsolutePos.z);
+                                camaraScript.left();
+                                this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.right, -90);
+                                this.gameObject.transform.Translate(new Vector3(0, cubo.width - 1.5f, -0.5f), Space.World);
+                                //this.gameObject.transform.Translate(new Vector3(-0.5f, 0, 0), Space.World);
+                                cara = 4;
+                                moving = false;
+                                lastMovement = 2;
+                                this.gameObject.transform.rotation = Quaternion.Euler(-90, 0, 0);
+                                indexY = 7;
+                                hayCambioCara = false;
+                            }
+                            //s
+                            else if (lastMovement == 2)
+                            {
+                                Vector3 aux = comprobarCasillaMasCercana();
+                                TileScript tile = cubo.faces[cara].tiles[(int)aux.x, (int)aux.y].GetComponent<TileScript>();
+                                this.transform.position = new Vector3(tile.AbsolutePos.x, this.transform.position.y, tile.AbsolutePos.z);
+                                camaraScript.front();
+                                this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.forward, -90);
+                                this.gameObject.transform.Translate(new Vector3(0.5f, cubo.width - 1.5f, 0), Space.World);
+                                //this.gameObject.transform.Translate(new Vector3(-0.5f, 0, 0), Space.World);
+                                this.gameObject.transform.rotation = Quaternion.Euler(0, 0, -90);
+                                cara = 2;
+                                moving = false;
+                                //lastMovement = 0;
+                                indexX = 0;
+                                hayCambioCara = false;
+                            }
+                            //d
+                            else if (lastMovement == 3)
+                            {
+                                Vector3 aux = comprobarCasillaMasCercana();
+                                TileScript tile = cubo.faces[cara].tiles[(int)aux.x, (int)aux.y].GetComponent<TileScript>();
+                                this.transform.position = new Vector3(tile.AbsolutePos.x, this.transform.position.y, tile.AbsolutePos.z);
+                                camaraScript.right();
+                                this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.right, 90);
+                                this.gameObject.transform.Translate(new Vector3(0, cubo.width - 1.5f, 0.5f), Space.World);
+                                cara = 3;
+                                //indexX = 1;
+                                indexY = 0;
+                                //indexX = ((int)cubo.width) - 1 - indexX;       
+                                //indexX = 0;
+                                this.gameObject.transform.rotation = Quaternion.Euler(90, 0, 0);
+
+                                //Debug.LogWarning("Cambio de cara");
+                                moving = false;
+                                lastMovement = 2;
+                                hayCambioCara = false;
+                            }
+                            //w
+                            else if (lastMovement == 4)
+                            {
+                                Vector3 aux = comprobarCasillaMasCercana();
+                                TileScript tile = cubo.faces[cara].tiles[(int)aux.x, (int)aux.y].GetComponent<TileScript>();
+                                this.transform.position = new Vector3(tile.AbsolutePos.x, this.transform.position.y, tile.AbsolutePos.z);
+                                camaraScript.back();
+                                this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.forward, 90);
+                                this.gameObject.transform.Translate(new Vector3(-0.5f, cubo.width - 1.5f, 0), Space.World);
+                                //this.gameObject.transform.Translate(new Vector3(-0.5f, 0, 0), Space.World);
+                                this.gameObject.transform.rotation = Quaternion.Euler(0, 0, 90);
+                                cara = 1;
+                                moving = false;
+                                //del 0,1 al 1,7
+                                lastMovement = 2;
+                                //indexX = indexY;
+                                indexX = 7;
+                                hayCambioCara = false;
+                            }
+                        }
+
+                        //back
+                        else if (cara == 1)
+                        {
+                            //a
+                            if (lastMovement == 1)
+                            {
+                                Vector3 aux = comprobarCasillaMasCercana();
+                                TileScript tile = cubo.faces[cara].tiles[(int)aux.x, (int)aux.y].GetComponent<TileScript>();
+                                this.transform.position = new Vector3(this.transform.position.x, tile.AbsolutePos.y, tile.AbsolutePos.z);
+                                camaraScript.right();
+                                this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.up, 90);
+                                this.gameObject.transform.Translate(new Vector3(-(cubo.width - 1f), 0, 0), Space.World);
+                                cara = 3;
+                                //indexX = 1;
+                                indexY = ((int)(cubo.width - 1)) - indexX;
+                                indexX = 0;
+                                //Vennimos del 7,4
+                                //Hay que ir al 4,0
+
+                                //indexX = ((int)cubo.width) - 1 - indexX;       
+                                //indexX = 0;
+
+                                this.gameObject.transform.rotation = Quaternion.Euler(90, 0, 0);
+                                model.transform.localRotation = Quaternion.Euler(0, model.transform.rotation.eulerAngles.y + 90, 0);
+                                //model.transform.localRotation = Quaternion.Euler(0, -90, 0);
+                                //Debug.LogWarning("Cambio de cara");
+                                moving = false;
+                                lastMovement = 1;
+                                hayCambioCara = false;
+                            }
+                            //s
+                            else if (lastMovement == 2)
+                            {
+                                Vector3 aux = comprobarCasillaMasCercana();
+                                TileScript tile = cubo.faces[cara].tiles[(int)aux.x, (int)aux.y].GetComponent<TileScript>();
+                                this.transform.position = new Vector3(this.transform.position.x, tile.AbsolutePos.y, tile.AbsolutePos.z);
+                                camaraScript.button();
+                                this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.forward, 90);
+                                this.gameObject.transform.Translate(new Vector3(-(cubo.width - 0.5f), -0.5f, 0), Space.World);
+                                cara = 5;
+                                lastMovement = 3;
+                                indexY = (Mathf.RoundToInt(cubo.width) - 1) - indexY;
+                                indexX = 0;
+                                this.gameObject.transform.rotation = Quaternion.Euler(-180, 0, 0);
+                                if (Mathf.Abs(model.transform.localEulerAngles.y - 180) <= 1)
+                                {
+                                    model.transform.localRotation = Quaternion.Euler(0, 0, 0);
+                                }
+                                else if (Mathf.Abs(model.transform.localEulerAngles.y) <= 1)
+                                {
+                                    model.transform.localRotation = Quaternion.Euler(0, 180, 0);
+                                }
+                                else
+                                {
+                                    model.transform.localRotation = Quaternion.Euler(0, model.transform.rotation.eulerAngles.y + 180, 0);
+                                }
+                                //model.transform.localRotation = Quaternion.Euler(0, -90, 0);
+                                hayCambioCara = false;
+                            }
+                            //d
+                            else if (lastMovement == 3)
+                            {
+                                Vector3 aux = comprobarCasillaMasCercana();
+                                TileScript tile = cubo.faces[cara].tiles[(int)aux.x, (int)aux.y].GetComponent<TileScript>();
+                                this.transform.position = new Vector3(this.transform.position.x, tile.AbsolutePos.y, tile.AbsolutePos.z);
+                                camaraScript.left();
+                                this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.up, -90);
+                                this.gameObject.transform.Translate(new Vector3(-(cubo.width - 1f), 0, 0), Space.World);
+                                cara = 4;
+                                //indexX = 1;
+                                indexY = /*((int)(cubo.width - 1)) -*/ indexX;
+                                indexX = 0;
+                                //Vennimos del 7,4
+                                //Hay que ir al 4,0
+
+                                //indexX = ((int)cubo.width) - 1 - indexX;       
+                                //indexX = 0;
+
+                                this.gameObject.transform.rotation = Quaternion.Euler(-90, 0, 0);
+                                model.transform.localRotation = Quaternion.Euler(0, model.transform.rotation.eulerAngles.y - 90, 0);
+                                //model.transform.localRotation = Quaternion.Euler(0, -90, 0);
+                                //Debug.LogWarning("Cambio de cara");
+                                moving = false;
+                                lastMovement = 3;
+                                hayCambioCara = false;
+                            }
+                            //w
+                            else if (lastMovement == 4)
+                            {
+                                Vector3 aux = comprobarCasillaMasCercana();
+                                TileScript tile = cubo.faces[cara].tiles[(int)aux.x, (int)aux.y].GetComponent<TileScript>();
+                                this.transform.position = new Vector3(this.transform.position.x, tile.AbsolutePos.y, tile.AbsolutePos.z);
+                                camaraScript.top();
+                                this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.forward, -90);
+                                this.gameObject.transform.Translate(new Vector3(-(cubo.width - 1.5f), -0.5f, 0), Space.World);
+                                //this.gameObject.transform.Translate(new Vector3(-0.5f, 0, 0), Space.World);
+                                cara = 0;
+                                moving = false;
+                                //del 0,1 al 1,7
+                                lastMovement = 2;
+                                //indexX = indexY;
+                                indexX = 0;
+                                hayCambioCara = false;
+                            }
+                        }
+
+                        //Front
+                        else if (cara == 2)
+                        {
+                            //a
+                            if (lastMovement == 1)
+                            {
+                                Vector3 aux = comprobarCasillaMasCercana();
+                                TileScript tile = cubo.faces[cara].tiles[(int)aux.x, (int)aux.y].GetComponent<TileScript>();
+                                this.transform.position = new Vector3(this.transform.position.x, tile.AbsolutePos.y, tile.AbsolutePos.z);
+                                camaraScript.left();
+                                this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.up, 90);
+                                this.gameObject.transform.Translate(new Vector3((cubo.width - 1f), 0, 0), Space.World);
+                                cara = 4;
+                                //indexX = 1;
+                                indexY = ((int)(cubo.width - 1)) - indexX;
+                                indexX = 7;
+                                //Vennimos del 7,4
+                                //Hay que ir al 4,0
+
+                                //indexX = ((int)cubo.width) - 1 - indexX;       
+                                //indexX = 0;
+
+                                this.gameObject.transform.rotation = Quaternion.Euler(-90, 0, 0);
+                                model.transform.localRotation = Quaternion.Euler(0, model.transform.rotation.eulerAngles.y + 90, 0);
+                                //model.transform.localRotation = Quaternion.Euler(0, 90, 0);
+                                //Debug.LogWarning("Cambio de cara");
+                                moving = false;
+                                lastMovement = 1;
+                                hayCambioCara = false;
+                            }
+                            //s
+                            else if (lastMovement == 2)
+                            {
+                                Vector3 aux = comprobarCasillaMasCercana();
+                                TileScript tile = cubo.faces[cara].tiles[(int)aux.x, (int)aux.y].GetComponent<TileScript>();
+                                this.transform.position = new Vector3(this.transform.position.x, tile.AbsolutePos.y, tile.AbsolutePos.z);
+                                camaraScript.button();
+                                this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.forward, -90);
+                                this.gameObject.transform.Translate(new Vector3((cubo.width - 0.5f), -0.5f, 0), Space.World);
+                                cara = 5;
+                                lastMovement = 1;
+                                indexY = (Mathf.RoundToInt(cubo.width) - 1) - indexY;
+                                indexX = 7;
+                                this.gameObject.transform.rotation = Quaternion.Euler(-180, 0, 0);
+
+                                if (Mathf.Abs(model.transform.localEulerAngles.y - 180) <= 1)
+                                {
+                                    model.transform.localRotation = Quaternion.Euler(0, 0, 0);
+                                }
+                                else if (Mathf.Abs(model.transform.localEulerAngles.y) <= 1)
+                                {
+                                    model.transform.localRotation = Quaternion.Euler(0, 180, 0);
+                                }
+                                else
+                                {
+                                    model.transform.localRotation = Quaternion.Euler(0, model.transform.rotation.eulerAngles.y + 180, 0);
+                                }
+
+                                //model.transform.localRotation = Quaternion.Euler(0, 90, 0);
+                                hayCambioCara = false;
+                            }
+                            //d
+                            else if (lastMovement == 3)
+                            {
+                                Vector3 aux2 = comprobarCasillaMasCercana();
+                                TileScript tile = cubo.faces[cara].tiles[(int)aux2.x, (int)aux2.y].GetComponent<TileScript>();
+                                this.transform.position = new Vector3(this.transform.position.x, tile.AbsolutePos.y, tile.AbsolutePos.z);
+                                camaraScript.right();
+                                this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.up, -90);
+                                this.gameObject.transform.Translate(new Vector3(cubo.width - 1f, 0, 0), Space.World);
+                                cara = 3;
+                                //indexX = 1;
+                                int aux = indexX;
+                                indexX = indexY;
+                                indexY = aux;
+                                //indexX = ((int)cubo.width) - 1 - indexX;       
+                                //indexX = 0;
+                                this.gameObject.transform.rotation = Quaternion.Euler(90, 0, 0);
+
+                                model.transform.localRotation = Quaternion.Euler(0, model.transform.rotation.eulerAngles.y - 90, 0);
+                                //Debug.LogWarning("Cambio de cara");
+                                moving = false;
+                                lastMovement = 3;
+                                hayCambioCara = false;
+                            }
+                            //w
+                            else if (lastMovement == 4)
+                            {
+                                Vector3 aux = comprobarCasillaMasCercana();
+                                TileScript tile = cubo.faces[cara].tiles[(int)aux.x, (int)aux.y].GetComponent<TileScript>();
+                                this.transform.position = new Vector3(this.transform.position.x, tile.AbsolutePos.y, tile.AbsolutePos.z);
+                                camaraScript.top();
+                                this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.forward, 90);
+                                this.gameObject.transform.Translate(new Vector3((cubo.width - 1.5f), -0.5f, 0), Space.World);
+                                cara = 0;
+                                //indexX = 1;
+                                indexX = 7;
+                                //indexX = ((int)cubo.width) - 1 - indexX;       
+                                //indexX = 0;
+
+
+                                //Debug.LogWarning("Cambio de cara");
+                                moving = false;
+                                lastMovement = 4;
+                                hayCambioCara = false;
+                            }
+                        }
+
+                        //Right
+                        else if (cara == 3)
+                        {
+                            //a
+                            if (lastMovement == 1)
+                            {
+                                Vector3 aux2 = comprobarCasillaMasCercana();
+                                TileScript tile = cubo.faces[cara].tiles[(int)aux2.x, (int)aux2.y].GetComponent<TileScript>();
+                                this.transform.position = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y, this.transform.position.z);
+                                camaraScript.front();
+                                this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.up, 90);
+                                this.gameObject.transform.Translate(new Vector3(0, 0, cubo.width - 1f), Space.World);
+                                cara = 2;
+                                //indexX = 1;
+                                int aux = indexX;
+                                indexX = indexY;
+                                indexY = aux;
+                                //indexX = ((int)cubo.width) - 1 - indexX;       
+                                //indexX = 0;
+
+                                this.gameObject.transform.rotation = Quaternion.Euler(0, 0, -90);
+                                model.transform.localRotation = Quaternion.Euler(0, model.transform.rotation.eulerAngles.y + 90, 0);
+                                //model.transform.localRotation = Quaternion.Euler(0, 0, 0);
+                                //Debug.LogWarning("Cambio de cara");
+                                moving = false;
+                                lastMovement = 1;
+                                hayCambioCara = false;
+                            }
+
+                            //s
+                            else if (lastMovement == 2)
+                            {
+                                Vector3 aux2 = comprobarCasillaMasCercana();
+                                TileScript tile = cubo.faces[cara].tiles[(int)aux2.x, (int)aux2.y].GetComponent<TileScript>();
+                                this.transform.position = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y, this.transform.position.z);
+                                camaraScript.button();
+                                this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.right, 90);
+                                this.gameObject.transform.Translate(new Vector3(0, -0.5f, +(cubo.width - 0.5f)), Space.World);
+                                //this.gameObject.transform.Translate(new Vector3(-0.5f, 0, 0), Space.World);
+                                this.gameObject.transform.rotation = Quaternion.Euler(-180, 0, 0);
+                                //model.transform.localRotation = Quaternion.Euler(0, 180, 0);
+                                cara = 5;
+                                moving = false;
+                                lastMovement = 4;
+                                indexY = 0;
+                                hayCambioCara = false;
+                            }
+
+                            //d
+                            else if (lastMovement == 3)
+                            {
+                                Vector3 aux2 = comprobarCasillaMasCercana();
+                                TileScript tile = cubo.faces[cara].tiles[(int)aux2.x, (int)aux2.y].GetComponent<TileScript>();
+                                this.transform.position = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y, this.transform.position.z);
+                                camaraScript.back();
+                                this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.up, -90);
+                                this.gameObject.transform.Translate(new Vector3(0, 0, (cubo.width - 1f)), Space.World);
+                                cara = 1;
+                                //indexX = 1;
+                                indexX = ((int)(cubo.width - 1)) - indexY;
+                                indexY = 7;
+
+
+                                this.gameObject.transform.rotation = Quaternion.Euler(0, 0, 90);
+                                model.transform.localRotation = Quaternion.Euler(0, model.transform.rotation.eulerAngles.y - 90, 0);
+                                //model.transform.localRotation = Quaternion.Euler(0, 0, 0);
+                                //Debug.LogWarning("Cambio de cara");
+                                moving = false;
+                                lastMovement = 3;
+                                hayCambioCara = false;
+                            }
+
+                            //w
+                            else if (lastMovement == 4)
+                            {
+                                Vector3 aux2 = comprobarCasillaMasCercana();
+                                TileScript tile = cubo.faces[cara].tiles[(int)aux2.x, (int)aux2.y].GetComponent<TileScript>();
+                                this.transform.position = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y, this.transform.position.z);
+                                camaraScript.top();
+                                this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.right, -90);
+                                this.gameObject.transform.Translate(new Vector3(0, -0.5f, cubo.width - 1.5f), Space.World);
+                                cara = 0;
+                                //indexX = 1;
+                                indexY = 7;
+                                //indexX = ((int)cubo.width) - 1 - indexX;       
+                                //indexX = 0;
+
+
+                                //Debug.LogWarning("Cambio de cara");
+                                moving = false;
+                                lastMovement = 1;
+                                hayCambioCara = false;
+                            }
+                        }
+
+                        //Left
+                        else if (cara == 4)
+                        {
+                            //a
+                            if (lastMovement == 1)
+                            {
+                                Vector3 aux2 = comprobarCasillaMasCercana();
+                                TileScript tile = cubo.faces[cara].tiles[(int)aux2.x, (int)aux2.y].GetComponent<TileScript>();
+                                this.transform.position = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y, this.transform.position.z);
+                                camaraScript.back();
+                                this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.up, 90);
+                                this.gameObject.transform.Translate(new Vector3(0, 0, -(cubo.width - 1f)), Space.World);
+                                cara = 1;
+                                //indexX = 1;
+                                indexX = /*((int)(cubo.width - 1)) -*/ indexY;
+                                indexY = 0;
+                                //Vennimos del 7,4
+                                //Hay que ir al 4,0
+
+                                //indexX = ((int)cubo.width) - 1 - indexX;       
+                                //indexX = 0;
+
+                                this.gameObject.transform.rotation = Quaternion.Euler(0, 0, 90);
+                                model.transform.localRotation = Quaternion.Euler(0, model.transform.rotation.eulerAngles.y + 90, 0);
+                                //model.transform.localRotation = Quaternion.Euler(0, 180, 0);
+                                //Debug.LogWarning("Cambio de cara");
+                                moving = false;
+                                lastMovement = 1;
+                                hayCambioCara = false;
+                            }
+                            //s
+                            else if (lastMovement == 2)
+                            {
+                                Vector3 aux2 = comprobarCasillaMasCercana();
+                                TileScript tile = cubo.faces[cara].tiles[(int)aux2.x, (int)aux2.y].GetComponent<TileScript>();
+                                this.transform.position = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y, this.transform.position.z);
+                                camaraScript.button();
+                                this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.right, -90);
+                                this.gameObject.transform.Translate(new Vector3(0, -0.5f, -(cubo.width - 0.5f)), Space.World);
+                                cara = 5;
+                                //indexX = 1;
+                                indexY = 7;
+                                //indexX = ((int)cubo.width) - 1 - indexX;       
+                                //indexX = 0;
+                                this.gameObject.transform.rotation = Quaternion.Euler(-180, 0, 0);
+                                //model.transform.localRotation = Quaternion.Euler(0, 0, 0);
+
+                                //Debug.LogWarning("Cambio de cara");
+                                moving = false;
+                                lastMovement = 2;
+                                hayCambioCara = false;
+                            }
+                            //d
+                            else if (lastMovement == 3)
+                            {
+                                Vector3 aux2 = comprobarCasillaMasCercana();
+                                TileScript tile = cubo.faces[cara].tiles[(int)aux2.x, (int)aux2.y].GetComponent<TileScript>();
+                                this.transform.position = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y, this.transform.position.z);
+                                camaraScript.front();
+                                this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.up, -90);
+                                this.gameObject.transform.Translate(new Vector3(0, 0, -(cubo.width - 1f)), Space.World);
+                                cara = 2;
+                                //indexX = 1;
+                                indexX = ((int)(cubo.width - 1)) - indexY;
+                                indexY = 0;
+                                //Vennimos del 7,4
+                                //Hay que ir al 4,0
+
+                                //indexX = ((int)cubo.width) - 1 - indexX;       
+                                //indexX = 0;
+
+                                this.gameObject.transform.rotation = Quaternion.Euler(0, 0, -90);
+                                model.transform.localRotation = Quaternion.Euler(0, model.transform.rotation.eulerAngles.y - 90, 0);
+                                //model.transform.localRotation = Quaternion.Euler(0, 180, 0);
+                                //Debug.LogWarning("Cambio de cara");
+                                moving = false;
+                                lastMovement = 3;
+                                hayCambioCara = false;
+                            }
+                            //w
+                            else if (lastMovement == 4)
+                            {
+                                Vector3 aux2 = comprobarCasillaMasCercana();
+                                TileScript tile = cubo.faces[cara].tiles[(int)aux2.x, (int)aux2.y].GetComponent<TileScript>();
+                                this.transform.position = new Vector3(tile.AbsolutePos.x, tile.AbsolutePos.y, this.transform.position.z);
+                                camaraScript.top();
+                                this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.right, 90);
+                                this.gameObject.transform.Translate(new Vector3(0, -0.5f, -(cubo.width - 1.5f)), Space.World);
+                                //this.gameObject.transform.Translate(new Vector3(-0.5f, 0, 0), Space.World);
+                                cara = 0;
+                                moving = false;
+                                lastMovement = 3;
+                                indexY = 0;
+                                hayCambioCara = false;
+                            }
+                        }
+
+                        //Bottom
+                        else if (cara == 5)
+                        {
+                            //a
+                            if (lastMovement == 1)
+                            {
+                                Vector3 aux = comprobarCasillaMasCercana();
+                                TileScript tile = cubo.faces[cara].tiles[(int)aux.x, (int)aux.y].GetComponent<TileScript>();
+                                this.transform.position = new Vector3(tile.AbsolutePos.x, this.transform.position.y, tile.AbsolutePos.z);
+                                camaraScript.back();
+                                this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.forward, -90);
+                                this.gameObject.transform.Translate(new Vector3(+0.5f, -(cubo.width - 0.5f), 0), Space.World);
+                                cara = 1;
+                                lastMovement = 4;
+                                indexY = (Mathf.RoundToInt(cubo.width) - 1) - indexY;
+                                indexX = 0;
+                                this.gameObject.transform.rotation = Quaternion.Euler(0, 0, 90);
+                                if (Mathf.Abs(model.transform.localEulerAngles.y - 180) <= 1)
+                                {
+                                    model.transform.localRotation = Quaternion.Euler(0, 0, 0);
+                                }
+                                else if (Mathf.Abs(model.transform.localEulerAngles.y) <= 1)
+                                {
+                                    model.transform.localRotation = Quaternion.Euler(0, 180, 0);
+                                }
+                                else
+                                {
+                                    model.transform.localRotation = Quaternion.Euler(0, model.transform.rotation.eulerAngles.y + 180, 0);
+                                }
+                                //model.transform.localRotation = Quaternion.Euler(0, -90, 0);
+                                hayCambioCara = false;
+                            }
+                            //s
+                            else if (lastMovement == 2)
+                            {
+                                Vector3 aux = comprobarCasillaMasCercana();
+                                TileScript tile = cubo.faces[cara].tiles[(int)aux.x, (int)aux.y].GetComponent<TileScript>();
+                                this.transform.position = new Vector3(tile.AbsolutePos.x, this.transform.position.y, tile.AbsolutePos.z);
+                                camaraScript.right();
+                                this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.right, -90);
+                                this.gameObject.transform.Translate(new Vector3(0, -(cubo.width - 0.5f), -0.5f), Space.World);
+                                //this.gameObject.transform.Translate(new Vector3(-0.5f, 0, 0), Space.World);
+                                cara = 3;
+                                moving = false;
+                                this.gameObject.transform.rotation = Quaternion.Euler(90, 0, 0);
+                                //model.transform.localRotation = Quaternion.Euler(0, 0, 0);
+                                lastMovement = 4;
+                                indexY = 7;
+                                hayCambioCara = false;
+                            }
+                            //d
+                            else if (lastMovement == 3)
+                            {
+                                Vector3 aux = comprobarCasillaMasCercana();
+                                TileScript tile = cubo.faces[cara].tiles[(int)aux.x, (int)aux.y].GetComponent<TileScript>();
+                                this.transform.position = new Vector3(tile.AbsolutePos.x, this.transform.position.y, tile.AbsolutePos.z);
+                                camaraScript.front();
+                                this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.forward, 90);
+                                this.gameObject.transform.Translate(new Vector3(-0.5f, -(cubo.width - 0.5f), 0), Space.World);
+                                cara = 2;
+                                lastMovement = 4;
+                                indexY = (Mathf.RoundToInt(cubo.width) - 1) - indexY;
+                                indexX = 7;
+                                this.gameObject.transform.rotation = Quaternion.Euler(0, 0, -90);
+
+                                if (Mathf.Abs(model.transform.localEulerAngles.y - 180) <= 1)
+                                {
+                                    model.transform.localRotation = Quaternion.Euler(0, 0, 0);
+                                }
+                                else if (Mathf.Abs(model.transform.localEulerAngles.y) <= 1)
+                                {
+                                    model.transform.localRotation = Quaternion.Euler(0, 180, 0);
+                                }
+                                else
+                                {
+                                    model.transform.localRotation = Quaternion.Euler(0, model.transform.rotation.eulerAngles.y + 180, 0);
+                                }
+                                //model.transform.localRotation = Quaternion.Euler(0, 90, 0);
+                                hayCambioCara = false;
+                            }
+                            //w
+                            else if (lastMovement == 4)
+                            {
+                                Vector3 aux = comprobarCasillaMasCercana();
+                                TileScript tile = cubo.faces[cara].tiles[(int)aux.x, (int)aux.y].GetComponent<TileScript>();
+                                this.transform.position = new Vector3(tile.AbsolutePos.x, this.transform.position.y, tile.AbsolutePos.z);
+                                camaraScript.left();
+                                this.gameObject.transform.RotateAround(new Vector3(3.5f, -3.5f, 3.5f), Vector3.right, 90);
+                                this.gameObject.transform.Translate(new Vector3(0, -(cubo.width - 0.5f), 0.5f), Space.World);
+                                //this.gameObject.transform.Translate(new Vector3(-0.5f, 0, 0), Space.World);
+                                cara = 4;
+                                moving = false;
+                                this.gameObject.transform.rotation = Quaternion.Euler(-90, 0, 0);
+                                //model.transform.localRotation = Quaternion.Euler(0, 180, 0);
+                                lastMovement = 4;
+                                indexY = 0;
+                                hayCambioCara = false;
+                            }
+                        }
+
+                        timeoutCollisionBorders = maxTimeoutCollisionBorders;
+                    }
+
+                }
             }
+
         }
 
     }
@@ -1832,59 +1852,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
         //salirmePartida();
     }
 
-    public void activarTutorial(Vector3 datosCasilla)
-    {
-        tutorial = true;
-        this.CasillaTutorial = datosCasilla;
-    }
-
-    public void ColocarmeTutorial(Vector3 datosCasilla)
-    {
-        Debug.Log("Tutorial");
-        camaraScript = FindObjectOfType<moverCamaraFija>();
-        cubo = FindObjectOfType<Cube>();
-
-        TileScript ts = cubo.faces[(int)datosCasilla.z].tiles[(int)datosCasilla.x, (int)datosCasilla.y].GetComponent<TileScript>();
-
-        indexX = ts.indexX;
-        indexY = ts.indexY;
-        cara = ts.cubeId;
-
-
-        this.transform.position = ts.AbsolutePos;
-        switch (cara)
-        {
-            case (0):
-
-                break;
-            case (1):
-                this.transform.Rotate(new Vector3(0, 0, 90));
-                camaraScript.back();
-                break;
-            case (2):
-                this.transform.Rotate(new Vector3(0, 0, -90));
-                camaraScript.front();
-                break;
-            case (3):
-                this.transform.Rotate(new Vector3(90, 0, 0));
-                camaraScript.right();
-                break;
-            case (4):
-                this.transform.Rotate(new Vector3(-90, 0, 0));
-                camaraScript.left();
-                break;
-            case (5):
-                //Debug.Log("Cambiando de cara");
-                this.transform.Rotate(new Vector3(-180, 0, 0));
-                camaraScript.button();
-                break;
-        }
-        this.transform.position += this.transform.TransformDirection(Vector3.up);
-        // inicializamos la puntuacion de todos
-
-        hecho = true;
-    }
-
+   
     [PunRPC]
     void Colocarme(object[] parametros)
     {
@@ -1960,7 +1928,13 @@ public class CharacterController : MonoBehaviourPunCallbacks
             }
             // inicializar las puntuaciones
             Debug.Log("Inicializando el personaje en puntuacion");
-            this.photonView.RPC("sumarPuntos", RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber);
+            object tutorial;
+            PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("tutorial", out tutorial);
+            if (tutorial == null)
+            {
+                this.photonView.RPC("sumarPuntos", RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber);
+            }
+            inicializado = true;
             aux2.avisarAlSiguiente();
 
 
