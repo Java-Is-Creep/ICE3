@@ -460,6 +460,14 @@ public class CharacterController : MonoBehaviourPunCallbacks
       
         if(tutorial != null)
         {
+            if (puntos == 1)
+            {
+                controladorTutorial.segundoTexto();
+            }
+            if (puntos == 2)
+            {
+                controladorTutorial.tercerTexto();
+            }
             if(puntos == 3)
             {
                 PhotonNetwork.LeaveRoom();
