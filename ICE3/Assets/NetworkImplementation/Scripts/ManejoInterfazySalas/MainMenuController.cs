@@ -271,7 +271,7 @@ public class MainMenuController : MonoBehaviour
             "\nAlejandro Garcia Rodriguez" +
             "\nDaniel Jimenez Pacheco" +
             "\nSergio Plaza Larrosa" +
-            "\nLeo Vázquez ¿?";
+            "\nLeo Vázquez Solano";
 
         // BOT
         menuBot.text = "Menú";
@@ -327,7 +327,7 @@ public class MainMenuController : MonoBehaviour
         "\nAlejandro Garcia Rodriguez" +
         "\nDaniel Jimenez Pacheco" +
         "\nSergio Plaza Larrosa" +
-        "\nLeo Vázquez ¿?";
+        "\nLeo Vázquez Solano";
 
         // BOT
         menuBot.text = "Menu";

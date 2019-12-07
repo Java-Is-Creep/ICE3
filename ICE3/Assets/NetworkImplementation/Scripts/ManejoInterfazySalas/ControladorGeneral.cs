@@ -32,7 +32,13 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
     public Text createRoomPlaceholder;
     public Text joinRoomPlaceholder;
 
-    [Header ("Front")]
+    [Header("Errores")]
+    public Text textoErrorCrearSala;
+    public Text textoErrorUnirseSala;
+    public Text textoErrorBuscarSala;
+
+    [Header("Front")]
+    public Text connectingText;
     public Text buscarFront;
     public Text salirFront;
     public Text unirseFront;
@@ -56,7 +62,6 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
     public Sprite movimientoMobile;
     public Sprite disparoMobile;
 
-
     [Header ("Bot")]
     public Text titleBot;
     public Text insertarNombreSalaHolderBot;
@@ -79,6 +84,7 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
 
     //tutorial
     bool tutorial;
+    float timeError;
 
     /// <summary>
     /// MonoBehaviour method called on GameObject by Unity during early initialization phase.
@@ -91,10 +97,12 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
+        timeError = 0;
         // Idioma 0 espanol
         if (PlayerPrefs.GetInt("Idioma") == 0)
         {
             // Front
+            connectingText.text = "Conectando...";
             buscarFront.text = "Buscar";
             crearFront.text = "Crear";
             salirFront.text = "Salir";
@@ -132,6 +140,7 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
         else
         {
             // Front
+            connectingText.text = "Connecting...";
             buscarFront.text = "Search";
             crearFront.text = "Create";
             salirFront.text = "Exit";
@@ -269,13 +278,20 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
             buscarFrontButton.SetActive(true);
             crearFrontButton.SetActive(true);
             unirseFrontButton.SetActive(true);
+            connectingText.gameObject.SetActive(false);
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        timeError += Time.deltaTime;
+        if (timeError > 3)
+        {
+            textoErrorBuscarSala.text = "";
+            textoErrorUnirseSala.text = "";
+            textoErrorCrearSala.text = "";
+        }
         //Debug.Log("Haciendo update");
         //Debug.Log("¿Estoy conectado? " + PhotonNetwork.IsConnected);
         //Debug.Log("Estoy en el lobby?" + PhotonNetwork.InLobby);
@@ -286,6 +302,7 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
             createRoomButton.SetActive(true);
             joinRoomButton.SetActive(true);
             joinRandomRoonButton.SetActive(true);
+            connectingText.gameObject.SetActive(false);
         }
         if (Application.isMobilePlatform)
         {
@@ -311,51 +328,52 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
     /// </summary>
     public void createRoomMethod()
     {
-
-        if (PhotonNetwork.IsConnected)
+        if (roomNameMobileCreate.text != "" || roomNameCreate.text != "")
         {
-            RoomOptions roomOptions = new RoomOptions();
-            roomOptions.IsOpen = true;
-            roomOptions.IsVisible = true;
-            roomOptions.CustomRoomPropertiesForLobby = new string[] { "modo" };
-            //if(int.Parse(numPlayers.text) != int)
-            if (Application.isMobilePlatform)
+            if (PhotonNetwork.IsConnected)
             {
-              
-                roomOptions.MaxPlayers = byte.Parse(numPlayers.text);
-                if (PlayerPrefs.GetInt("Modo") == 1)
+                RoomOptions roomOptions = new RoomOptions();
+                roomOptions.IsOpen = true;
+                roomOptions.IsVisible = true;
+                roomOptions.CustomRoomPropertiesForLobby = new string[] { "modo" };
+                //if(int.Parse(numPlayers.text) != int)
+                if (Application.isMobilePlatform)
                 {
-                    roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "modo", 1 } };
-                    PhotonNetwork.CreateRoom(roomNameMobileCreate.text, roomOptions);
+
+                    roomOptions.MaxPlayers = byte.Parse(numPlayers.text);
+                    if (PlayerPrefs.GetInt("Modo") == 1)
+                    {
+                        roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "modo", 1 } };
+                        PhotonNetwork.CreateRoom(roomNameMobileCreate.text, roomOptions);
+                    }
+                    else
+                    {
+                        roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "modo", 2 } };
+                        PhotonNetwork.CreateRoom(roomNameMobileCreate.text, roomOptions);
+                    }
+
                 }
                 else
                 {
-                    roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "modo", 2 } };
-                    PhotonNetwork.CreateRoom(roomNameMobileCreate.text, roomOptions);
+                    roomOptions.MaxPlayers = byte.Parse(numPlayers.text);
+
+                    if (PlayerPrefs.GetInt("Modo") == 1)
+                    {
+                        roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "modo", 1 } };
+                        PhotonNetwork.CreateRoom(roomNameCreate.text, roomOptions);
+                    }
+                    else
+                    {
+                        roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "modo", 2 } };
+                        PhotonNetwork.CreateRoom(roomNameCreate.text, roomOptions);
+                    }
                 }
-                
             }
             else
             {
-                roomOptions.MaxPlayers = byte.Parse(numPlayers.text);
-
-                if (PlayerPrefs.GetInt("Modo") == 1)
-                {
-                    roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "modo", 1 } };
-                    PhotonNetwork.CreateRoom(roomNameCreate.text, roomOptions);
-                }
-                else
-                {
-                    roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "modo", 2 } };
-                    PhotonNetwork.CreateRoom(roomNameCreate.text, roomOptions);
-                }
+                Debug.Log("Error");
             }
         }
-        else
-        {
-            Debug.Log("Error");
-        }
-
     }
 
     public void joinRandomRoomMethod()
@@ -430,6 +448,7 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
             joinRoomButton.SetActive(true);
             joinRandomRoonButton.SetActive(true);
             botonTutorial.SetActive(true);
+            connectingText.gameObject.SetActive(false);
 
         }
     }
@@ -448,6 +467,7 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
         crearFrontButton.SetActive(true);
         unirseFrontButton.SetActive(true);
         botonTutorial.SetActive(true);
+        connectingText.gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -467,7 +487,15 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
     /// <param name="message"></param>
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
-        Debug.Log("NOMBRE DE SALA YA COGIDO");
+        if (PlayerPrefs.GetInt("Idioma") == 0)
+        {
+            textoErrorCrearSala.text = "Nombre de sala ya cogido";
+        }
+        else
+        {
+            textoErrorCrearSala.text = "Room name already taken";
+        }
+        timeError = 0;
     }
 
     /// <summary>
@@ -494,10 +522,30 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
     /// <param name="message"></param>
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
+        if (PlayerPrefs.GetInt("Idioma") == 0)
+        {
+            textoErrorBuscarSala.text = "No se encontró sala";
+        }
+        else
+        {
+            textoErrorBuscarSala.text = "Room not found";
+        }
+        timeError = 0;
         Debug.Log("No se pudo unir a la sala, no existe o esta llena");
     }
 
-
+    public override void OnJoinRoomFailed(short returnCode, string message)
+    {
+        if (PlayerPrefs.GetInt("Idioma") == 0)
+        {
+            textoErrorUnirseSala.text = "No se pudo unir a la sala";
+        }
+        else
+        {
+            textoErrorUnirseSala.text = "Room not found";
+        }
+        timeError = 0;
+    }
 
     /// <summary>
     /// Un vez unidos a la sala, pasamos a lapantalla de waiting room para esperar al resto de jugadores.

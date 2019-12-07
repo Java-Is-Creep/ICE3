@@ -12,7 +12,7 @@ public class InitSesion : MonoBehaviour
     private InputField playerNameMobile;
 
     public Text placeholderNombre;
-    
+    public Text textoError;
 
     public Text title;
     public Text button;
@@ -26,10 +26,13 @@ public class InitSesion : MonoBehaviour
     public Sprite activate;
     public Sprite desactivate;
 
+    float timeError;
+
     
     // Start is called before the first frame update
     void Start()
     {
+        timeError = 0;
         if (Application.isMobilePlatform)
         {
             // Crear
@@ -80,22 +83,49 @@ public class InitSesion : MonoBehaviour
         {
             // Crear
             placeholderNombre.text = playerNameMobile.text;
-
+        }
+        timeError += Time.deltaTime;
+        if (timeError > 3)
+        {
+            textoError.text = "";
         }
     }
 
     public void onClick()
     {
+
         if (Application.isMobilePlatform)
         {
-            PlayerPrefs.SetString("Name", playerNameMobile.text);
+            if (playerNameMobile.text != "")
+            {
+                PlayerPrefs.SetString("Name", playerNameMobile.text);
+            }
         }
         else
         {
-            PlayerPrefs.SetString("Name", playerName.text);
+            if (playerName.text != "")
+            {
+                PlayerPrefs.SetString("Name", playerName.text);
+            }
         }
 
-        SceneManager.LoadScene("MainMenu");
+        if (playerName.text != "" || playerNameMobile.text != "")
+        {
+            SceneManager.LoadScene("MainMenu");
+        }
+        else
+        {
+            if (PlayerPrefs.GetInt("Idioma") == 0)
+            {
+                textoError.text = "Escribe un nombre";
+            }
+            else
+            {
+                textoError.text = "Type a name";
+            }
+            timeError = 0;
+                
+        }
     }
 
     public void botonOn()
