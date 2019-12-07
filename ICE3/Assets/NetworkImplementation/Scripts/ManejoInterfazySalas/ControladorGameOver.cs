@@ -33,14 +33,17 @@ public class ControladorGameOver : MonoBehaviourPunCallbacks
     public Text[] name6Jugadores;
     public Text[] score6Jugadores;
 
+    [Header("SpritesPersonaje")]
+    public Sprite[] p;
+
     // Start is called before the first frame update
     void Start()
     {
         string[] puestosEsp = { "Primer Puesto", "Segundo Puesto",
-            "Tercero Puesto", "Cuarto Puesto", "Quinto Puesto", "Sexto Puesto" };
+            "Tercer Puesto", "Cuarto Puesto", "Quinto Puesto", "Sexto Puesto" };
         string[] puestosEng = { "First Place", "Second Place",
             "Third Place", "Fourth Place", "Fifth Place", "Sixth Place"};
-        
+
         // Idioma 0 espanol
         if (PlayerPrefs.GetInt ("Idioma") == 0)
         {
@@ -51,10 +54,9 @@ public class ControladorGameOver : MonoBehaviourPunCallbacks
             botonSalir.text = "Exit";
         }
 
+        Player[] jugadores = PhotonNetwork.PlayerList;
         punt = FindObjectOfType<Puntuaciones>();
-
         List<Puntuacion> listaOrdenada = new List<Puntuacion>();
-
         foreach (int key in punt.puntuaciones.Keys)
         {
             Puntuacion aux;
@@ -98,33 +100,66 @@ public class ControladorGameOver : MonoBehaviourPunCallbacks
         int i = 0;
         foreach (Puntuacion punt in listaOrdenada)
         {
-            if (PlayerPrefs.GetInt("Idioma") == 0)
-            {
-                puestoText.text = puestosEsp[i];
-            }
-            else
-            {
-                puestoText.text = puestosEng[i];
-            }
-
+            // Seteo nombre y texto de cada uno de los jugadores
             auxTexto[i].text = punt.nombre;
             auxScore[i].text = "" + punt.puntuacion;
+
+            if (punt.nombre.CompareTo(PhotonNetwork.LocalPlayer.NickName) == 0)
+            {
+                if (PlayerPrefs.GetInt("Idioma") == 0)
+                {
+                    puestoText.text = puestosEsp[i];
+                }
+                else
+                {
+                    puestoText.text = puestosEng[i];
+                }
+            }
 
             // Podium
             if (i == 0)
             {
-                //personaje1.sprite =
-                personaje1Text.text = punt.nombre;
+                for (int n = 0; n < PhotonNetwork.CurrentRoom.MaxPlayers; n++)
+                {
+                    Debug.Log("Jugador " + n + " es: " + jugadores[n].NickName);
+                    if (punt.nombre.CompareTo(jugadores[n].NickName) == 0)
+                    {
+                        object indice;
+                        jugadores[n].CustomProperties.TryGetValue("skin", out indice);
+                        int index = (int)indice;
+                        personaje1.sprite = p[index];
+                        personaje1Text.text = punt.nombre;
+                        break;
+                    }
+                }
             }
             else if (i == 1)
             {
-                //personaje2.sprite =
-                personaje2Text.text = punt.nombre;
+                for (int n = 0; n < PhotonNetwork.CurrentRoom.MaxPlayers; n++)
+                {
+                    if (punt.nombre.CompareTo(jugadores[n].NickName) == 0)
+                    {
+                        object indice;
+                        jugadores[n].CustomProperties.TryGetValue("skin", out indice);
+                        int index = (int)indice;
+                        personaje2.sprite = p[index];
+                        personaje2Text.text = punt.nombre;
+                    }
+                }
             }
             else if (i == 2)
             {
-                //personaje3.sprite = 
-                personaje3Text.text = punt.nombre;
+                for (int n = 0; n < PhotonNetwork.CurrentRoom.MaxPlayers; n++)
+                {
+                    if (punt.nombre.CompareTo(jugadores[n].NickName) == 0)
+                    {
+                        object indice;
+                        jugadores[n].CustomProperties.TryGetValue("skin", out indice);
+                        int index = (int)indice;
+                        personaje3.sprite = p[index];
+                        personaje3Text.text = punt.nombre;
+                    }
+                }
             }
             i++;
         }
