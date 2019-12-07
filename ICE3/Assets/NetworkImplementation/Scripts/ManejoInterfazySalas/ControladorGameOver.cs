@@ -119,7 +119,7 @@ public class ControladorGameOver : MonoBehaviourPunCallbacks
             // Podium
             if (i == 0)
             {
-                for (int n = 0; n < PhotonNetwork.CurrentRoom.MaxPlayers; n++)
+                for (int n = 0; n < PhotonNetwork.CurrentRoom.PlayerCount; n++)
                 {
                     Debug.Log("Jugador " + n + " es: " + jugadores[n].NickName);
                     if (punt.nombre.CompareTo(jugadores[n].NickName) == 0)
@@ -135,7 +135,7 @@ public class ControladorGameOver : MonoBehaviourPunCallbacks
             }
             else if (i == 1)
             {
-                for (int n = 0; n < PhotonNetwork.CurrentRoom.MaxPlayers; n++)
+                for (int n = 0; n < PhotonNetwork.CurrentRoom.PlayerCount; n++)
                 {
                     if (punt.nombre.CompareTo(jugadores[n].NickName) == 0)
                     {
@@ -149,7 +149,7 @@ public class ControladorGameOver : MonoBehaviourPunCallbacks
             }
             else if (i == 2)
             {
-                for (int n = 0; n < PhotonNetwork.CurrentRoom.MaxPlayers; n++)
+                for (int n = 0; n < PhotonNetwork.CurrentRoom.PlayerCount; n++)
                 {
                     if (punt.nombre.CompareTo(jugadores[n].NickName) == 0)
                     {

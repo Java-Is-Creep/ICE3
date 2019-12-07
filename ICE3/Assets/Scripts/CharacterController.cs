@@ -100,10 +100,13 @@ public class CharacterController : MonoBehaviourPunCallbacks
     bool inicializado = false;
     ControladorTutorial controladorTutorial;
 
+    // animacion Cargando
+    public GameObject animacionCarga;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        animacionCarga = GameObject.Find("PantallaCarga");
         punt = FindObjectOfType<Puntuaciones>();
         soundController = GameObject.Find("AudioController").GetComponent<gameSoundsController>();
         textoBalas = GameObject.Find("Balas").GetComponent<Text>();
@@ -1944,6 +1947,12 @@ public class CharacterController : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
+    void quitarPantallaCarga()
+    {
+        animacionCarga.SetActive(false);
+    }
+
+    [PunRPC]
     void siguienteJugador()
     {
         if (PhotonNetwork.IsMasterClient)
@@ -1954,10 +1963,15 @@ public class CharacterController : MonoBehaviourPunCallbacks
             if (indiceJugador < jugadores.Length)
             {
                 jugadores[indiceJugador].inicializateTu(photonView.ViewID,obtenerVector(controladorNivel.getCasillaVacia()));
+            } else
+            {
+                this.photonView.RPC("quitarPantallaCarga", RpcTarget.All);
+                Debug.Log("Quitar Pantalla de carga");
             }
 
         } else
         {
+
             Debug.Log("No soy el master");
         }
 

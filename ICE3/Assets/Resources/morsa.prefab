@@ -156,6 +156,7 @@ MonoBehaviour:
   textoPuntos: {fileID: 0}
   soundController: {fileID: 0}
   sonidoEmpezado: 0
+  animacionCarga: {fileID: 0}
 --- !u!114 &5781113139883213981
 MonoBehaviour:
   m_ObjectHideFlags: 0
