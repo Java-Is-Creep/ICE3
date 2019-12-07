@@ -94,6 +94,7 @@ public class ControladorGameOver : MonoBehaviourPunCallbacks
                 auxScore = score6Jugadores;
                 break;
         }
+
         int i = 0;
         foreach (Puntuacion punt in listaOrdenada)
         {
@@ -123,7 +124,7 @@ public class ControladorGameOver : MonoBehaviourPunCallbacks
             else if (i == 2)
             {
                 //personaje3.sprite = 
-                personaje2Text.text = punt.nombre;
+                personaje3Text.text = punt.nombre;
             }
             i++;
         }
