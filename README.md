@@ -1,10 +1,11 @@
 # Historial de Versiones
 
-![master](https://img.shields.io/badge/master-v0.0.0-green?style=for-the-badge&logo=appveyor)
-![develop](https://img.shields.io/badge/develop-v0.4.0-blue?style=for-the-badge&logo=appveyor)
+![master](https://img.shields.io/badge/master-v1.0.0-green?style=for-the-badge&logo=appveyor)
+![develop](https://img.shields.io/badge/develop-v1.0.0-blue?style=for-the-badge&logo=appveyor)
 
 | Versión | Descripción |
 | ------------- | ------------- |
+| ![master](https://img.shields.io/badge/master-v1.0.0-green?style=for-the-badge&logo=appveyor)|- Arreglo de errores <br> - Añadidos GDD y documentos completos|
 | ![develop](https://img.shields.io/badge/develop-v0.4.0-blue?style=for-the-badge&logo=appveyor)| - Administración de salas <br> - Modos de juego: "Congelado" y "A bolazos" <br> - Multilenguaje <br> - Efectos de sonido y música <br> - Personajes jugables <br> - Interfaz completa <br> - Tutorial para nuevos jugadores <br> - Cuenta para donaciones <br> - InstantGames + Itch.io <br> - Diseño de nuevos mapas|
 |![develop](https://img.shields.io/badge/develop-v0.3.0-blue?style=for-the-badge&logo=appveyor) | - Movimiento entre todas las caras del cubo <br> - Colisiones, recoger objeto <br>- Disparo de bola de nieve <br> - Diseño del skybox <br> - Ampliación de los modos de juego <br> - Diseño esquemático de las interfaces ampliado para modo multijugador <br> - Cambios en Photon para mejorar la interpolación|
 |![develop](https://img.shields.io/badge/develop-v0.2.0-blue?style=for-the-badge&logo=appveyor) | - Movimiento en 3 de las caras del cubo <br> - Diseño de la interfaz básica (concept) y botones <br> - Modelos 3D de 6 personajes con texturizado <br> - Sala para dos jugadores <br> - Arreglos de colisiones en el cubo <br> - Arreglos de bugs varios| 
