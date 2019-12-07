@@ -479,6 +479,9 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
         Debug.Log("Sala creada");
         if (tutorial)
         {
+            ExitGames.Client.Photon.Hashtable tutorial = new ExitGames.Client.Photon.Hashtable();
+            tutorial.Add("tutorial", true);
+            PhotonNetwork.CurrentRoom.SetCustomProperties(tutorial);
             PhotonNetwork.LoadLevel("Tutorial");
         }
     }
