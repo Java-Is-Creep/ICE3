@@ -1,0 +1,2 @@
+He hecho varias texturas para probarlas, creo que la que más pega con el estilo es la que se llama "hielo 5". Se ve el hielo como s fueran cubos de hielo vistos desde arriba y estan separados como casillas para que desde arriba sea más fácil distinguir la posición en la que te encuentras sin romper la estetica, pero si os parece que no pega o lo que sea me avisais y la cambio en un momento.
+Algunas tienen cambios muy pequeños entre ellas pero cuando hay varias casillas de hielo seguidas se nota bastante.
