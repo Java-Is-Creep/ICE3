@@ -106,7 +106,7 @@ public class CharacterController : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
-        animacionCarga = GameObject.Find("PantallaCarga");
+        animacionCarga = GameObject.Find("CanvasLoading");
         punt = FindObjectOfType<Puntuaciones>();
         soundController = GameObject.Find("AudioController").GetComponent<gameSoundsController>();
         textoBalas = GameObject.Find("Balas").GetComponent<Text>();

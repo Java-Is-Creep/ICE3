@@ -13,6 +13,10 @@ public class ControladorWaitingRoomPersonajes : MonoBehaviourPunCallbacks
     public float tiempoParaRecargar;
     public float actualTime;
 
+    public Text modeText;
+    public Text selectedModeText;
+
+
     [Header("Textos")]
     public Text[] text2Jugadores;
     public Text[] text3Jugadores;
@@ -44,6 +48,10 @@ public class ControladorWaitingRoomPersonajes : MonoBehaviourPunCallbacks
     void Start()
     {
         //g[PhotonNetwork.CurrentRoom.MaxPlayers - 2].SetActive(true);
+        object objeto;
+        PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("modo", out objeto);
+        int modoSeleccionado = (int)objeto;
+        PlayerPrefs.SetInt("Modo", modoSeleccionado);
 
         if (PlayerPrefs.GetInt ("Idioma") == 0)
         {
@@ -52,6 +60,15 @@ public class ControladorWaitingRoomPersonajes : MonoBehaviourPunCallbacks
             numberPlayersText.text = "Número Jugadores";
             waitingPlayersText.text = "Esperando más jugadores...";
             exitText.text = "Salir";
+            modeText.text = "Modo";
+            if (PlayerPrefs.GetInt ("Modo") == 1)
+            {
+                selectedModeText.text = "A bolazos";
+            }
+            else
+            {
+                selectedModeText.text = "Congélate";
+            }
         }
         else
         {
@@ -60,6 +77,16 @@ public class ControladorWaitingRoomPersonajes : MonoBehaviourPunCallbacks
             numberPlayersText.text = "Number of Players";
             waitingPlayersText.text = "Waiting more players...";
             exitText.text = "Exit";
+            modeText.text = "Mode";
+            //selectedModeText.text = 
+            if (PlayerPrefs.GetInt("Modo") == 1)
+            {
+                selectedModeText.text = "Snowball";
+            }
+            else
+            {
+                selectedModeText.text = "Freeze";
+            }
         }
 
         jugadores = PhotonNetwork.PlayerList;

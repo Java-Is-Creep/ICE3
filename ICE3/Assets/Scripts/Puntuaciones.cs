@@ -16,6 +16,7 @@ public class Puntuaciones : MonoBehaviourPunCallbacks
 
     public Text numerosTop3;
     public Text maxPuntuation;
+    public Text loading;
     string cadena;
 
     // Start is called before the first frame update
@@ -26,10 +27,12 @@ public class Puntuaciones : MonoBehaviourPunCallbacks
         if (PlayerPrefs.GetInt ("Idioma") == 0)
         {
             cadena = "Puntos 1º: ";
+            loading.text = "Cargando...";
         }
         else
         {
             cadena = "Best Score: ";
+            loading.text = "Loading...";
         }
     }
 

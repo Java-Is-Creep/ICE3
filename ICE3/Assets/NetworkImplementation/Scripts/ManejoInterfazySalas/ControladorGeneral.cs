@@ -109,11 +109,11 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
             unirseFront.text = "Unirse";
             if (PlayerPrefs.GetInt ("Modo") == 1)
             {
-                modoSeleccionado.text = "Modo 1";
+                modoSeleccionado.text = "A bolazos";
             }
             else
             {
-                modoSeleccionado.text = "Modo 2";
+                modoSeleccionado.text = "Congélate";
             }
             
 
@@ -147,11 +147,11 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
             unirseFront.text = "Join";
             if (PlayerPrefs.GetInt("Modo") == 1)
             {
-                modoSeleccionado.text = "Mode 1";
+                modoSeleccionado.text = "Snowball Fight";
             }
             else
             {
-                modoSeleccionado.text = "Mode 2";
+                modoSeleccionado.text = "Freeze";
             }
 
             // Bot
@@ -558,14 +558,14 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
         }
         Debug.Log("PUN Basics Tutorial/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.");
         // #Critical: We only load if we are the first player, else we rely on `PhotonNetwork.AutomaticallySyncScene` to sync our instance scene.
-        // Cambiamos de escena cuando halla 2 players
+        // Cambiamos de escena cuando haya 2 players
+        object objeto;
+        PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("modo", out objeto);
+        PlayerPrefs.SetInt("Modo", (int) objeto);
         Debug.Log(PhotonNetwork.CurrentRoom.Name);
         if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
         {
-
             Debug.Log("We load the Waiting Room ");
-
-
             // #Critical
             // Load the Room Level.
             if (PhotonNetwork.IsMasterClient)

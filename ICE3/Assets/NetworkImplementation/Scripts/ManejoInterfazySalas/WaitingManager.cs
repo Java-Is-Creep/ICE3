@@ -56,15 +56,15 @@ public class WaitingManager : MonoBehaviourPunCallbacks
             Debug.Log(PhotonNetwork.CurrentRoom.PlayerCount);
             Debug.LogError("PhotonNetwork : Trying to Load a level but we are not the master Client");
         }
-        Debug.Log("Loading game scene");
-        if(PlayerPrefs.GetInt("Modo") == 1)
+        if (PlayerPrefs.GetInt("Modo") == 1)
         {
             PhotonNetwork.LoadLevel("MapScene");
-        } else
+        }
+        else
         {
             PhotonNetwork.LoadLevel("MapScene2");
         }
-
+        Debug.Log("Loading game scene");
     }
 
    public  void disconect()

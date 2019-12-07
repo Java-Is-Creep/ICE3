@@ -34,6 +34,7 @@ public class ControladorTutorial : MonoBehaviourPunCallbacks
 
     //Texto de tutorial
     public Text texto;
+    public Text loading;
 
     private void Awake()
     {
@@ -51,6 +52,7 @@ public class ControladorTutorial : MonoBehaviourPunCallbacks
         pasos = new bool[numPasos];
         if (PlayerPrefs.GetInt("Idioma") == 0)
         {
+            loading.text = "Cargando...";
             if (Application.isMobilePlatform)
             {
                 texto.text = "Usa las flechas direccionales para moverte. Busca 3 banderas.";
@@ -58,8 +60,10 @@ public class ControladorTutorial : MonoBehaviourPunCallbacks
             {
                 texto.text = "Usa W, A, S, D para moverte. Busca 3 banderas.";
             }
-        } else
+        }
+        else
         {
+            loading.text = "Loading...";
             if (Application.isMobilePlatform)
             {
                 texto.text = "Use the directional keys to move. Take 3 flags.";

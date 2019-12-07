@@ -37,7 +37,10 @@ public class MainMenuController : MonoBehaviour
     [Header("TOP")]
     public Text menuTop;
     public Text titleTop;
-    public Text contentScrollTop;
+    public Text titleCreditosNosotros;
+    public Text textContentNosotros;
+    public Text titleCreditosColaboradores;
+    public Text textCreditosColaboradores;
     public Text donarTextTop;
 
     [Header("BOTTOM")]
@@ -179,11 +182,11 @@ public class MainMenuController : MonoBehaviour
         PlayerPrefs.SetInt("Modo", 1);
         if (PlayerPrefs.GetInt ("Idioma") == 0)
         {
-            modoTextFront.text = "Modo 1";
+            modoTextFront.text = "A Bolazos";
         }
         else
         {
-            modoTextFront.text = "Mode 1";
+            modoTextFront.text = "Snowball Fight";
         }
         tituloDescr1.gameObject.SetActive(true);
         contentDescr1.gameObject.SetActive(true);
@@ -199,11 +202,11 @@ public class MainMenuController : MonoBehaviour
         PlayerPrefs.SetInt("Modo", 2);
         if (PlayerPrefs.GetInt("Idioma") == 0)
         {
-            modoTextFront.text = "Modo 2";
+            modoTextFront.text = "Congélate";
         }
         else
         {
-            modoTextFront.text = "Mode 2";
+            modoTextFront.text = "Freeze";
         }
         tituloDescr1.gameObject.SetActive(false);
         contentDescr1.gameObject.SetActive(false);
@@ -254,11 +257,11 @@ public class MainMenuController : MonoBehaviour
         opcionesFront.text = "Opciones";
         if (PlayerPrefs.GetInt("Modo") == 1)
         {
-            modoTextFront.text = "Modo 1";
+            modoTextFront.text = "A Bolazos";
         }
         else
         {
-            modoTextFront.text = "Modo 2";
+            modoTextFront.text = "Congélate";
         }
         
 
@@ -266,12 +269,14 @@ public class MainMenuController : MonoBehaviour
         menuTop.text = "Menú";
         titleTop.text = "Créditos";
         donarTextTop.text = "Donar";
-        contentScrollTop.text = "Desarrolladores ICE3: Java Is Creep" +
-            "\nDavid Fontela Moñino" +
-            "\nAlejandro Garcia Rodriguez" +
-            "\nDaniel Jimenez Pacheco" +
-            "\nSergio Plaza Larrosa" +
-            "\nLeo Vázquez Solano";
+        titleCreditosNosotros.text = "Equipo Java Is Creep";
+        textContentNosotros.text = "David Fontela Moñino" +
+                    "\nAlejandro Garcia Rodriguez" +
+                    "\nDaniel Jimenez Pacheco" +
+                    "\nSergio Plaza Larrosa" +
+                    "\nLeo Vázquez Solano";
+        titleCreditosColaboradores.text = "Colaboraciones:";
+        textCreditosColaboradores.text = "Rainbow Teapot Studio: Ms Teapot";
 
         // BOT
         menuBot.text = "Menú";
@@ -283,17 +288,17 @@ public class MainMenuController : MonoBehaviour
         infoLeft.text = "Info";
         menuLeft.text = "Menú";
         titleLeft.text = "Modos De Juego";
-        modo1TextLeft.text = "Modo 1";
-        modo2TextLeft.text = "Modo 2";
+        modo1TextLeft.text = "A Bolazos";
+        modo2TextLeft.text = "Congélate";
 
         // BACK
         personajeBack.text = "Personaje";
         modoJuegoBack.text = "Modo\nJuego";
         titleBack.text = "Información Modo";
-        titleGameMode1Back.text = "Pelea bolas de nieve";
-        contentGameMode1Back.text = "En este modo, deberás hacer uso de tu puntería para acertar 5 bolazos antes que los demás";
+        titleGameMode1Back.text = "A Bolazos";
+        contentGameMode1Back.text = "Deberás hacer uso de tu puntería y estrategia para acertar 5 bolazos antes que los demás";
         titleGameMode2Back.text = "Congélate";
-        contentGameMode2Back.text = "Se el más rápido en el cubo, consigiuiendo coger las banderas";
+        contentGameMode2Back.text = "Se el más rápido en el cubo, consiguiendo coger las banderas";
 
         // RIGHT
         infoRight.text = "Info";
@@ -310,11 +315,11 @@ public class MainMenuController : MonoBehaviour
         opcionesFront.text = "Options";
         if (PlayerPrefs.GetInt("Modo") == 1)
         {
-            modoTextFront.text = "Mode 1";
+            modoTextFront.text = "Snowball fight";
         }
         else
         {
-            modoTextFront.text = "Mode 2";
+            modoTextFront.text = "Freeze";
         }
 
 
@@ -322,12 +327,14 @@ public class MainMenuController : MonoBehaviour
         menuTop.text = "Menu";
         titleTop.text = "Credits";
         donarTextTop.text = "Donate";
-        contentScrollTop.text = "Developers ICE3: Java Is Creep" +
-        "\nDavid Fontela Moñino" +
-        "\nAlejandro Garcia Rodriguez" +
-        "\nDaniel Jimenez Pacheco" +
-        "\nSergio Plaza Larrosa" +
-        "\nLeo Vázquez Solano";
+        titleCreditosNosotros.text = "Team Java Is Creep";
+        textContentNosotros.text = "David Fontela Moñino" +
+                    "\nAlejandro Garcia Rodriguez" +
+                    "\nDaniel Jimenez Pacheco" +
+                    "\nSergio Plaza Larrosa" +
+                    "\nLeo Vázquez Solano";
+        titleCreditosColaboradores.text = "Colaborations:";
+        textCreditosColaboradores.text = "Rainbow Teapot Studio: Ms Teapot";
 
         // BOT
         menuBot.text = "Menu";
@@ -339,17 +346,17 @@ public class MainMenuController : MonoBehaviour
         infoLeft.text = "Info";
         menuLeft.text = "Menu";
         titleLeft.text = "Game Mode";
-        modo1TextLeft.text = "Mode 1";
-        modo2TextLeft.text = "Mode 2";
+        modo1TextLeft.text = "Snowball fight";
+        modo2TextLeft.text = "Freeze";
 
         // BACK
         personajeBack.text = "Character";
-        modoJuegoBack.text = "Modo\nJuego";
+        modoJuegoBack.text = "Game\nMode";
         titleBack.text = "Mode Information";
-        titleGameMode1Back.text = "Fight snowballs";
-        contentGameMode1Back.text = "In this mode, you must use your aim to hit 5 balls before the others";
+        titleGameMode1Back.text = "Snowball fight";
+        contentGameMode1Back.text = "Use the bazookas in the cube and throw snowballs to the other players. Get 5 points as soon as possible to win";
         titleGameMode2Back.text = "Freeze";
-        contentGameMode2Back.text = "Be the fastest in the cube, getting the flags";
+        contentGameMode2Back.text = "Try to catch the flags as fast as possible in order to maintain the temperature of the cube. Get 5 flags to win";
 
         // RIGHT
         infoRight.text = "Info";

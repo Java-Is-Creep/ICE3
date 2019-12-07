@@ -87,7 +87,7 @@ public class Carrousel : MonoBehaviour
                     titel.text = "Globillo The Walrus";
                     break;
                 case 6:
-                    titel.text = "Teapot Ft. TeapotStudio";
+                    titel.text = "Ms Teapot";
                     break;
             }
 
@@ -121,7 +121,7 @@ public class Carrousel : MonoBehaviour
                     globi.Play();
 
                 }
-                else if (titel.text == "Teapot Ft. TeapotStudio")
+                else if (titel.text == "Ms Teapot")
                 {
                     teapot.Play();
 
