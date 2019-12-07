@@ -75,7 +75,12 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  MapInfo: {fileID: 4900000, guid: 9ce80db158e45b14aa9d00a525f677e4, type: 3}
+  Mapas:
+  - {fileID: 4900000, guid: 2c4d821295fd20641bc11a43d08dc6af, type: 3}
+  - {fileID: 4900000, guid: 65231c334a95a9743b37edacf4e57409, type: 3}
+  - {fileID: 4900000, guid: c6b2ffe98c10ba9488ed1546974e8fbc, type: 3}
+  - {fileID: 4900000, guid: 1635792cbffef754db1b8f1cfe6e6469, type: 3}
+  MapTutorial: {fileID: 4900000, guid: 42eead5df4a205b4fa87eb2713edf74c, type: 3}
   "tama\xF1oCara": 1
 --- !u!114 &1330174981098044732
 MonoBehaviour:

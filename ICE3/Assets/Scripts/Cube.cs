@@ -26,7 +26,8 @@ public class Cube : MonoBehaviourPunCallbacks
     public CubeFace[] faces = new CubeFace[6];
     public GameObject[] facesObject = new GameObject[6];
     // Start is called before the first frame update
-    public TextAsset MapInfo;
+    public TextAsset[] Mapas;
+    public TextAsset MapTutorial;
 
     string[] separacion1;
 
@@ -46,13 +47,23 @@ public class Cube : MonoBehaviourPunCallbacks
     int numeroSpawnsPlayers = 0;
 
 
+
     void Awake()
     {
 
          controlNivel= FindObjectOfType<ControladorNivel>();
         controlTutorial = FindObjectOfType<ControladorTutorial>();
 
-        readCSV();
+        if(controlTutorial == null)
+        {
+            object numeroMapa;
+            PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("Mapa", out numeroMapa);
+            readCSV((int) numeroMapa,false);
+        } else
+        {
+            readCSV(-1, true);
+        }
+
         //this.transform.position = new Vector3(-this.width / 2, this.heigth / 2, -this.heigth / 2 + this.tamañoCara / 2);
 
         GameObject[,] cubeFace;
@@ -235,10 +246,16 @@ public class Cube : MonoBehaviourPunCallbacks
 
         }
 
-    public void readCSV()
+    public void readCSV(int id, bool tutorial)
     {
         int tamaño = 0;
-        separacion1 = MapInfo.text.Split('\n');
+        if (!tutorial)
+        {
+            separacion1 = Mapas[id].text.Split('\n');
+        } else
+        {
+            separacion1 = MapTutorial.text.Split('\n');
+        }
         for ( int i = 0; i < separacion1.Length-1; i++)
         {
             

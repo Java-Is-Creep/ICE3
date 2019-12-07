@@ -15,6 +15,9 @@ public class WaitingManager : MonoBehaviourPunCallbacks
 
     public bool startDirectly;
 
+    [SerializeField]
+    public int numberOfMaps;
+
     void OnApplicationQuit()
     {
         disconect();
@@ -22,6 +25,16 @@ public class WaitingManager : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            int selectedMap = Random.Range(0, numberOfMaps);
+
+            ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable();
+            hash.Add("Mapa", selectedMap);
+            PhotonNetwork.CurrentRoom.SetCustomProperties(hash);
+        }
+
+
         textoInformativo.text = PhotonNetwork.CurrentRoom.PlayerCount + "/" + PhotonNetwork.CurrentRoom.MaxPlayers;
         if (startDirectly)
         {
