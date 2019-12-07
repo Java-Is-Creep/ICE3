@@ -85,6 +85,7 @@ public class GameManagerTutorialOK : MonoBehaviourPunCallbacks
                 break;
         }
 
+        aux.GetComponent<CharacterController>().activarTutorial(posIniTutorial);
 
 
     }

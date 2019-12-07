@@ -281,6 +281,7 @@ public class ControladorGeneral : MonoBehaviourPunCallbacks
         //Debug.Log("Estoy en el lobby?" + PhotonNetwork.InLobby);
         if (PhotonNetwork.IsConnected && PhotonNetwork.InLobby)
         {
+            Debug.Log("Conectado y en lobby update");
             //Debug.Log("Estamos conectados ");
             createRoomButton.SetActive(true);
             joinRoomButton.SetActive(true);
