@@ -82,37 +82,7 @@ public class moverCamaraFija : MonoBehaviour
         }
         else
         {
-            if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
-            {
-                Free();
-            }
-            else if (Input.GetMouseButtonUp(0))
-            {
-                if (personaje.cara == 0)
-                {
-                    top();
-                }
-                else if (personaje.cara == 4)
-                {
-                    left();
-                }
-                else if (personaje.cara == 5)
-                {
-                    button();
-                }
-                else if (personaje.cara == 3)
-                {
-                    right();
-                }
-                else if (personaje.cara == 2)
-                {
-                    front();
-                }
-                else if (personaje.cara == 1)
-                {
-                    back();
-                }
-            }
+            
         }
             //Debug.Log("Clic" + Input.GetMouseButtonDown(0));
             //Debug.Log("Estoy no tocando interfaz" + !EventSystem.current.IsPointerOverGameObject());
