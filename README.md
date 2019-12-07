@@ -1,10 +1,11 @@
 # Historial de Versiones
 
 ![master](https://img.shields.io/badge/master-v0.0.0-green?style=for-the-badge&logo=appveyor)
-![develop](https://img.shields.io/badge/develop-v0.3.0-blue?style=for-the-badge&logo=appveyor)
+![develop](https://img.shields.io/badge/develop-v0.4.0-blue?style=for-the-badge&logo=appveyor)
 
 | Versión | Descripción |
 | ------------- | ------------- |
+| ![develop](https://img.shields.io/badge/develop-v0.4.0-blue?style=for-the-badge&logo=appveyor)| - Administración de salas <br> - Modos de juego: "Congelado" y "A bolazos" <br> - Multilenguaje <br> - Efectos de sonido y música <br> - Personajes jugables <br> - Interfaz completa <br> - Tutorial para nuevos jugadores <br> - Cuenta para donaciones <br> - InstantGames + Itch.io <br> - Diseño de nuevos mapas|
 |![develop](https://img.shields.io/badge/develop-v0.3.0-blue?style=for-the-badge&logo=appveyor) | - Movimiento entre todas las caras del cubo <br> - Colisiones, recoger objeto <br>- Disparo de bola de nieve <br> - Diseño del skybox <br> - Ampliación de los modos de juego <br> - Diseño esquemático de las interfaces ampliado para modo multijugador <br> - Cambios en Photon para mejorar la interpolación|
 |![develop](https://img.shields.io/badge/develop-v0.2.0-blue?style=for-the-badge&logo=appveyor) | - Movimiento en 3 de las caras del cubo <br> - Diseño de la interfaz básica (concept) y botones <br> - Modelos 3D de 6 personajes con texturizado <br> - Sala para dos jugadores <br> - Arreglos de colisiones en el cubo <br> - Arreglos de bugs varios| 
 ![develop](https://img.shields.io/badge/develop-v0.1.0-blue?style=for-the-badge&logo=appveyor)  | - Interacción con el cubo <br> - Movimientos de cámara<br>- Primeras aproximaciones respecto al movimiento del personaje <br> - GDD semi-completo<br> - Bocetos y diseños iniciales  
@@ -22,19 +23,21 @@ Somos una empresa dedicada al desarrollo de videojuegos con un potencial de dive
 
 ## Roles de los integrantes
 - Game Designer: Axel
-- Artista 2D: Leo
-- Artista 3D: Leo - Fonti - Axel
+- CM: Fonti
 - Programadores:
-    - Multijugador: Dani
-    - Físicas: Sergio
--	Música: Axel – Fonti
--	CM: Axel – Fonti
--   Técnico: Fonti
+    - Comunicación: Dani
+    - Mecánicas: Sergio
+    - Interfaces: Axel
+    - Portfolio: Fonti
+- Música: Axel – Fonti
+- Efectos de sonido: Fonti - Sergio
+- 2D Artist: Axel – Leo
+- 3D Artist: Fonti
 
 
 
 # ICE<sup>3</sup>
-ICE<sup>3</sup> es la mezcla definitiva entre arcade, estrategia, hielo y peleas, en el que deberás hacer uso de tu habilidad para encontrar a otros personajes y mandarlos fuera del mapa. Pero no todo es tan sencillo, todo esto ocurre en un cubo, y, por si fuera poco, ¡todo resbala! Para conseguir sobrevivir y ser el último en pie, deberás patinar, golpear y sacar del cubo a todo aquel que se cruce en tu camino.
+ICE<sup>3</sup> es la mezcla definitiva entre arcade, estrategia e hielo, en el que deberás hacer uso de tu habilidad para encontrar a otros personajes y mandarlos fuera del mapa. Pero no todo es tan sencillo, todo esto ocurre en un cubo, y, por si fuera poco, ¡todo resbala! Para conseguir ganar los puntos, deberás patinar, golpear y sacar del cubo a todo aquel que se cruce en tu camino.
 
 Para ello, dispondrás de un abanico de objetos que pueden darle la vuelta <strike>a la tortilla</strike> al cubo y proclamarte así ganador.
 
